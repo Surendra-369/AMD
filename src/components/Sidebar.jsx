@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./Card";
 
 const Sidebar = () => {
+  const [show, setShow] = useState({
+    "Workloads":false,
+    "SystemProfile":false,
+    "Economics":false
+  }); // Track visibility for all parts
+
+  const handleShow = (index) => {
+  
+    setShow(prev => ({
+      ...prev, // Spread the previous state to maintain other values
+      [index]: !prev[index] // Toggle the visibility of the clicked part
+    }));
+  };
+
   const workloads = [
     "AI - Model Llama 3.x 1B",
     "ML - Vision Transformer",
@@ -21,25 +35,31 @@ const Sidebar = () => {
   return (
     <>
       <Card
-        width="100%"
-        height="41px"
-        // backgroundColor="rgba(0, 0, 0, 1)"
-        color="rgba(0, 0, 0, 1)"
-        marginTop="37%"
-      />
+        // width="100%"
+        // height="41px"
+        // marginTop="37%"
+        width="16em"
+        height="2em"
+        marginTop="8.3em"
+        alignItems="anchor-center"
+      >
+        Subscribers
+      </Card>
       <div
         className="sidebar-font"
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "30px"}}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "30px" }}
+        onClick={()=>handleShow("Workloads")}
       >
         <Card
-          width="30px"
-          height="140px"
-          // backgroundColor="rgba(0, 0, 0, 1)"
-          color="rgba(0, 0, 0, 1)"
+          // width="30px"
+          // height="140px"
+          width="2em"
+          height="15em"
           alignItems="center"
         >
-          <div style={{ transform: "rotate(-90deg)", whiteSpace: "nowrap" }}>
-            {"Workloads"}
+          <div style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)"
+            , whiteSpace: "nowrap" }}>
+             {"Workloads"}
           </div>
         </Card>
 
@@ -48,16 +68,16 @@ const Sidebar = () => {
             display: "flex",
             flexDirection: "column",
             marginLeft: "10px",
-             width:"100%"
+            width: "100%",
           }}
         >
           {workloads.map((type, index) => (
             <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
               <Card
-                width="100%"
-                height="30px"
-                // backgroundColor="rgba(0, 0, 0, 1)"
-                color="rgba(0, 0, 0, 1)"
+                // width="100%"
+                // height="30px"
+                width="18em"
+                height="2.5em"
                 alignItems="center"
                 key={index}
               >
@@ -69,15 +89,18 @@ const Sidebar = () => {
       </div>
       <div
         style={{ display: "flex", alignItems: "flex-start", marginTop: "65px" }}
+        onClick={()=>handleShow("SystemProfile")}
       >
         <Card
-          width="30px"
-          height="140px"
+          // width="30px"
+          // height="140px"
+          width="2em"
+          height="8.5em"
           // backgroundColor="rgba(0, 0, 0, 1)"
-          color="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
-          <div style={{ transform: "rotate(-90deg)", whiteSpace: "nowrap" }}>
+          <div style={{ transform: show["SystemProfile"] ? "" : "rotate(-90deg)"
+, whiteSpace: "nowrap" }}>
             {"System Profile"}
           </div>
         </Card>
@@ -87,16 +110,17 @@ const Sidebar = () => {
             display: "flex",
             flexDirection: "column",
             marginLeft: "10px",
-            width:"100%"
+            width: "100%",
           }}
         >
           {SystemProfile.map((type, index) => (
             <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
               <Card
-                width="100%"
-                height="30px"
+                // width="100%"
+                // height="30px"
+                width="13.5em"
+                height="2em"
                 // backgroundColor="rgba(0, 0, 0, 1)"
-                color="rgba(0, 0, 0, 1)"
                 alignItems="center"
                 key={index}
               >
@@ -108,15 +132,18 @@ const Sidebar = () => {
       </div>
       <div
         style={{ display: "flex", alignItems: "flex-start", marginTop: "15px" }}
+        onClick={()=>handleShow("Economics")}
       >
         <Card
-          width="30px"
-          height="224px"
+          // width="30px"
+          // height="224px"
+          width="2em"
+          height="15em"
           // backgroundColor="rgba(0, 0, 0, 1)"
-          color="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
-          <div style={{ transform: "rotate(-90deg)", whiteSpace: "nowrap" }}>
+          <div style={{ transform: show["Economics"] ? "" : "rotate(-90deg)"
+, whiteSpace: "nowrap" }}>
             {"Economics"}
           </div>
         </Card>
@@ -126,7 +153,7 @@ const Sidebar = () => {
             display: "flex",
             flexDirection: "column",
             marginLeft: "10px",
-            width:"100%"
+            width: "100%",
           }}
         >
           {Economics.map((type, index) => (
@@ -137,10 +164,11 @@ const Sidebar = () => {
               }}
             >
               <Card
-                width="100%"
-                height="30px"
+                // width="100%"
+                // height="30px"
+                width="20em"
+                height="3em"
                 // backgroundColor="rgba(0, 0, 0, 1)"
-                color="rgba(0, 0, 0, 1)"
                 alignItems="center"
                 key={index}
               >

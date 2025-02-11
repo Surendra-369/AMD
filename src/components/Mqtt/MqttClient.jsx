@@ -6,11 +6,12 @@ const MqttClient = () => {
 
   useEffect(() => {
     // Create an EventSource to connect to the server
-    const eventSource = new EventSource("http://192.168.0.26:5000/receive_data");
-    const data = fetch("http://192.168.0.26:5000/receive_data");
+    const eventSource = new EventSource("http://192.168.0.26:5002/stream");
+    // const data = fetch("http://192.168.0.26:5000/receive_data");
     eventSource.onmessage = (event) => {
-      const newMessage = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      // const newMessage = JSON.parse(event);
+      console.log(event?.data,"newMessage");
+      // setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
     // Cleanup on component unmount
@@ -18,6 +19,9 @@ const MqttClient = () => {
       eventSource.close();
     };
   }, []);
+
+ 
+  
 
   return (
     <div>
