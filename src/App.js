@@ -6,10 +6,11 @@ import MqttClient from "./components/Mqtt/MqttClient";
 function App() {
   return (
     <>
-    <MqttClient/>
-      {/* <Header />
+    {/* <MqttClient/> */}
+      <Header />
       <Home />
-      <Footer /> */}
+      <MqttClient/>
+      <Footer />
     </>
   );
 }

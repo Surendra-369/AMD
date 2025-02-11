@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./Card";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 const OnePsystem = () => {
   const data = [
@@ -32,13 +33,48 @@ const OnePsystem = () => {
   ];
   return (
     <>
-      <Card width="100%" height="60px" />
-      <div className="flex-center column">
+      <Card 
+        // width="100%" 
+        // height="60px" 
+        width="20em" 
+        height="4em" 
+        // flexDirection="column"
+        alignItems="center"
+         backgroundColor='rgba(0, 0, 0, 1)'
+          color='rgba(255, 255, 255, 1)'
+        >
+          1P AMD EPYC™ 
+          <div>
+          9575F - (64 cores)
+          </div>
+        </Card>
+      <div className="flex-center column" style={{width:"20em",height:"3em" }}>
         <div style={{ padding: "10px" }}>(1P - Single System)</div>
         <div>200Gb NIC</div>
       </div>
-      <Card width="100%" height="30px" marginTop="20px" />
-      <Card width="100%" height="200px" marginTop="20px" flexDirection="row">
+      <Card
+        // width="100%"
+        // height="30px"
+        width="20em"
+        height="2em"
+        marginTop="20px"
+        alignItems="normal"
+      >
+        <div className="flex-spaceBetween">
+          <div style={{ textAlign: "center", flex: 1 }}>1000 - 1800</div>
+          <div style={{ marginRight: "10px" }}>
+            <Icon icon="iconamoon:profile-bold" />
+          </div>
+        </div>
+      </Card>
+      <Card 
+        // width="100%" 
+        // height="200px" 
+        width="20em" 
+        height="12.6em" 
+        marginTop="20px" 
+        flexDirection="row"
+        >
         <div
           style={{
             display: "flex",
@@ -51,10 +87,13 @@ const OnePsystem = () => {
           {data.map((item, index) => (
             <Card
               key={index}
-              width="200px"
-              height="60px"
+              // width="200px"
+              // height="60px"
+              width="20em"
+              height="6em"
               alignItems="normal"
               marginTop="5px"
+              border= "0.81px solid rgba(255, 255, 255, 1)"
             >
               <div
                 style={{
@@ -88,16 +127,20 @@ const OnePsystem = () => {
             fontSize: "10px",
             // gap:"5px",
             marginLeft: "5px",
+            
           }}
         >
           {data2.map((item, index) => (
             <Card
               key={index}
-              width="120px"
-              height="189px"
+              // width="120px"
+              // height="189px"
+              width="10em"
+              height="19em"
               alignItems="normal"
               flexDirection="row"
               marginTop="5px"
+                border= "0.81px solid rgba(255, 255, 255, 1)"
             >
               <div style={{ marginTop: "10px" }}>
                 {Object.entries(item).map(([key, value]) => (
@@ -118,7 +161,14 @@ const OnePsystem = () => {
         </div>
       </Card>
 
-      <Card width="100%" height="124px" marginTop="20px" alignItems="normal">
+      <Card 
+        // width="100%" 
+        // height="124px" 
+        width="20em" 
+        height="8em" 
+        marginTop="20px" 
+        alignItems="normal"
+        >
         <div
           style={{
             display: "flex",
@@ -128,7 +178,13 @@ const OnePsystem = () => {
             gap: "10px",
           }}
         >
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -140,7 +196,13 @@ const OnePsystem = () => {
               {60}
             </div>
           </Card>
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -152,7 +214,13 @@ const OnePsystem = () => {
               {"zero"}
             </div>
           </Card>
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -166,17 +234,30 @@ const OnePsystem = () => {
           </Card>
         </div>
       </Card>
-      <Card width="100%" height="146px" marginTop="20px" alignItems="normal">
+      <Card 
+        // width="100%" 
+        // height="146px" 
+        width="20em" 
+        height="10em" 
+        marginTop="20px" 
+        alignItems="normal">
         <div
           style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
+            width:"100%",
             gap: "5px",
           }}
         >
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -188,7 +269,13 @@ const OnePsystem = () => {
               {"575 w - 825w"}
             </div>
           </Card>
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -200,7 +287,13 @@ const OnePsystem = () => {
               {"825w"}
             </div>
           </Card>
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -212,7 +305,13 @@ const OnePsystem = () => {
               {"$9,085"}
             </div>
           </Card>
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -226,7 +325,13 @@ const OnePsystem = () => {
           </Card>
         </div>
       </Card>
-      <Card width="100%" height="75px" marginTop="20px" alignItems="normal">
+      <Card 
+        // width="100%" 
+        // height="75px"
+      width="20em" 
+        height="5em"
+         marginTop="20px" 
+         alignItems="normal">
         <div
           style={{
             display: "flex",
@@ -236,7 +341,13 @@ const OnePsystem = () => {
             gap: "5px",
           }}
         >
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
@@ -248,7 +359,13 @@ const OnePsystem = () => {
               {}
             </div>
           </Card>
-          <Card width="320px" height="30px">
+          <Card 
+            // width="320px" 
+            // height="30px"
+            width="19em" 
+            height="2em"
+            border= "0.81px solid rgba(255, 255, 255, 1)"
+            >
             <div
               style={{
                 display: "flex",
