@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "./Card";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useVisibility } from "./VisibilityProvider";
 
 const ThreePsystem = () => {
     const data = [
@@ -31,6 +32,8 @@ const ThreePsystem = () => {
           "TTFT (ms)": 10,
         },
       ];
+      const { show, setShow } = useVisibility();
+      console.log("showwwwwwwwwwww11",show)
       return (
         <>
        <Card 

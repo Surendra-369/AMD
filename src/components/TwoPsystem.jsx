@@ -1,6 +1,7 @@
 import React from "react";
 import Card from "./Card";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useVisibility } from "./VisibilityProvider";
 
 const TwoPsystem = () => {
   const data = [
@@ -31,6 +32,8 @@ const TwoPsystem = () => {
       "TTFT (ms)": 10,
     },
   ];
+  const { show, setShow } = useVisibility();
+  console.log("showwwwwwwwwwww22",show)
   return (
     <>
       <Card
