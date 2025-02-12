@@ -7,20 +7,32 @@ body {
 
 
 /* Header CSS */
-.header-list{
+.header-list {
   display: flex;
   flex-direction: column;
   background-color: #000000;
-  color: white;  
+  color: white;
 }
-.list-items{
+
+.list-items {
   display: flex;
   justify-content: space-between;
   background-color: #000000;
   color: white;
   width: 100%;
-
+  align-items: center; /* Center the items vertically */
 }
+
+.left {
+  /* flex: 1; */
+  text-align: left; /* Align AMD text to the left */
+}
+
+.centered {
+  text-align: center; /* Center the second heading */
+  flex: 2; /* Make the centered text occupy more space */
+}
+
 /* Home CSS */
 .center-content {
   display: flex;
@@ -32,7 +44,7 @@ body {
 .container {
   display: flex;
   width: 100%;
-  /* overflow-x: auto; */
+  overflow-x: auto;
   /* height: 100vh;   */
   margin-top: 20px;
   /* gap: 20px; */

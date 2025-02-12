@@ -61,7 +61,7 @@ const OnePsystem = () => {
         height="4em"
         // flexDirection="column"
         alignItems="center"
-        backgroundColor='rgba(0, 0, 0, 1)'
+        // backgroundColor='rgba(0, 0, 0, 1)'
         color='rgba(255, 255, 255, 1)'
       >
         1P AMD EPYC™
