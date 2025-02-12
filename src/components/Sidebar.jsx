@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import Card from "./Card";
+import { useVisibility } from "./VisibilityProvider";
 
 const Sidebar = () => {
-  const [show, setShow] = useState({
-    "Workloads":true,
-    "SystemProfile":true,
-    "Economics":true
-  }); // Track visibility for all parts
-
+  // const [show, setShow] = useState({
+  //   "Workloads":true,
+  //   "SystemProfile":true,
+  //   "Economics":true
+  // }); // Track visibility for all parts
+   
+  const { show, setShow } = useVisibility();
   const handleShow = (index) => {
   
     setShow(prev => ({
