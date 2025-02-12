@@ -1,5 +1,8 @@
 body {
   margin: 0;
+  background: linear-gradient(270deg, #000000 0%, #00788E 100%);
+
+
 }
 
 
@@ -33,6 +36,7 @@ body {
   /* height: 100vh;   */
   margin-top: 20px;
   /* gap: 20px; */
+  /* background: linear-gradient(270deg, #000000 0%, #00788E 100%); */
 }
 
 /* Content 75% */
@@ -60,7 +64,7 @@ body {
   margin: 1;
   padding: 0;
   gap: 0px; /* Adds a 5px gap between each part */
-  background: linear-gradient(270deg, #000000 0%, #00788E 100%);
+  /* background: linear-gradient(270deg, #000000 0%, #00788E 100%); */
 
 }
 
@@ -69,7 +73,7 @@ body {
   flex: 1; /* Each part takes equal space */
   padding: 5px; /* Remove internal padding */
   /* background-color: purple; */
-  background: linear-gradient(350.44deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%);
+  /* background: linear-gradient(350.44deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%); */
 
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width/height */
 }
@@ -122,7 +126,7 @@ body {
 @media (max-width: 768px) {
   .container {
     flex-direction: column;  /* Stack the content vertically on smaller screens */
-    background: linear-gradient(270deg, #000000 0%, #00788E 100%);
+    /* background: linear-gradient(270deg, #000000 0%, #00788E 100%); */
   }
 
   .content-right, .content-left {
