@@ -71,21 +71,21 @@ function Home() {
         <Sidebar />
       </div>
       <div
-        className="part"
+        className="part border"
         style={{ display: show[0] ? 'block' : 'none' }}
         onClick={() => handleShow(0)}
       >
         <OnePsystem />
       </div>
       <div
-        className="part"
+        className="part border"
         style={{ display: show[1] ? 'block' : 'none' }}
         onClick={() => handleShow(1)}
       >
         <TwoPsystem />
       </div>
       <div
-        className="part"
+        className="part border"
         style={{ display: show[2] ? 'block' : 'none' }}
         onClick={() => handleShow(2)}
       >

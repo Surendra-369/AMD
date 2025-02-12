@@ -6,7 +6,7 @@ const Info = () => {
     <>
     <Card
     // width="27em"
-    height="33em"
+    height="32em"
     backgroundColor="rgba(0, 120, 142, 1)"
      alignItems="normal"
     >
