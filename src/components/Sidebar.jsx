@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import Card from "./Card";
+import { useVisibility } from "./VisibilityProvider";
 
 const Sidebar = () => {
-  const [show, setShow] = useState({
-    "Workloads":false,
-    "SystemProfile":false,
-    "Economics":false
-  }); // Track visibility for all parts
+  // const [show, setShow] = useState({
+  //   "Workloads":true,
+  //   "SystemProfile":true,
+  //   "Economics":true
+  // }); // Track visibility for all parts
 
+  const { show, setShow } = useVisibility();
   const handleShow = (index) => {
-  
+
     setShow(prev => ({
       ...prev, // Spread the previous state to maintain other values
       [index]: !prev[index] // Toggle the visibility of the clicked part
@@ -47,94 +49,152 @@ const Sidebar = () => {
       </Card>
       <div
         className="sidebar-font"
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "30px" }}
-        onClick={()=>handleShow("Workloads")}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "30px", height: "12em" }}
+        onClick={() => handleShow("Workloads")}
       >
-        <Card
+        {!show["Workloads"] && <Card
           // width="30px"
           // height="140px"
           width="2em"
           height="15em"
           alignItems="center"
+          style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)" }}
         >
-          <div style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap" }}>
-             {"Workloads"}
+          <div style={{
+            transform: show["Workloads"] ? "" : "rotate(-90deg)"
+            , whiteSpace: "nowrap"
+          }}>
+            {"Workloads"}
           </div>
-        </Card>
+        </Card>}
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "10px",
-            width: "100%",
-          }}
-        >
-          {workloads.map((type, index) => (
-            <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
+        {!show["Workloads"] ?
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "10px",
+              width: "100%",
+            }}
+          >
+            {workloads.map((type, index) => (
+              <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
+                <Card
+                  // width="100%"
+                  // height="30px"
+                  width="18em"
+                  height="2.5em"
+                  alignItems="center"
+                  key={index}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {type}
+                </Card>
+              </div>
+            ))}
+          </div> :
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "10px",
+              width: "100%",
+            }}
+
+          >
+
+            <div style={{ marginTop: "22px" }}>
               <Card
                 // width="100%"
                 // height="30px"
                 width="18em"
                 height="2.5em"
                 alignItems="center"
-                key={index}
+
               >
-                {type}
+                Workloads
               </Card>
             </div>
-          ))}
-        </div>
+
+          </div>}
       </div>
-      <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "65px" }}
-        onClick={()=>handleShow("SystemProfile")}
+      {<div
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "65px", height: "8em" }}
+        onClick={() => handleShow("SystemProfile")}
       >
-        <Card
+        {!show["SystemProfile"] && <Card
           // width="30px"
           // height="140px"
+          key={"SystemProfile"}
           width="2em"
           height="8.5em"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
-          <div style={{ transform: show["SystemProfile"] ? "" : "rotate(-90deg)"
-, whiteSpace: "nowrap" }}>
+          <div style={{
+            transform: show["SystemProfile"] ? "" : "rotate(-90deg)"
+            , whiteSpace: "nowrap"
+          }}>
             {"System Profile"}
           </div>
-        </Card>
+        </Card>}
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "10px",
-            width: "100%",
-          }}
-        >
-          {SystemProfile.map((type, index) => (
-            <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
+        {!show["SystemProfile"] ?
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "10px",
+              width: "100%",
+            }}
+          >
+            {SystemProfile.map((type, index) => (
+              <div style={{ marginTop: index === 0 ? "0" : "22px" }}
+                onClick={(e) => e.stopPropagation()}>
+                <Card
+                  // width="100%"
+                  // height="30px"
+                  width="13.5em"
+                  height="2em"
+                  // backgroundColor="rgba(0, 0, 0, 1)"
+                  alignItems="center"
+                  key={index}
+
+                >
+                  {type}
+                </Card>
+              </div>
+            ))}
+          </div> : <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "10px",
+              width: "100%",
+            }}
+
+          >
+
+            <div style={{ marginTop: "22px" }}>
               <Card
                 // width="100%"
                 // height="30px"
-                width="13.5em"
-                height="2em"
-                // backgroundColor="rgba(0, 0, 0, 1)"
+                width="16em"
+                height="2.5em"
                 alignItems="center"
-                key={index}
+
               >
-                {type}
+                System Profile
               </Card>
             </div>
-          ))}
-        </div>
-      </div>
+
+          </div>}
+      </div>}
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "15px" }}
-        onClick={()=>handleShow("Economics")}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px", height: "15em" }}
+        onClick={() => handleShow("Economics")}
       >
-        <Card
+        {!show["Economics"] && <Card
           // width="30px"
           // height="224px"
           width="2em"
@@ -142,44 +202,74 @@ const Sidebar = () => {
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
-          <div style={{ transform: show["Economics"] ? "" : "rotate(-90deg)"
-, whiteSpace: "nowrap" }}>
+          <div style={{
+            transform: show["Economics"] ? "" : "rotate(-90deg)"
+            , whiteSpace: "nowrap"
+          }}>
             {"Economics"}
           </div>
-        </Card>
+        </Card>}
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "10px",
-            width: "100%",
-          }}
-        >
-          {Economics.map((type, index) => (
-            <div
-              style={{
-                marginTop: index === 0 ? "0" : "10px",
-                fontSize: "11px",
-              }}
-            >
+        {!show["Economics"] ?
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "10px",
+              width: "100%",
+            }}
+          >
+
+            {Economics.map((type, index) => (
+              <div
+                style={{
+                  marginTop: index === 0 ? "0" : "10px",
+                  fontSize: "11px",
+                }}
+              >
+                <Card
+                  // width="100%"
+                  // height="30px"
+                  width="20em"
+                  height="3em"
+                  // backgroundColor="rgba(0, 0, 0, 1)"
+                  alignItems="center"
+                  key={index}
+                >
+                  {type}
+                </Card>
+              </div>
+            ))}
+          </div> : <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginLeft: "10px",
+
+              width: "100%",
+            }}
+
+          >
+
+            <div style={{ marginTop: "22px",marginLeft:'5px' }}>
               <Card
                 // width="100%"
                 // height="30px"
-                width="20em"
-                height="3em"
-                // backgroundColor="rgba(0, 0, 0, 1)"
+                width="15em"
+                height="2.5em"
                 alignItems="center"
-                key={index}
               >
-                {type}
+                Economics
               </Card>
             </div>
-          ))}
-        </div>
+
+          </div>}
       </div>
     </>
   );
 };
 
 export default Sidebar;
+
+
+

@@ -57,13 +57,13 @@ function Home() {
   return (
     <div className="container">
       <div className="content-left" style={{ flex: show.every(value => value === true) ? "0 0 75%" : "0 0 40%"}}>
-        <div className="header-list">
+        {/* <div className="header-list">
           <div className="center-content">
             <h3>
               Supporting Heterogeneous Workload demands with AMD EPYC Foundation{" "}
             </h3>
           </div>
-        </div>
+        </div> */}
         <div className="four-parts">
       <div
         className="part"

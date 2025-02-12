@@ -1,23 +1,38 @@
 body {
   margin: 0;
+  background: linear-gradient(270deg, #000000 0%, #00788E 100%);
+
+
 }
 
 
 /* Header CSS */
-.header-list{
+.header-list {
   display: flex;
   flex-direction: column;
   background-color: #000000;
-  color: white;  
+  color: white;
 }
-.list-items{
+
+.list-items {
   display: flex;
   justify-content: space-between;
   background-color: #000000;
   color: white;
   width: 100%;
-
+  align-items: center; /* Center the items vertically */
 }
+
+.left {
+  /* flex: 1; */
+  text-align: left; /* Align AMD text to the left */
+}
+
+.centered {
+  text-align: center; /* Center the second heading */
+  flex: 2; /* Make the centered text occupy more space */
+}
+
 /* Home CSS */
 .center-content {
   display: flex;
@@ -29,14 +44,17 @@ body {
 .container {
   display: flex;
   width: 100%;
+  overflow-x: auto;
   /* height: 100vh;   */
   margin-top: 20px;
   /* gap: 20px; */
+  /* background: linear-gradient(270deg, #000000 0%, #00788E 100%); */
 }
 
 /* Content 75% */
 .content-left {
-  flex: 7.5;  /* 75% of the space */
+  flex: 0 0 75%;
+  
   /* background-color: lightblue; */
   /* padding: 20px; */
   box-sizing: border-box;
@@ -45,26 +63,12 @@ body {
 
 /* Content 25% */
 .content-right {
-  flex: 2.5;  /* 25% of the space */
+  flex: 0 0 25%;  /* 25% of the space */
   /* background-color: lightcoral; */
   /* padding: 20px; */
   box-sizing: border-box;
-  /* margin-right: 10px; */
+  margin-left: 10px;
 }
-/* .four-parts {
-  display: flex;
-  justify-content: space-between; 
-  width: 100%;
-}
-
-.part {
-  flex: 1;  
-  margin: 0 10px;  
-  background-color: purple;
-  padding: 20px;
-  margin-top: 10px;
-  box-sizing: border-box;
-} */
 .four-parts {
   display: flex;
   justify-content: space-between;
@@ -72,12 +76,17 @@ body {
   margin: 1;
   padding: 0;
   gap: 0px; /* Adds a 5px gap between each part */
+  /* background: linear-gradient(270deg, #000000 0%, #00788E 100%); */
+
 }
 
 .part {
+  cursor: pointer;
   flex: 1; /* Each part takes equal space */
   padding: 5px; /* Remove internal padding */
   /* background-color: purple; */
+  /* background: linear-gradient(350.44deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%); */
+
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width/height */
 }
 
@@ -86,7 +95,7 @@ body {
 /* Card CSS */
 .card{
   display: flex;
-  border: 1px solid black;
+  /* border: 1px solid rgba(255, 255, 255, 1); */
   border-radius: 10px;
   justify-content: center;
 }
@@ -106,6 +115,12 @@ body {
   justify-content: center;
   align-items: center;
 }
+.flex-spaceBetween{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 .flex-start{
   display: flex;
   justify-content: center;
@@ -123,6 +138,7 @@ body {
 @media (max-width: 768px) {
   .container {
     flex-direction: column;  /* Stack the content vertically on smaller screens */
+    /* background: linear-gradient(270deg, #000000 0%, #00788E 100%); */
   }
 
   .content-right, .content-left {
