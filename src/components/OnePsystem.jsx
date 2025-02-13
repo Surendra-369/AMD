@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "./Card";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useVisibility } from "./VisibilityProvider";
+import { SubtabsContext } from "./SubtabsContext";
 
 const OnePsystem = () => {
   const data = [
@@ -51,6 +52,7 @@ const OnePsystem = () => {
     { value: "$120" },
   ];
   const { show, setShow } = useVisibility();
+  const { subtabs, setSubtabs } = useContext(SubtabsContext);
   console.log("showwwwwwwwwwww", show)
   return (
     <>
@@ -97,8 +99,12 @@ const OnePsystem = () => {
         flexDirection={!show["Workloads"] ? "row" : ""}
         alignItems={!show["Workloads"] ? "" : "normal"}
       >
+        
         {!show["Workloads"] ? (
           <>
+
+
+
             <div
               style={{
                 display: "flex",

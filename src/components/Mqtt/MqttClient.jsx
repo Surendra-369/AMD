@@ -67,6 +67,7 @@ const MqttClient = () => {
     return () => {
       eventSource.close();
     };
+    
   }, [setMessages]);
 
   return (
