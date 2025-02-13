@@ -5,7 +5,7 @@ export const SubtabsContext = createContext();
 
 export const SubtabsProvider = ({ children }) => {
     const [subtabs, setSubtabs] = useState({
-        "1P_LLM_LLAME": false,
+        "1P_LLM_LLAMA": false,
         "1P_LLM_DS": false,
         "1P_VIT": false,
         "1P_FW": false,

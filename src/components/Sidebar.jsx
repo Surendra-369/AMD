@@ -26,9 +26,9 @@ const Sidebar = () => {
   //   "Enterprise - Firewall",
   // ];
   const workloads = [
-    {key:"1P_LLM_LLAME" , value:"AI - Model Llama 3.x 1B" },
-    {key:"1P_LLM_LLAME" ,   value:"ML - Vision Transformer"},
-    {key:"1P_LLM_LLAME" , value:"Enterprise - Firewall"},
+    {key:"1P_LLM_LLAMA" , value:"AI - Model Llama 3.x 1B" },
+    {key:"1P_VIT" ,   value:"ML - Vision Transformer"},
+    {key:"1P_FW" , value:"Enterprise - Firewall"},
         ];    
   const SystemProfile = ["CPU in use", "Accelerator", "Watts"];
 
@@ -63,14 +63,26 @@ const { subtabs, setSubtabs } = useContext(SubtabsContext);
 
   const handlesubmenu = (type, index) => {
     console.log("dfghj", type, index);
-
+    let s = subtabs.hasOwnProperty(type.key)
+    console.log(s,"sai")
     // Check if the key exists in subtabs
     if (subtabs.hasOwnProperty(type.key)) {
-        setSubtabs(prevState => ({
-            ...prevState,
-            [type.key]: true
-        }));
+      console.log("surrrr");
+    
+      setSubtabs(prevState => {
+        // Create a new object with all subtabs set to false
+        const updatedSubtabs = Object.keys(prevState).reduce((acc, key) => {
+          acc[key] = false; // Set all values to false
+          return acc;
+        }, {});
+    
+        // Set the clicked element to true
+        updatedSubtabs[type.key] = true;
+    
+        return updatedSubtabs; // Return the updated state
+      });
     }
+    
 };
 console.log("subtabs",subtabs);
   return (
