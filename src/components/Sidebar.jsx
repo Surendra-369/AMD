@@ -68,7 +68,7 @@ const Sidebar = () => {
         // width="100%"
         // height="41px"
         // marginTop="37%"
-        width="16em"
+        width="20em"
         height="2em"
         marginTop="8.3em"
         alignItems="anchor-center"
@@ -77,14 +77,14 @@ const Sidebar = () => {
       </Card>
       <div
         className="sidebar-font"
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "3em", height: "12em" }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop:"3em", }}
         onClick={() => handleShow("Workloads")}
       >
         {!show["Workloads"] && <Card
           // width="30px"
           // height="140px"
-          width="2em"
-          height="15em"
+          width="2.5em"
+          height="14em"
           alignItems="center"
           style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)" }}
         >
@@ -114,7 +114,7 @@ const Sidebar = () => {
                 }}
                 key={`${workload.key}-${index}`} // Ensures unique key
               >
-                <Card width="20em" height="3.5em" alignItems="center">
+                <Card width="24em" height="3.5em" alignItems="center">
                   {workload.value}  {/* Display only the value */}
                 </Card>
               </div>
@@ -137,8 +137,8 @@ const Sidebar = () => {
               <Card
                 // width="100%"
                 // height="30px"
-                width="18em"
-                height="2.5em"
+                width="20em"
+                height="15em"
                 alignItems="center"
 
               >
@@ -149,7 +149,7 @@ const Sidebar = () => {
           </div>}
       </div>
       <div
-        style={{ display: "flex", alignItems: "center", marginTop: "5em", height: "8em" }}
+        style={{ display: "flex", alignItems: "center", marginTop: "5em",  }}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -204,7 +204,7 @@ const Sidebar = () => {
                 // width="100%"
                 // height="30px"
                 width="16em"
-                height="2.5em"
+                height="15em"
                 alignItems="center"
 
               >
@@ -215,7 +215,7 @@ const Sidebar = () => {
           </div>}
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px", height: "15em" }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px",  }}
         onClick={() => handleShow("Economics")}
       >
         {!show["Economics"] && <Card
@@ -291,7 +291,7 @@ const Sidebar = () => {
                 // width="100%"
                 // height="30px"
                 width="15em"
-                height="2.5em"
+                height="15em"
                 alignItems="center"
               >
                 Economics

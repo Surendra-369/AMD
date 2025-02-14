@@ -10,7 +10,7 @@ const OnePsystem = () => {
   const getGridStyle = (dataLength) => {
     const baseStyle = {
       display: 'grid',
-      gap: '1rem',
+      gap: '4rem',
       width: '100%',
     };
 
@@ -19,7 +19,8 @@ const OnePsystem = () => {
         return {
           ...baseStyle,
           gridTemplateColumns: '1fr',
-          justifyItems: 'center'
+          justifyItems: 'center',
+          marginTop:"4em"
         };
       case 2:
         return {
@@ -44,7 +45,7 @@ const OnePsystem = () => {
 
   const styles = {
     card: {
-      backgroundColor: '#000000',
+      backgroundColor: '#00788E',
       borderRadius: '0.5rem',
       maxWidth: '42rem',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -53,7 +54,7 @@ const OnePsystem = () => {
       marginTop: '0.25rem'
     },
     header: {
-      backgroundColor: '#000000',
+      backgroundColor: '#035369',
       color: 'white',
       fontSize: '1.25rem',
       fontWeight: '600',
@@ -71,7 +72,7 @@ const OnePsystem = () => {
       justifyContent: 'center'
     },
     metricLabel: {
-      color: '#99f6e4',
+      color: 'white',
       fontSize: '0.875rem',
       marginBottom: '0.25rem'
     },
@@ -111,7 +112,7 @@ const OnePsystem = () => {
   const { show, setShow } = useVisibility();
   const { tabs, setTabs } = useContext(SubtabsContext);
   console.log("tabs", tabs)
-  const Keys = {
+  const workloadDataKeys = {
     "concurrent_user": "Concurrent User",
     "token_latency": "Token Latency",
     "tokens_per_sec": "Tokens Per Sec",
@@ -175,75 +176,7 @@ const OnePsystem = () => {
           </div>
         </div>
       </Card>
-      {/* <div style={styles.card}>
-      <div style={styles.header}>
-        AI: Llama 3.x 1B
-      </div>
      
-      <div style={styles.contentArea}>
-        <div style={styles.metricsGrid}>
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>Users</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
-         
-          <div style={styles.verticalDivider}></div>
- 
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>Tokens/s</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
- 
-          <div style={styles.horizontalDivider}></div>
- 
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>Latency (ms)</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
- 
-          <div style={styles.verticalDivider}></div>
- 
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>TTFT (ms)</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
-        </div>
- 
-     
-      </div>
-      </div> */}
-      {/* <div style={styles.card}>
-  <div style={styles.header}>
-    AI: Llama 3.x 1B
-  </div>
-
-  <div style={styles.contentArea}>
-  <div style={styles.contentArea}>
-  {Object.entries(tabs)?.map(([key, isSelected]) => {
-    // Check if the tab is selected and data exists for that key
-    const dataKey =data[key];
-    console.log(dataKey,"dataKey",key,isSelected)
-    if (isSelected && dataKey) {
-      return (
-        <div key={dataKey} style={styles.metricsGrid}>
-          {console.log(key, isSelected, "ram", dataKey)}
-          {Object.entries(dataKey)?.map(([metricKey, metricValue], index) => (
-            <div key={index} style={styles.metric}>
-              <span style={styles.metricLabel}>
-                {Keys[metricKey] || convertToReadableFormat(metricKey)}
-              </span>
-              <span style={styles.metricValue}>{metricValue}</span>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null; // Do not render if isSelected is false or data[key] is not available
-  })}
-</div>
-</div>
-
-</div> */}
 <div style={styles.card}>
       <div style={styles.header}>
 
@@ -251,31 +184,6 @@ const OnePsystem = () => {
       </div>
       
       <div style={styles.contentArea}>
-        {/* {Object.entries(tabs)?.map(([key, isSelected]) => {
-          const dataKey = data[key];
-          console.log(key,"key");
-          
-          if (isSelected && dataKey) {
-            const entries = Object.entries(dataKey);
-            const gridStyle = getGridStyle(entries.length);
-            
-            return (
-              <div key={key} style={gridStyle}>
-                {entries.map(([metricKey, metricValue], index) => (
-                  <div key={index} style={styles.metricContainer}>
-                    <span style={styles.metricLabel}>
-                      {convertToReadableFormat(metricKey)}
-                    </span>
-                    <span style={styles.metricValue}>
-                      {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            );
-          }
-          return null;
-        })} */}
        {Object.entries(tabs).map(([category, categoryTabs]) => {
   return Object.entries(categoryTabs).map(([key, isSelected]) => {
     const dataKey = data[key];
@@ -298,11 +206,11 @@ const OnePsystem = () => {
             </div>
           ))}
         </div>
-      );
+      )
     }
-    return null;
-  });
-})};
+    return null
+  })
+})}
 
       </div>
     </div>
@@ -521,50 +429,3 @@ const OnePsystem = () => {
 };
 
 export default OnePsystem;
-
-
-// {Object.entries(data).map(([key, value], index) => (
-//   <Card
-//     key={index}
-//     width="20em"
-//     height="6em"
-//     alignItems="normal"
-//     marginTop="5px"
-//     border="0.81px solid rgba(255, 255, 255, 1)"
-//   >
-//     <div
-//       style={{
-//         flexDirection: "column",
-//         justifyContent: "space-between",
-//         marginLeft: "10px",
-//         marginRight: "10px",
-//       }}
-//     >
-//       {typeof value === 'object' && value !== null ? (
-//         Object.entries(value).map(([nestedKey, nestedValue], nestedIndex) => (
-//           <div
-//             key={nestedIndex}
-//             style={{
-//               display: "flex",
-//               justifyContent: "space-between",
-//               flexWrap: "wrap",
-//             }}
-//           >
-//             <strong>{Keys[nestedKey] || convertToReadableFormat(nestedKey)}:</strong> {JSON.stringify(nestedValue)}
-//           </div>
-//         ))
-//       ) : (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "space-between",
-//             flexWrap: "wrap",
-//           }}
-//         >
-//           <strong>{Keys[key] || convertToReadableFormat(key)}:</strong> {JSON.stringify(value)}
-//         </div>
-//       )}
-//     </div>
-    
-//   </Card>
-// ))}
