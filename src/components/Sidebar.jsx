@@ -72,6 +72,10 @@ const Sidebar = () => {
         height="2em"
         marginTop="8.3em"
         alignItems="anchor-center"
+        style={{
+          borderRadius: "10px", // Adjust as needed
+          border: "2px solid white",
+        }}
       >
         Subscribers
       </Card>

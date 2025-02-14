@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  background: linear-gradient(270deg, #827e7eac 0%, #595b5b 100%);
+  background: linear-gradient( #000000 , #636365 100%);
 
 
 }
@@ -53,7 +53,7 @@ body {
 
 /* Content 75% */
 .content-left {
-  flex: 0 0 75%;
+  /* flex: 0 0 75%; */
   
   /* background-color: lightblue; */
   /* padding: 20px; */
@@ -63,7 +63,7 @@ body {
 
 /* Content 25% */
 .content-right {
-  flex: 0 0 25%;  /* 25% of the space */
+  /* flex: 0 0 25%; */
   /* background-color: lightcoral; */
   /* padding: 20px; */
   box-sizing: border-box;
@@ -82,7 +82,7 @@ body {
 
 .part {
   cursor: pointer;
-  flex: 1; /* Each part takes equal space */
+  /* flex: 1;  */
   padding: 5px; /* Remove internal padding */
   /* background-color: purple; */
   /* background: linear-gradient(350.44deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.3) 100%); */
@@ -90,9 +90,9 @@ body {
   box-sizing: border-box; /* Ensure padding and border are included in the element's total width/height */
 }
 .part.border{
-  background: linear-gradient(134.53deg, rgba(0, 194, 222, 0.5) 0%, rgba(0, 120, 142, 0.5) 75.21%);
-  border: 1px solid;
-  border-radius: 10px;
+  /* background: linear-gradient(134.53deg, rgba(0, 194, 222, 0.5) 0%, rgba(0, 120, 142, 0.5) 75.21%); */
+  /* border: 1px solid;
+  border-radius: 10px; */
   margin: 2px;
 }
 
@@ -104,6 +104,9 @@ body {
   /* border: 1px solid rgba(255, 255, 255, 1); */
   border-radius: 10px;
   justify-content: center;
+  /* background: linear-gradient(to right, #00B1CA, #000F13) */
+
+  /* background: linear-gradient(134.53deg, rgba(0, 194, 222, 0.5) 0%, rgba(0, 120, 142, 0.5) 75.21%); */
 }
 
 /* Footer CSS */

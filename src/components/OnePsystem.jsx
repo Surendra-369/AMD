@@ -1,15 +1,469 @@
-import { React, useState, useEffect ,useContext} from "react";
+// import { React, useState, useEffect, useContext } from "react";
+// import Card from "./Card";
+// import { Icon } from "@iconify/react/dist/iconify.js";
+// import { useVisibility } from "./VisibilityProvider";
+// import { useMqtt } from "./Mqtt/MqttContext";
+// import { SubtabsContext } from "./SubtabsContext";
+
+// const OnePsystem = () => {
+
+//   const styling = {
+//     card1: {
+//       backgroundColor: '#115e59',
+//       borderRadius: '8px',
+//       maxWidth: '500px',
+//       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+//       overflow: 'hidden'
+//     },
+//     header1: {
+//       backgroundColor: '#0d4a44',
+//       color: 'white',
+//       fontSize: '20px',
+//       fontWeight: '600',
+//       padding: '16px',
+//       textAlign: 'center',
+//       marginBottom: '20px'
+//     },
+//     contentArea1: {
+//       padding: '0 24px 24px 24px',
+//       display: 'flex',           // Added flex display
+//       justifyContent: 'center',  // Center horizontally
+//       alignItems: 'center',      // Center vertically
+//       minHeight: '100px'         // Give some minimum height for vertical centering
+//     },
+//     metricsGrid1: {
+//       display: 'flex',           // Changed to flex for better centering
+//       justifyContent: 'center',  // Center horizontally
+//       alignItems: 'center',      // Center vertically
+//       width: '100%'             // Take full width
+//     },
+//     metric1: {
+//       display: 'flex',
+//       flexDirection: 'column',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//       textAlign: 'center'
+//     },
+//     metricLabel1: {
+//       color: '#99f6e4',
+//       fontSize: '14px',
+//       marginBottom: '4px'
+//     },
+//     metricValue1: {
+//       color: 'white',
+//       fontSize: '24px',
+//       fontWeight: 'bold'
+//     }
+//   };
+
+//   const getGridStyle = (dataLength) => {
+//     const baseStyle = {
+//       display: 'grid',
+//       gap: '1rem',
+//       width: '100%',
+//     };
+
+//     switch (dataLength) {
+//       case 1:
+//         return {
+//           ...baseStyle,
+//           gridTemplateColumns: '1fr',
+//           justifyItems: 'center'
+//         };
+//       case 2:
+//         return {
+//           ...baseStyle,
+//           gridTemplateColumns: '1fr 1fr'
+//         };
+//       case 3:
+//         return {
+//           ...baseStyle,
+//           gridTemplateColumns: '1fr 1fr 1fr'
+//         };
+//       default:
+//         return {
+//           ...baseStyle,
+//           gridTemplateColumns: '1fr 1fr',
+//           '@media (min-width: 768px)': {
+//             gridTemplateColumns: '1fr 1fr 1fr 1fr'
+//           }
+//         };
+//     }
+//   };
+
+//   const styles = {
+//     card: {
+//       backgroundColor: '#000000',
+//       borderRadius: '0.5rem',
+//       maxWidth: '42rem',
+//       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+//       overflow: 'hidden',
+//       height: '15rem',
+//       marginTop: '0.25rem'
+//     },
+//     header: {
+//       backgroundColor: '#000000',
+//       color: 'white',
+//       fontSize: '1.25rem',
+//       fontWeight: '600',
+//       padding: '1rem',
+//       textAlign: 'center',
+//       marginBottom: '1.25rem'
+//     },
+//     contentArea: {
+//       padding: '0 1.5rem 1.5rem 1.5rem'
+//     },
+//     metricContainer: {
+//       display: 'flex',
+//       flexDirection: 'column',
+//       alignItems: 'center',
+//       justifyContent: 'center'
+//     },
+//     metricLabel: {
+//       color: '#99f6e4',
+//       fontSize: '0.875rem',
+//       marginBottom: '0.25rem'
+//     },
+//     metricValue: {
+//       color: 'white',
+//       fontSize: '1.5rem',
+//       fontWeight: 'bold'
+//     }
+//   };
+//   const data2 = [
+//     {
+//       "CPUs": 10,
+//       "CPU Util": "10",
+//       "Threads": 10,
+//       "Mem (GB)": 10,
+//       "Network (Gb)": 10,
+//     },
+//   ];
+//   const data3 = [
+//     { key: "Token/s", value: 10 },
+//     { key: "Inference/s", value: 10 },
+//     { key: "ACL/rules", value: 10 }
+//   ];
+//   const data4 = [
+//     { value: 60 },
+//     { value: "zero" },
+//     { value: "825W" },
+//   ];
+//   const data5 = [
+//     { value: "575 w - 825w" },
+//     { value: "825w" },
+//     { value: "$9,085" },
+//     { value: "$12,130" },
+//     { value: "$1130" },
+//     { value: "$120" },
+//   ];
+//   const { show, setShow } = useVisibility();
+//   const { tabs, setTabs } = useContext(SubtabsContext);
+//   console.log("tabs", tabs)
+//   const Keys = {
+//     "concurrent_user": "Concurrent User",
+//     "token_latency": "Token Latency",
+//     "tokens_per_sec": "Tokens Per Sec",
+//     "ttft": "TTFT"
+//   };
+
+//   const temp = [
+//     {
+//       "Concurrent Packets": 10,
+//       "Applied ACL/rules": 10,
+//       "Latency (ms)": 10,
+//       "Jitter (ms)": 10,
+//     },
+//   ];
+//   const { messages, setMessage } = useMqtt()
+//   console.log(messages, "messages");
+//   function convertToReadableFormat(text) {
+//     return text
+//       .split('_')                  // Split the text by underscores
+//       .map(word => word.charAt(0).toUpperCase() + word.slice(1))  // Capitalize each word
+//       .join(' ');                  // Join the words with a space
+//   }
+//   const [data, setData] = useState(messages);
+//   const updateElement = (newMessage) => {
+//     setData(newMessage); // Assuming `prev` is an array
+//   };
+
+//   useEffect(() => {
+//     if (typeof messages !== 'undefined')
+//       updateElement(messages)
+//   }, [messages])
+
+//   console.log("data", data)
+//   return (
+//     <>
+//       <Card
+//         width="20em"
+//         height="4em"
+//         alignItems="center"
+//         color='rgba(255, 255, 255, 1)'
+//       >
+//         1P AMD EPYC™
+//         <div>
+//           9575F - (64 cores)
+//         </div>
+//       </Card>
+//       <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
+//         <div style={{ padding: "10px" }}>(1P - Single System)</div>
+//         <div>200Gb NIC</div>
+//       </div>
+//       <Card
+//         width="20em"
+//         height="2em"
+//         marginTop="20px"
+//         alignItems="normal"
+//       >
+//         <div className="flex-spaceBetween">
+//           <div style={{ textAlign: "center", flex: 1 }}>1000 - 1800</div>
+//           <div style={{ marginRight: "10px" }}>
+//             <Icon icon="iconamoon:profile-bold" />
+//           </div>
+//         </div>
+//       </Card>
+
+//       <div style={styles.card}>
+//         <div style={styles.header}>
+
+//           {/* AI: Llama 3.x 1B */}
+//         </div>
+
+//         <div style={styles.contentArea}>
+
+//           {Object.entries(tabs).map(([category, categoryTabs]) => {
+//             return Object.entries(categoryTabs).map(([key, isSelected]) => {
+//               const dataKey = data[key];
+//               console.log("key", isSelected);
+
+//               if (isSelected && dataKey) {
+//                 const entries = Object.entries(dataKey);
+//                 const gridStyle = getGridStyle(entries.length);
+
+//                 return (
+//                   <div key={key} style={gridStyle}>
+//                     {entries.map(([metricKey, metricValue], index) => (
+//                       <div key={index} style={styles.metricContainer}>
+//                         <span style={styles.metricLabel}>
+//                           {convertToReadableFormat(metricKey)}
+//                         </span>
+//                         <span style={styles.metricValue}>
+//                           {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
+//                         </span>
+//                       </div>
+//                     ))}
+//                   </div>
+//                 );
+//               }
+//               return null;
+//             });
+//           })};
+
+//         </div>
+//       </div>
+
+
+
+
+
+
+//       <Card
+
+//         width="20em"
+//         height="8em"
+//         marginTop="20px"
+//         alignItems="normal"
+//       >
+//         {!show["SystemProfile"] ? (
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "center",
+//               alignItems: "center",
+//               flexDirection: "column",
+//               gap: "10px",
+//             }}
+//           >
+//             {data4.map((item, index) => (
+//               <Card
+//                 key={index}
+//                 width="19em"
+//                 height="2em"
+//                 border="0.81px solid rgba(255, 255, 255, 1)"
+//               >
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     alignItems: "center",
+//                     width: "100%",
+//                   }}
+//                 >
+//                   {item.value}
+//                 </div>
+//               </Card>
+//             ))}
+//           </div>
+//         ) : (
+//           <>
+//             <div className="flex-center">
+//               {`100 W`}
+//             </div>
+//           </>
+//         )}
+//       </Card>
+//       <Card
+
+//         width="20em"
+//         height="15em"
+//         marginTop="20px"
+//         alignItems="normal">
+//         {!show["Economics"] ? (
+//           <div
+//             style={{
+//               display: "flex",
+//               justifyContent: "center",
+//               alignItems: "center",
+//               flexDirection: "column",
+//               width: "100%",
+//               gap: "5px",
+//             }}
+//           >
+//             {data5.map((item, index) => (
+//               <Card
+//                 key={index}
+//                 width="19em"
+//                 height="2em"
+//                 border="0.81px solid rgba(255, 255, 255, 1)"
+//               >
+//                 <div
+//                   style={{
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     alignItems: "center",
+//                     width: "100%",
+//                   }}
+//                 >
+//                   {item.value}
+//                 </div>
+//               </Card>
+//             ))}
+//           </div>
+//         ) : (
+//           <>
+//             <div className="flex-center">
+//               {`$9,085`}
+//             </div>
+//           </>
+//         )}
+//       </Card>
+
+//     </>
+//   );
+// };
+
+// export default OnePsystem;
+
+
+import { React, useState, useEffect, useContext } from "react";
 import Card from "./Card";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useVisibility } from "./VisibilityProvider";
 import { useMqtt } from "./Mqtt/MqttContext";
 import { SubtabsContext } from "./SubtabsContext";
 
-const OnePsystem = () => {
+const OnePsystem = ({ getShow }) => {
+
+  // Add state for tracking selected card
+  const [selectedCard, setSelectedCard] = useState(null);
+
+  const handleCardClick = (index) => {
+    if (selectedCard === index) {
+      // If clicking the same card, show all cards
+      setSelectedCard(null);
+    } else {
+      // Show only the clicked card
+      setSelectedCard(index);
+    }
+  };
+  useEffect(() => {
+    getShow(selectedCard);
+  }, [selectedCard])
+  console.log(selectedCard, "selectedCard");
+
+  const styling = {
+
+    // Add cursor pointer style for clickable cards
+    clickableCard: {
+      cursor: 'pointer',
+      transition: 'transform 0.2s',
+      ':hover': {
+        transform: 'scale(1.02)'
+      }
+    },
+    containerStyle: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'flex-start',
+      gap: '10px',
+      // padding: '20px',
+      width: '100%',
+      overflowX: 'auto'
+    },
+    card1: {
+      backgroundColor: '#115e59',
+      borderRadius: '8px',
+      maxWidth: '500px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      overflow: 'hidden'
+    },
+    header1: {
+      backgroundColor: '#0d4a44',
+      color: 'white',
+      fontSize: '20px',
+      fontWeight: '600',
+      padding: '16px',
+      textAlign: 'center',
+      marginBottom: '20px'
+    },
+    contentArea1: {
+      padding: '0 24px 24px 24px',
+      display: 'flex',           // Added flex display
+      justifyContent: 'center',  // Center horizontally
+      alignItems: 'center',      // Center vertically
+      minHeight: '100px'         // Give some minimum height for vertical centering
+    },
+    metricsGrid1: {
+      display: 'flex',           // Changed to flex for better centering
+      justifyContent: 'center',  // Center horizontally
+      alignItems: 'center',      // Center vertically
+      width: '100%'             // Take full width
+    },
+    metric1: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center'
+    },
+    metricLabel1: {
+      color: '#99f6e4',
+      fontSize: '14px',
+      marginBottom: '4px'
+    },
+    metricValue1: {
+      color: 'white',
+      fontSize: '24px',
+      fontWeight: 'bold'
+    }
+  };
 
   const getGridStyle = (dataLength) => {
     const baseStyle = {
       display: 'grid',
+      gap: '4rem',
       gap: '4rem',
       width: '100%',
     };
@@ -20,7 +474,7 @@ const OnePsystem = () => {
           ...baseStyle,
           gridTemplateColumns: '1fr',
           justifyItems: 'center',
-          marginTop:"4em"
+          marginTop: "4em"
         };
       case 2:
         return {
@@ -45,8 +499,9 @@ const OnePsystem = () => {
 
   const styles = {
     card: {
-      backgroundColor: '#00788E',
+      // backgroundColor: '#00788E',
       borderRadius: '0.5rem',
+      // opacity:"0.3",
       maxWidth: '42rem',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
       overflow: 'hidden',
@@ -54,7 +509,8 @@ const OnePsystem = () => {
       marginTop: '0.25rem'
     },
     header: {
-      backgroundColor: '#035369',
+      // backgroundColor: '#035369',
+
       color: 'white',
       fontSize: '1.25rem',
       fontWeight: '600',
@@ -109,6 +565,8 @@ const OnePsystem = () => {
     { value: "$1130" },
     { value: "$120" },
   ];
+
+  // Keep all your existing constants and hooks
   const { show, setShow } = useVisibility();
   const { tabs, setTabs } = useContext(SubtabsContext);
   console.log("tabs", tabs)
@@ -128,7 +586,19 @@ const OnePsystem = () => {
     },
   ];
   const { workloadData, messages2P } = useMqtt()
-  console.log(workloadData, "workloadData",messages2P);
+  console.log(workloadData, "workloadData", messages2P);
+  const [hoveredCards, setHoveredCards] = useState({
+    0: false,
+    1: false,
+    2: false
+  });
+  const handleCardHover = (index, ishover) => {
+
+    setHoveredCards(prev => ({
+      ...prev,
+      [index]: ishover
+    }));
+  };
   function convertToReadableFormat(text) {
     return text
       .split('_')                  // Split the text by underscores
@@ -137,294 +607,281 @@ const OnePsystem = () => {
   }
   const [data, setData] = useState(workloadData);
   const updateElement = (newMessage) => {
-    setData(newMessage); // Assuming `prev` is an array
+    setData(newMessage);
   };
 
   useEffect(() => {
     if (typeof workloadData !== 'undefined')
       updateElement(workloadData)
-  }, [workloadData])
+  }, [workloadData]);
 
-  console.log("data", data)
-  return (
-    <>
-      <Card 
-        width="20em"
-        height="4em"
-        alignItems="center"
-        color='rgba(255, 255, 255, 1)'
-      >
-        1P AMD EPYC™
-        <div>
-          9575F - (64 cores)
-        </div>
-      </Card>
-      <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
-        <div style={{ padding: "10px" }}>(1P - Single System)</div>
-        <div>200Gb NIC</div>
-      </div>
-      <Card
-        width="20em"
-        height="2em"
-        marginTop="20px"
-        alignItems="normal"
-      >
-        <div className="flex-spaceBetween">
-          <div style={{ textAlign: "center", flex: 1 }}>1000 - 1800</div>
-          <div style={{ marginRight: "10px" }}>
-            <Icon icon="iconamoon:profile-bold" />
-          </div>
-        </div>
-      </Card>
-     
-<div style={styles.card}>
-      <div style={styles.header}>
+  function convertToReadableFormat(text) {
+    return text
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+  const titles = [
+    { key: "1p", value: "1P AMD EPYC™\n9575F - (64 cores)" },
+    { key: "2p", value: "2P AMD EPYC™\n9575F - (128 cores)" },
+    { key: "2*2p", value: "4P AMD EPYC™\n9575F - (256 cores)" }
+  ];
 
-        {/* AI: Llama 3.x 1B */}
-      </div>
-      
-      <div style={styles.contentArea}>
-       {Object.entries(tabs).map(([category, categoryTabs]) => {
-  return Object.entries(categoryTabs).map(([key, isSelected]) => {
-    const dataKey = data[key];
-    console.log( "key",isSelected ,category , categoryTabs);
-    
-    if (isSelected && dataKey) {
-      const entries = Object.entries(dataKey);
-      const gridStyle = getGridStyle(entries.length);
-      
-      return (
-        <div key={key} style={gridStyle}>
-          {entries.map(([metricKey, metricValue], index) => (
-            <div key={index} style={styles.metricContainer}>
-              <span style={styles.metricLabel}>
-                {convertToReadableFormat(metricKey)}
-              </span>
-              <span style={styles.metricValue}>
-                {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
-              </span>
-            </div>
-          ))}
-        </div>
-      )
+  const subtitle = [
+    { key: "1p", value: "1P AMD EPYC™" },
+    { key: "2p", value: "2P AMD EPYC™" },
+    { key: "2*2p", value: "4P AMD EPYC™" }
+  ];
+
+  const userList = [
+    { key: "1p", value: "1200-1300" },
+    { key: "2p", value: "1200-1900" },
+    { key: "2*2p", value: "1300-1700" }
+  ];
+  const subHeaderTitle = [
+
+    { key: "1p", value: "AI - Model Llama 3.x 1B" },
+    {
+      key: "2p", value: "ML - Vision Transformer"
+    },
+    { key: "2*2p", value: "Enterprise - Firewall" }
+
+  ]
+  // Function to get appropriate workload data based on card index
+  const getWorkloadData = (index) => {
+    switch (index) {
+      case 0: // 1P system
+        return {
+          "1P_LLM_LLAMA": workloadData["1P_LLM_LLAMA"] || {},
+          "1P_VIT": workloadData["1P_VIT"] || {}
+        };
+      case 1: // 2P system
+        return {
+          "1P_LLM_LLAMA": workloadData["2P_LLM_LLAMA"] || {},
+          "1P_VIT": workloadData["2P_VIT"] || {}
+        };
+      case 2: // 4P system
+        return {
+          "1P_LLM_LLAMA": workloadData["4P_LLM_LLAMA"] || {},
+          "1P_VIT": workloadData["4P_VIT"] || {}
+        };
+      default:
+        return {};
     }
-    return null
-  })
-})}
+  };
 
-      </div>
-    </div>
- 
+  // Create a SingleCard component that contains your existing card structure
+  const SingleCard = ({ index }) => {
+    const titleData = titles[index];
+    const subtitleData = subtitle[index];
+    const userListData = userList[index];
+    const cardWorkloadData = getWorkloadData(index);
 
+    // Only render if no card is selected or this is the selected card
+    if (selectedCard !== null && selectedCard !== index) {
+      return null;
+    }
 
+    return (
+      <div style={{
+        minWidth: '20em',
+        background: "rgba(0, 0, 0, 0.32)",
+        borderRadius: "15px",
+        padding: '10px',
+        border: `0.1px solid ${hoveredCards[index] ? "#0AA3BB" : "transparent"}`, // Set transparent border by default
 
-
-      {/* <Card
-        width="20em"
-        height="12.6em"
-        marginTop="20px"
-        flexDirection={!show["Workloads"] ? "row" : ""}
-        alignItems={!show["Workloads"] ? "" : "normal"}
+      }}
+        onClick={() => handleCardClick(index)}
+        onMouseEnter={() => handleCardHover(index, true)}  // Handle hover using onMouseEnter
+        onMouseLeave={() => handleCardHover(index, false)}
       >
-        
-        {!show["Workloads"] ? (
-          <>
+        {/* Title Card */}
+        <Card
+          width="20em"
+          height="4em"
+          alignItems="center"
+          color='rgba(255, 255, 255, 1)'
+        >
+          {titleData.value.split('\n').map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
+        </Card>
 
+        {/* Subtitle */}
+        <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
+          <div style={{ padding: "10px" }}>({subtitleData.value})</div>
+          <div>200Gb NIC</div>
+        </div>
 
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                fontSize: "10px",
-                marginLeft: "5px",
-              }}
-            >
-              {temp.map((item, index) => (
-                <Card
-                  key={index}
-                  width="20em"
-                  height="6em"
-                  alignItems="normal"
-                  marginTop="5px"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                  <div
-                    style={{
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      marginLeft: "10px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    {Object.entries(item).map(([key, value]) => (
-                      <div
-                        key={key}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <strong>{key}:</strong> {value}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              ))}
+        {/* User Count Card */}
+        <Card
+          width="20em"
+          height="2em"
+          marginTop="20px"
+          alignItems="normal"
+        >
+          <div className="flex-spaceBetween">
+            <div style={{ textAlign: "center", flex: 1 }}>{userListData.value}</div>
+            <div style={{ marginRight: "10px" }}>
+              <Icon icon="iconamoon:profile-bold" />
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                fontSize: "10px",
-                marginLeft: "5px",
-
-              }}
-            >
-              {!show["Workloads"] && data2.map((item, index) => (
-                <Card
-                  key={index}
-                  width="10em"
-                  height="19em"
-                  alignItems="normal"
-                  flexDirection="row"
-                  marginTop="5px"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                    
-
-                  <div style={{ marginTop: "10px" }}>
-                    <h4> System Metrics</h4>
-                    {Object.entries(item).map(([key, value]) => (
-                      <div
-                        key={key}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <strong>{key}:</strong> {value}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {data3.map((item, index) => (
-              <div key={index}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px' }}>
-                  <span>{item.key}:</span>
-                  <span>{item.value}</span>
-                </div>
-                {index < data3.length - 1 && <hr />} 
-              </div>
-            ))}
-
           </div>
-        )}
+        </Card>
 
-      </Card> */}
-      <Card
-        // width="100%" 
-        // height="124px" 
-        width="20em"
-        height="8em"
-        marginTop="20px"
-        alignItems="normal"
-      >
-        {!show["SystemProfile"] ? (
-          <div
-            style={{
+        {/* Workload Data Card */}
+        <div style={{
+          ...styles.card, 
+          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
+
+        }}>
+          <div style={{...styles.header,
+                background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
+
+          }}>
+
+            {/* AI: Llama 3.x 1B */}
+          </div>
+          <div style={styles.contentArea}>
+            {Object.entries(tabs).map(([category, categoryTabs]) =>
+              Object.entries(categoryTabs).map(([key, isSelected]) => {
+                if (!isSelected) return null;
+
+                const workloadKey = key.toUpperCase();
+                const dataKey = cardWorkloadData[workloadKey];
+
+                console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+
+                if (!dataKey) return null;
+
+                const entries = Object.entries(dataKey);
+                const gridStyle = getGridStyle(entries.length);
+
+                return (
+                  <div key={key} style={gridStyle}>
+                    {entries.map(([metricKey, metricValue], idx) => (
+                      <div key={idx} style={styles.metricContainer}>
+                        <span style={styles.metricLabel}>
+                          {convertToReadableFormat(metricKey)}
+                        </span>
+                        <span style={styles.metricValue}>
+                          {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+
+        {/* System Profile Card */}
+        <Card
+          width="20em"
+          height="8em"
+          marginTop="20px"
+          alignItems="normal"
+          background={index === 0 
+            ? "linear-gradient(to right, #00B1CA, #000F13)"
+            : index === 1
+            ? "linear-gradient(to right, #007487, #000C0F)"
+            : "linear-gradient(to right, #00303C, #000405)"
+          }
+        >
+          {!show["SystemProfile"] ? (
+            <div style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
               gap: "10px",
-            }}
-          >
-            {data4.map((item, index) => (
-              <Card
-                key={index}
-                width="19em"
-                height="2em"
-                border="0.81px solid rgba(255, 255, 255, 1)"
-              >
-                <div
-                  style={{
+              
+            }}>
+              {data4.map((item, idx) => (
+                <Card
+                  key={idx}
+                  width="19em"
+                  height="2em"
+                  border="0.81px solid rgba(255, 255, 255, 1)"
+                 
+                >
+                  <div style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     width: "100%",
-                  }}
-                >
-                  {item.value}
-                </div>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <>
+
+                  }}>
+                    {item.value}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
             <div className="flex-center">
               {`100 W`}
             </div>
-          </>
-        )}
-      </Card>
-      <Card
-        // width="100%" 
-        // height="146px" 
-        width="20em"
-        height="15em"
-        marginTop="20px"
-        alignItems="normal">
-        {!show["Economics"] ? (
-          <div
-            style={{
+          )}
+        </Card>
+
+        {/* Economics Card */}
+        <Card
+          width="20em"
+          height="15em"
+          marginTop="20px"
+          alignItems="normal"
+          background={index === 0 
+            ? "linear-gradient(to right, #00B1CA, #000F13)"
+            : index === 1
+            ? "linear-gradient(to right, #007487, #000C0F)"
+            : "linear-gradient(to right, #00303C, #000405)"
+          }
+        >
+          {!show["Economics"] ? (
+            <div style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
               width: "100%",
               gap: "5px",
-            }}
-          >
-            {data5.map((item, index) => (
-              <Card
-                key={index}
-                width="19em"
-                height="2em"
-                border="0.81px solid rgba(255, 255, 255, 1)"
-              >
-                <div
-                  style={{
+
+            }}>
+              {data5.map((item, idx) => (
+                <Card
+                  key={idx}
+                  width="19em"
+                  height="2em"
+                  border="0.81px solid rgba(255, 255, 255, 1)"
+                >
+                  <div style={{
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     width: "100%",
-                  }}
-                >
-                  {item.value}
-                </div>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <>
+                  }}>
+                    {item.value}
+                  </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
             <div className="flex-center">
               {`$9,085`}
             </div>
-          </>
-        )}
-      </Card>
- 
-    </>
+          )}
+        </Card>
+      </div>
+    );
+  };
+
+  // Return three instances of the card wrapped in a flex container
+  return (
+    <div style={styling.containerStyle}>
+      {[0, 1, 2].map((index) => (
+        <SingleCard key={index} index={index} />
+      ))}
+    </div>
   );
 };
 
