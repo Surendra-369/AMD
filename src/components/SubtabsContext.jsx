@@ -27,6 +27,7 @@ export const SubtabsProvider = ({ children }) => {
         },
         "economics": {
           "TCO_INActive": false,
+          "TCO_Active": false,
         },
       });
 

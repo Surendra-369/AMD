@@ -374,10 +374,35 @@ import { useVisibility } from "./VisibilityProvider";
 import { useMqtt } from "./Mqtt/MqttContext";
 import { SubtabsContext } from "./SubtabsContext";
 
-const OnePsystem = () => {
-  
+const OnePsystem = ({getShow}) => {
 
+    // Add state for tracking selected card
+    const [selectedCard, setSelectedCard] = useState(null);
+  
+    const handleCardClick = (index) => {
+      if (selectedCard === index) {
+        // If clicking the same card, show all cards
+        setSelectedCard(null);
+      } else {
+        // Show only the clicked card
+        setSelectedCard(index);
+      }
+    };
+    useEffect(()=>{
+      getShow(selectedCard);
+    },[selectedCard])
+  console.log(selectedCard,"selectedCard");
+  
     const styling = {
+
+       // Add cursor pointer style for clickable cards
+    clickableCard: {
+      cursor: 'pointer',
+      transition: 'transform 0.2s',
+      ':hover': {
+        transform: 'scale(1.02)'
+      }
+    },
       containerStyle: {
             display: 'flex',
             justifyContent: 'space-around',
@@ -438,7 +463,7 @@ const OnePsystem = () => {
   const getGridStyle = (dataLength) => {
     const baseStyle = {
       display: 'grid',
-      gap: '1rem',
+      gap: '4rem',
       width: '100%',
     };
 
@@ -447,7 +472,8 @@ const OnePsystem = () => {
         return {
           ...baseStyle,
           gridTemplateColumns: '1fr',
-          justifyItems: 'center'
+          justifyItems: 'center',
+          marginTop: '4em'
         };
       case 2:
         return {
@@ -472,7 +498,7 @@ const OnePsystem = () => {
 
   const styles = {
     card: {
-      backgroundColor: '#000000',
+      backgroundColor: '#00788E',
       borderRadius: '0.5rem',
       maxWidth: '42rem',
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
@@ -481,7 +507,7 @@ const OnePsystem = () => {
       marginTop: '0.25rem'
     },
     header: {
-      backgroundColor: '#000000',
+      backgroundColor: '#035369',
       color: 'white',
       fontSize: '1.25rem',
       fontWeight: '600',
@@ -499,7 +525,7 @@ const OnePsystem = () => {
       justifyContent: 'center'
     },
     metricLabel: {
-      color: '#99f6e4',
+      color: 'white',
       fontSize: '0.875rem',
       marginBottom: '0.25rem'
     },
@@ -540,18 +566,39 @@ const OnePsystem = () => {
   // Keep all your existing constants and hooks
   const { show, setShow } = useVisibility();
   const { tabs, setTabs } = useContext(SubtabsContext);
-  const { messages, setMessage } = useMqtt();
-  const [data, setData] = useState(messages);
+  console.log("tabs", tabs)
+  const Keys = {
+    "concurrent_user": "Concurrent User",
+    "token_latency": "Token Latency",
+    "tokens_per_sec": "Tokens Per Sec",
+    "ttft": "TTFT"
+  };
 
-  // Keep all your existing functions
+  const temp = [
+    {
+      "Concurrent Packets": 10,
+      "Applied ACL/rules": 10,
+      "Latency (ms)": 10,
+      "Jitter (ms)": 10,
+    },
+  ];
+  const { workloadData, messages2P } = useMqtt()
+  console.log(workloadData, "workloadData",messages2P);
+  function convertToReadableFormat(text) {
+    return text
+      .split('_')                  // Split the text by underscores
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))  // Capitalize each word
+      .join(' ');                  // Join the words with a space
+  }
+  const [data, setData] = useState(workloadData);
   const updateElement = (newMessage) => {
     setData(newMessage);
   };
 
   useEffect(() => {
-    if (typeof messages !== 'undefined')
-      updateElement(messages)
-  }, [messages]);
+    if (typeof workloadData !== 'undefined')
+      updateElement(workloadData)
+  }, [workloadData]);
 
   function convertToReadableFormat(text) {
     return text
@@ -576,14 +623,54 @@ const OnePsystem = () => {
     {key:"2p", value: "1200-1900"},
     {key:"2*2p", value: "1300-1700"}
   ];
+  const subHeaderTitle=[
+
+    {key:"1p", value :"AI - Model Llama 3.x 1B" },
+    {key:"2p",  value :"ML - Vision Transformer"
+    },
+    {key:"2*2p",  value :"Enterprise - Firewall" }
+    
+    ]
+  // Function to get appropriate workload data based on card index
+  const getWorkloadData = (index) => {
+    switch(index) {
+      case 0: // 1P system
+        return {
+          "1P_LLM_LLAMA": workloadData["1P_LLM_LLAMA"] || {},
+          "1P_VIT": workloadData["1P_VIT"] || {}
+        };
+      case 1: // 2P system
+        return {
+          "1P_LLM_LLAMA": workloadData["2P_LLM_LLAMA"] || {},
+          "1P_VIT": workloadData["2P_VIT"] || {}
+        };
+      case 2: // 4P system
+        return {
+          "1P_LLM_LLAMA": workloadData["4P_LLM_LLAMA"] || {},
+          "1P_VIT": workloadData["4P_VIT"] || {}
+        };
+      default:
+        return {};
+    }
+  };
+
   // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
     const subtitleData = subtitle[index];
     const userListData = userList[index];
+    const cardWorkloadData = getWorkloadData(index);
+
+     // Only render if no card is selected or this is the selected card
+     if (selectedCard !== null && selectedCard !== index) {
+      return null;
+    }
 
     return (
-      <div style={{ minWidth: '20em' }}>
+      <div style={{ minWidth: '20em' }}
+      onClick={() => handleCardClick(index)}
+      >
+        {/* Title Card */}
         <Card
           width="20em"
           height="4em"
@@ -594,12 +681,14 @@ const OnePsystem = () => {
             <div key={i}>{line}</div>
           ))}
         </Card>
-        
+
+        {/* Subtitle */}
         <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
           <div style={{ padding: "10px" }}>({subtitleData.value})</div>
           <div>200Gb NIC</div>
         </div>
-        
+
+        {/* User Count Card */}
         <Card
           width="20em"
           height="2em"
@@ -614,41 +703,47 @@ const OnePsystem = () => {
           </div>
         </Card>
 
+        {/* Workload Data Card */}
         <div style={styles.card}>
-          <div style={styles.header}>
-            {/* AI: Llama 3.x 1B */}
-          </div>
-
+        <div style={styles.header}>
+ 
+ {/* AI: Llama 3.x 1B */}
+</div>
           <div style={styles.contentArea}>
-            {Object.entries(tabs).map(([category, categoryTabs]) => {
-              // console.log(categoryTabs,"categoryTabs");
-              return Object.entries(categoryTabs).map(([key, isSelected]) => {
-                const dataKey = data[key];
-                if (isSelected && dataKey) {
-                  const entries = Object.entries(dataKey);
-                  const gridStyle = getGridStyle(entries.length);
+            {Object.entries(tabs).map(([category, categoryTabs]) => 
+              Object.entries(categoryTabs).map(([key, isSelected]) => {
+                if (!isSelected) return null;
+                
+                const workloadKey = key.toUpperCase();
+                const dataKey = cardWorkloadData[workloadKey];
 
-                  return (
-                    <div key={key} style={gridStyle}>
-                      {entries.map(([metricKey, metricValue], index) => (
-                        <div key={index} style={styles.metricContainer}>
-                          <span style={styles.metricLabel}>
-                            {convertToReadableFormat(metricKey)}
-                          </span>
-                          <span style={styles.metricValue}>
-                            {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }
-                return null;
-              });
-            })}
+                console.log(dataKey,"dataKey",workloadKey,cardWorkloadData);
+                
+                if (!dataKey) return null;
+
+                const entries = Object.entries(dataKey);
+                const gridStyle = getGridStyle(entries.length);
+
+                return (
+                  <div key={key} style={gridStyle}>
+                    {entries.map(([metricKey, metricValue], idx) => (
+                      <div key={idx} style={styles.metricContainer}>
+                        <span style={styles.metricLabel}>
+                          {convertToReadableFormat(metricKey)}
+                        </span>
+                        <span style={styles.metricValue}>
+                          {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 
+        {/* System Profile Card */}
         <Card
           width="20em"
           height="8em"
@@ -656,44 +751,39 @@ const OnePsystem = () => {
           alignItems="normal"
         >
           {!show["SystemProfile"] ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              {data4.map((item, index) => (
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              gap: "10px",
+            }}>
+              {data4.map((item, idx) => (
                 <Card
-                  key={index}
+                  key={idx}
                   width="19em"
                   height="2em"
                   border="0.81px solid rgba(255, 255, 255, 1)"
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                    }}
-                  >
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}>
                     {item.value}
                   </div>
                 </Card>
               ))}
             </div>
           ) : (
-            <>
-              <div className="flex-center">
-                {`100 W`}
-              </div>
-            </>
+            <div className="flex-center">
+              {`100 W`}
+            </div>
           )}
         </Card>
 
+        {/* Economics Card */}
         <Card
           width="20em"
           height="15em"
@@ -701,42 +791,36 @@ const OnePsystem = () => {
           alignItems="normal"
         >
           {!show["Economics"] ? (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                width: "100%",
-                gap: "5px",
-              }}
-            >
-              {data5.map((item, index) => (
+            <div style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              width: "100%",
+              gap: "5px",
+            }}>
+              {data5.map((item, idx) => (
                 <Card
-                  key={index}
+                  key={idx}
                   width="19em"
                   height="2em"
                   border="0.81px solid rgba(255, 255, 255, 1)"
                 >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                    }}
-                  >
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}>
                     {item.value}
                   </div>
                 </Card>
               ))}
             </div>
           ) : (
-            <>
-              <div className="flex-center">
-                {`$9,085`}
-              </div>
-            </>
+            <div className="flex-center">
+              {`$9,085`}
+            </div>
           )}
         </Card>
       </div>
@@ -746,10 +830,10 @@ const OnePsystem = () => {
   // Return three instances of the card wrapped in a flex container
   return (
     <div style={styling.containerStyle}>
-      {[0, 1, 2].map((index) => (
-        <SingleCard key={index} index={index} />
-      ))}
-    </div>
+    {[0, 1, 2].map((index) => (
+      <SingleCard key={index} index={index} />
+    ))}
+  </div>
   );
 };
 
