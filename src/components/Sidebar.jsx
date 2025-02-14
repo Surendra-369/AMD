@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Card from "./Card";
 import { useVisibility } from "./VisibilityProvider";
+import { SubtabsContext, SubtabsProvider } from "./SubtabsContext";
+
 
 const Sidebar = () => {
   // const [show, setShow] = useState({
@@ -18,13 +20,17 @@ const Sidebar = () => {
     }));
   };
 
+  // const workloads = [
+  //   "AI - Model Llama 3.x 1B",
+  //   "ML - Vision Transformer",
+  //   "Enterprise - Firewall",
+  // ];
   const workloads = [
-    "AI - Model Llama 3.x 1B",
-    "ML - Vision Transformer",
-    "Enterprise - Firewall",
+    { mainKey:"workload", key: "1P_LLM_LLAMA", value: "AI - Model Llama 3.x 1B" },
+    { mainKey:"workload", key: "1P_VIT", value: "ML - Vision Transformer" },
+    { mainKey:"workload", key: "1P_FW", value: "Enterprise - Firewall" },
   ];
-
-  const SystemProfile = ["CPU in use", "Accelerator", "Watts"];
+  const SystemProfile = [{mainKey:"systemprofile", key: "system_Metrics", value: "System Metrics" },];
 
   const Economics = [
     "Watts w Active Mgt / 1k Subscriber / Yr",
@@ -34,6 +40,55 @@ const Sidebar = () => {
     "Total Watts/h saved a week **",
     "TCO Savings ",
   ];
+
+  //   const [subtabs, setSubtabs] = useState({
+  //     "1P_LLM_LLAME":false,
+  // "1P_LLM_DS":false,
+  // "1P_VIT": false,
+  // "1P_FW":false,
+  // "1P_POWER":false,
+  // "2P_LLM_LLAME":false, 
+  // "2P_LLM_DS":false,
+  // "2P_VIT": false,
+  // "2P_FW":false,
+  // "2P_POWER":false,
+  // "4PC_LLM_LLAME":false,
+  // "4PC_LLM_DS":false,
+  // "4PC_VIT": false,
+  // "4PC_FW":false,
+  // "4PC_POWER":false
+
+  //   });
+  // tabs, setTabs
+  const { tabs, setTabs} = useContext(SubtabsContext);
+  const handlesubmenu = (workload, mainTabKey) => {
+
+    setTabs(prevState => {
+      // First, make a deep copy of the state
+      const updatedTabs = JSON.parse(JSON.stringify(prevState));
+      
+      // Check if the mainTabKey exists
+      console.log(updatedTabs,"updatedTabs");
+      
+      if (mainTabKey in updatedTabs) {
+        console.log("Found mainTabKey in tabs:", updatedTabs[mainTabKey]);
+        
+        // Get all keys in the mainTabKey section
+        const subtabKeys = Object.keys(updatedTabs[mainTabKey]);
+        
+        // Set all subtabs to false
+        subtabKeys.forEach(key => {
+          updatedTabs[mainTabKey][key] = false;
+        });
+        
+        // Set the clicked subtab to true
+        updatedTabs[mainTabKey][workload.key] = true;
+        
+      }
+      
+      return updatedTabs;
+    });
+  };
   return (
     <>
       <Card
@@ -77,21 +132,22 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            {workloads.map((type, index) => (
-              <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
-                <Card
-                  // width="100%"
-                  // height="30px"
-                  width="18em"
-                  height="2.5em"
-                  alignItems="center"
-                  key={index}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {type}
+            {workloads.map((workload, index) => (
+              <div
+                style={{ marginTop: index === 0 ? "0" : "22px" }}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering handleShow
+                  handlesubmenu(workload,workload.mainKey); // Passes the full object
+                }}
+                key={`${workload.key}-${index}`} // Ensures unique key
+              >
+                <Card width="18em" height="2.5em" alignItems="center">
+                  {workload.value}  {/* Display only the value */}
                 </Card>
               </div>
             ))}
+
+
           </div> :
           <div
             style={{
@@ -103,7 +159,8 @@ const Sidebar = () => {
 
           >
 
-            <div style={{ marginTop: "22px" }}>
+            <div style={{ marginTop: "22px" }}
+              onClick={(e) => { e.stopPropagation(); handleShow("Workloads") }}>
               <Card
                 // width="100%"
                 // height="30px"
@@ -112,7 +169,7 @@ const Sidebar = () => {
                 alignItems="center"
 
               >
-                Workloads
+                Workload
               </Card>
             </div>
 
@@ -148,20 +205,25 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            {SystemProfile.map((type, index) => (
+            {SystemProfile.map((SystemPro, index) => (
               <div style={{ marginTop: index === 0 ? "0" : "22px" }}
-                onClick={(e) => e.stopPropagation()}>
-                <Card
+                onClick={(e) => {
+                e.stopPropagation()
+                handlesubmenu(SystemPro, SystemPro.mainKey); // Passes the full object
+                }}>
+                {/* <Card
                   // width="100%"
                   // height="30px"
                   width="13.5em"
                   height="2em"
-                  // backgroundColor="rgba(0, 0, 0, 1)"
                   alignItems="center"
                   key={index}
 
                 >
                   {type}
+                </Card> */}
+                <Card width="18em" height="2.5em" alignItems="center">
+                  {SystemPro.value}  {/* Display only the value */}
                 </Card>
               </div>
             ))}
@@ -251,7 +313,7 @@ const Sidebar = () => {
 
           >
 
-            <div style={{ marginTop: "22px",marginLeft:'5px' }}>
+            <div style={{ marginTop: "22px", marginLeft: '5px' }}>
               <Card
                 // width="100%"
                 // height="30px"
