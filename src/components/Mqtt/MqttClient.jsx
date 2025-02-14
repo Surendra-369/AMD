@@ -10,7 +10,7 @@ const MqttClient = () => {
     // const data = fetch("http://192.168.0.26:5000/receive_data");
     eventSource.onmessage = (event) => {
       // const newMessage = JSON.parse(event);
-      console.log(event?.data,"newMessage");
+      console.log(event,"newMessage");
       // setMessages((prevMessages) => [...prevMessages, newMessage]);
     };
 
