@@ -716,26 +716,49 @@ const OnePsystem = ({ getShow }) => {
         {/* User Count Card */}
         <Card
           width="20em"
-          height="2em"
+          height="4em"
           marginTop="20px"
           alignItems="normal"
+          noborder="true"
         >
-          <div className="flex-spaceBetween">
-            <div style={{ textAlign: "center", flex: 1 }}>{userListData.value}</div>
-            <div style={{ marginRight: "10px" }}>
+          <div className="flex-spaceBetween" style={{
+            border:'1px solid black',
+            borderRadius: "10px", background:
+              index === 0
+                ? "linear-gradient(to right, #00B1CA, #000F13)"
+                : index === 1
+                  ? "linear-gradient(to right, #007487, #000C0F)"
+                  : "linear-gradient(to right, #00303C, #000405)",
+          }}>
+            <div
+              style={{
+                textAlign: "center",
+                flex: 1,
+
+                height: "2em",
+                display: "flex", // Use flexbox to align items
+                justifyContent: "center", // Center items horizontally
+                alignItems: "center", // Center items vertically
+              }}
+            >
+              {userListData.value}
+            </div>
+            <div style={{ marginRight: "10px", display: "flex", alignItems: "center" }}>
               <Icon icon="iconamoon:profile-bold" />
             </div>
           </div>
+
         </Card>
 
         {/* Workload Data Card */}
         <div style={{
-          ...styles.card, 
+          ...styles.card,
           background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
 
         }}>
-          <div style={{...styles.header,
-                background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
+          <div style={{
+            ...styles.header,
+            background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
 
           }}>
 
@@ -781,11 +804,11 @@ const OnePsystem = ({ getShow }) => {
           height="8em"
           marginTop="20px"
           alignItems="normal"
-          background={index === 0 
+          background={index === 0
             ? "linear-gradient(to right, #00B1CA, #000F13)"
             : index === 1
-            ? "linear-gradient(to right, #007487, #000C0F)"
-            : "linear-gradient(to right, #00303C, #000405)"
+              ? "linear-gradient(to right, #007487, #000C0F)"
+              : "linear-gradient(to right, #00303C, #000405)"
           }
         >
           {!show["SystemProfile"] ? (
@@ -795,7 +818,7 @@ const OnePsystem = ({ getShow }) => {
               alignItems: "center",
               flexDirection: "column",
               gap: "10px",
-              
+
             }}>
               {data4.map((item, idx) => (
                 <Card
@@ -803,7 +826,7 @@ const OnePsystem = ({ getShow }) => {
                   width="19em"
                   height="2em"
                   border="0.81px solid rgba(255, 255, 255, 1)"
-                 
+
                 >
                   <div style={{
                     display: "flex",
@@ -830,11 +853,11 @@ const OnePsystem = ({ getShow }) => {
           height="15em"
           marginTop="20px"
           alignItems="normal"
-          background={index === 0 
+          background={index === 0
             ? "linear-gradient(to right, #00B1CA, #000F13)"
             : index === 1
-            ? "linear-gradient(to right, #007487, #000C0F)"
-            : "linear-gradient(to right, #00303C, #000405)"
+              ? "linear-gradient(to right, #007487, #000C0F)"
+              : "linear-gradient(to right, #00303C, #000405)"
           }
         >
           {!show["Economics"] ? (

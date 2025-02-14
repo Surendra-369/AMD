@@ -11,7 +11,8 @@ const Card = ({
   color,
   border,
   opacity,
-  background
+  background,
+  noborder
 }) => {
   const cardStyle = {
     width: width,
@@ -22,7 +23,7 @@ const Card = ({
     boxSizing: "border-box",
     flexDirection: flexDirection ? flexDirection : "column",
     color:color ? color : "rgba(255, 255, 255, 1)",
-    border: border ? border : "1px solid rgba(0, 0, 0, 1)",
+    border: border ? border :  noborder==="true" ? "":"1px solid rgba(0, 0, 0, 1)",
     opacity:opacity ? opacity : "",
      background: background || ""
   };
