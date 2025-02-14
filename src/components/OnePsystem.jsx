@@ -6,64 +6,7 @@ import { useMqtt } from "./Mqtt/MqttContext";
 import { SubtabsContext } from "./SubtabsContext";
 
 const OnePsystem = () => {
-  // const styles = {
-  //   card: {
-  //     backgroundColor: '#115e59',
-  //     borderRadius: '8px',
-  //     maxWidth: '500px',
-  //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  //     overflow: 'hidden', // This ensures the header background extends fully
-  //     height:'15em',
-  //     marginTop:'5px'
-  //   },
-  //   header: {
-  //     backgroundColor: '#0d4a44', // Darker shade for header
-  //     color: 'white',
-  //     fontSize: '20px',
-  //     fontWeight: '600',
-  //     padding: '16px',
-  //     textAlign: 'center',
-  //     marginBottom: '20px'
-  //   },
-  //   contentArea: {
-  //     padding: '0 24px 24px 24px'
-  //   },
-  //   metricsGrid: {
-  //     display: 'grid',
-  //     gridTemplateColumns: '1fr 1px 1fr',
-  //     gap: '10px',
-  //     position: 'relative'
-  //   },
-  //   metric: {
-  //     display: 'flex',
-  //     flexDirection: 'column',
-  //     position: 'relative',
-  //     alignItems: 'center',
-  //   },
-  //   metricLabel: {
-  //     color: '#99f6e4',
-  //     fontSize: '14px',
-  //     marginBottom: '4px'
-  //   },
-  //   metricValue: {
-  //     color: 'white',
-  //     fontSize: '24px',
-  //     fontWeight: 'bold'
-  //   },
-  //   verticalDivider: {
-  //     width: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     height: '100%'
-  //   },
-  //   horizontalDivider: {
-  //     height: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     width: '100%',
-  //     gridColumn: '1 / span 3',
-  //     margin: '12px 0'
-  //   },
-   
-  // };
+  
   const styling = {
     card1: {
       backgroundColor: '#115e59',
@@ -112,84 +55,7 @@ const OnePsystem = () => {
       fontWeight: 'bold'
     }
   };
-  // const styles = {
-  //   card: {
-  //     backgroundColor: '#115e59',
-  //     borderRadius: '8px',
-  //     // maxWidth: '500px',
-  //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  //     overflow: 'hidden' // This ensures the header background extends fully
-  //   },
-  //   header: {
-  //     backgroundColor: '#0d4a44', // Darker shade for header
-  //     color: 'white',
-  //     fontSize: '20px',
-  //     fontWeight: '600',
-  //     padding: '16px',
-  //     textAlign: 'center',
-  //     marginBottom: '20px'
-  //   },
-  //   contentArea: {
-  //     padding: '0 24px 24px 24px'
-  //   },
-  //   metricsGrid: {
-  //     display: 'grid',
-  //     gridTemplateColumns: '1fr 1px 1fr',
-  //     gap: '24px',
-  //     position: 'relative'
-  //   },
-  //   metric: {
-  //     display: 'flex',
-  //     flexDirection: 'column',
-  //     position: 'relative',
-  //     alignItems: 'center',
-  //   },
-  //   metricLabel: {
-  //     color: '#99f6e4',
-  //     fontSize: '14px',
-  //     marginBottom: '4px'
-  //   },
-  //   metricValue: {
-  //     color: 'white',
-  //     fontSize: '24px',
-  //     fontWeight: 'bold'
-  //   },
-  //   verticalDivider: {
-  //     width: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     height: '100%'
-  //   },
-  //   horizontalDivider: {
-  //     height: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     width: '100%',
-  //     gridColumn: '1 / span 3',
-  //     margin: '12px 0'
-  //   },
    
-  // };
-  // const data = [
-  //   {
-  //     "Concurrent User": 10,
-  //     "Tokens/s": 10,
-  //     "Total Latency (ms)": 10,
-  //     "TTFT (ms)": 10,
-  //   },
-  //   {
-  //     "Concurrent User": 10,
-  //     "Tokens/s": 10,
-  //     "Total Latency (ms)": 10,
-  //     "TTFT (ms)": 10,
-  //   },
-  //   {
-  //     "Concurrent User": 10,
-  //     "Tokens/s": 10,
-  //     "Total Latency (ms)": 10,
-  //     "TTFT (ms)": 10,
-  //   },
-  // ];
-
-  //  const two = 
   const getGridStyle = (dataLength) => {
     const baseStyle = {
       display: 'grid',
@@ -358,75 +224,7 @@ const OnePsystem = () => {
           </div>
         </div>
       </Card>
-      {/* <div style={styles.card}>
-      <div style={styles.header}>
-        AI: Llama 3.x 1B
-      </div>
      
-      <div style={styles.contentArea}>
-        <div style={styles.metricsGrid}>
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>Users</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
-         
-          <div style={styles.verticalDivider}></div>
- 
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>Tokens/s</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
- 
-          <div style={styles.horizontalDivider}></div>
- 
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>Latency (ms)</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
- 
-          <div style={styles.verticalDivider}></div>
- 
-          <div style={styles.metric}>
-            <span style={styles.metricLabel}>TTFT (ms)</span>
-            <span style={styles.metricValue}>---</span>
-          </div>
-        </div>
- 
-     
-      </div>
-      </div> */}
-      {/* <div style={styles.card}>
-  <div style={styles.header}>
-    AI: Llama 3.x 1B
-  </div>
-
-  <div style={styles.contentArea}>
-  <div style={styles.contentArea}>
-  {Object.entries(subtabs)?.map(([key, isSelected]) => {
-    // Check if the tab is selected and data exists for that key
-    const dataKey =data[key];
-    console.log(dataKey,"dataKey",key,isSelected)
-    if (isSelected && dataKey) {
-      return (
-        <div key={dataKey} style={styles.metricsGrid}>
-          {console.log(key, isSelected, "ram", dataKey)}
-          {Object.entries(dataKey)?.map(([metricKey, metricValue], index) => (
-            <div key={index} style={styles.metric}>
-              <span style={styles.metricLabel}>
-                {Keys[metricKey] || convertToReadableFormat(metricKey)}
-              </span>
-              <span style={styles.metricValue}>{metricValue}</span>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null; // Do not render if isSelected is false or data[key] is not available
-  })}
-</div>
-</div>
-
-</div> */}
 <div style={styles.card}>
       <div style={styles.header}>
 
@@ -464,118 +262,7 @@ const OnePsystem = () => {
 
 
 
-      {/* <Card
-        width="20em"
-        height="12.6em"
-        marginTop="20px"
-        flexDirection={!show["Workloads"] ? "row" : ""}
-        alignItems={!show["Workloads"] ? "" : "normal"}
-      >
-        
-        {!show["Workloads"] ? (
-          <>
-
-
-
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                fontSize: "10px",
-                marginLeft: "5px",
-              }}
-            >
-              {temp.map((item, index) => (
-                <Card
-                  key={index}
-                  width="20em"
-                  height="6em"
-                  alignItems="normal"
-                  marginTop="5px"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                  <div
-                    style={{
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      marginLeft: "10px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    {Object.entries(item).map(([key, value]) => (
-                      <div
-                        key={key}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <strong>{key}:</strong> {value}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              ))}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                fontSize: "10px",
-                marginLeft: "5px",
-
-              }}
-            >
-              {!show["Workloads"] && data2.map((item, index) => (
-                <Card
-                  key={index}
-                  width="10em"
-                  height="19em"
-                  alignItems="normal"
-                  flexDirection="row"
-                  marginTop="5px"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                    
-
-                  <div style={{ marginTop: "10px" }}>
-                    <h4> System Metrics</h4>
-                    {Object.entries(item).map(([key, value]) => (
-                      <div
-                        key={key}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <strong>{key}:</strong> {value}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {data3.map((item, index) => (
-              <div key={index}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px' }}>
-                  <span>{item.key}:</span>
-                  <span>{item.value}</span>
-                </div>
-                {index < data3.length - 1 && <hr />} 
-              </div>
-            ))}
-
-          </div>
-        )}
-
-      </Card> */}
+      
       <Card
         // width="100%" 
         // height="124px" 
@@ -623,8 +310,7 @@ const OnePsystem = () => {
         )}
       </Card>
       <Card
-        // width="100%" 
-        // height="146px" 
+       
         width="20em"
         height="15em"
         marginTop="20px"
@@ -676,48 +362,3 @@ const OnePsystem = () => {
 export default OnePsystem;
 
 
-// {Object.entries(data).map(([key, value], index) => (
-//   <Card
-//     key={index}
-//     width="20em"
-//     height="6em"
-//     alignItems="normal"
-//     marginTop="5px"
-//     border="0.81px solid rgba(255, 255, 255, 1)"
-//   >
-//     <div
-//       style={{
-//         flexDirection: "column",
-//         justifyContent: "space-between",
-//         marginLeft: "10px",
-//         marginRight: "10px",
-//       }}
-//     >
-//       {typeof value === 'object' && value !== null ? (
-//         Object.entries(value).map(([nestedKey, nestedValue], nestedIndex) => (
-//           <div
-//             key={nestedIndex}
-//             style={{
-//               display: "flex",
-//               justifyContent: "space-between",
-//               flexWrap: "wrap",
-//             }}
-//           >
-//             <strong>{Keys[nestedKey] || convertToReadableFormat(nestedKey)}:</strong> {JSON.stringify(nestedValue)}
-//           </div>
-//         ))
-//       ) : (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "space-between",
-//             flexWrap: "wrap",
-//           }}
-//         >
-//           <strong>{Keys[key] || convertToReadableFormat(key)}:</strong> {JSON.stringify(value)}
-//         </div>
-//       )}
-//     </div>
-    
-//   </Card>
-// ))}
