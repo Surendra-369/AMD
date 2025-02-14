@@ -6,7 +6,8 @@ const Chart = () => {
     <Card
     // width="27em"
     height="17em"
-    backgroundColor="rgba(0, 120, 142, 1)"
+    // backgroundColor="rgba(0, 120, 142, 1)"
+     background=  'linear-gradient(to right, #00BAD4, #007C91)'
      alignItems="normal"
      marginTop="1em"
     >

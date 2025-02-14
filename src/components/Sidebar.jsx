@@ -26,39 +26,39 @@ const Sidebar = () => {
   //   "Enterprise - Firewall",
   // ];
   const workloads = [
-    { mainKey:"workload", key: "1P_LLM_LLAMA", value: "AI - Model Llama 3.x 1B" },
-    { mainKey:"workload", key: "1P_VIT", value: "ML - Vision Transformer" },
-    { mainKey:"workload", key: "1P_FW", value: "Enterprise - Firewall" },
+    { mainKey: "workload", key: "1P_LLM_LLAMA", value: "AI - Model Llama 3.x 1B" },
+    { mainKey: "workload", key: "1P_VIT", value: "ML - Vision Transformer" },
+    { mainKey: "workload", key: "1P_FW", value: "Enterprise - Firewall" },
   ];
-  const SystemProfile = [{mainKey:"systemprofile", key: "system_Metrics", value: "System Metrics" },];
+  const SystemProfile = [{ mainKey: "systemprofile", key: "system_Metrics", value: "System Metrics" },];
 
   const Economics = [
-    { mainKey:"economics", key: "TCO_Active", value: "TCO(active mgmt)" },
-    { mainKey:"economics", key: "TCO_INActive", value: "TCO(inactive mgmt)" },
+    { mainKey: "economics", key: "TCO_Active", value: "TCO(active mgmt)" },
+    { mainKey: "economics", key: "TCO_INActive", value: "TCO(inactive mgmt)" },
   ];
 
-  const { tabs, setTabs} = useContext(SubtabsContext);
+  const { tabs, setTabs } = useContext(SubtabsContext);
   const handlesubmenu = (workload, mainTabKey) => {
 
     setTabs(prevState => {
       // First, make a deep copy of the state
       const updatedTabs = JSON.parse(JSON.stringify(prevState));
-      
+
 
       if (mainTabKey in updatedTabs) {
         // Get all keys in the mainTabKey section
         const subtabKeys = Object.keys(updatedTabs[mainTabKey]);
-        
+
         // Set all subtabs to false
         subtabKeys.forEach(key => {
           updatedTabs[mainTabKey][key] = false;
         });
-        
+
         // Set the clicked subtab to true
         updatedTabs[mainTabKey][workload.key] = true;
-        
+
       }
-      
+
       return updatedTabs;
     });
   };
@@ -81,20 +81,22 @@ const Sidebar = () => {
       </Card>
       <div
         className="sidebar-font"
-        style={{ display: "flex", alignItems: "flex-start", marginTop:"3em", }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.5em", border: "2px solid white", height: '18em', padding: '6px' ,borderRadius:'10px'}}
         onClick={() => handleShow("Workloads")}
       >
         {!show["Workloads"] && <Card
           // width="30px"
           // height="140px"
           width="2.5em"
-          height="14em"
+          height="18em"
           alignItems="center"
-          style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)" }}
+          border="1px solid white"
+          style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)", }}
         >
           <div style={{
             transform: show["Workloads"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap"
+            , whiteSpace: "nowrap",
+            
           }}>
             {"Workloads"}
           </div>
@@ -114,11 +116,11 @@ const Sidebar = () => {
                 style={{ marginTop: index === 0 ? "0" : "22px" }}
                 onClick={(e) => {
                   e.stopPropagation(); // Prevent triggering handleShow
-                  handlesubmenu(workload,workload.mainKey); // Passes the full object
+                  handlesubmenu(workload, workload.mainKey); // Passes the full object
                 }}
                 key={`${workload.key}-${index}`} // Ensures unique key
               >
-                <Card width="24em" height="3.5em" alignItems="center">
+                <Card width="24em" height="3.5em" alignItems="center" border="1px solid white">
                   {workload.value}  {/* Display only the value */}
                 </Card>
               </div>
@@ -128,32 +130,36 @@ const Sidebar = () => {
           </div> :
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
               marginLeft: "10px",
               width: "100%",
+              display: "flex",
+              height: '19em',
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
             }}
-
           >
-
-            <div style={{ marginTop: "22px" }}
-              onClick={(e) => { e.stopPropagation(); handleShow("Workloads") }}>
-              <Card
-                // width="100%"
-                // height="30px"
-                width="20em"
-                height="15em"
-                alignItems="center"
-
-              >
-                Workload
-              </Card>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                color: 'white',
+                height: "100%", // Ensure it takes up space for centering
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShow("Workloads");
+              }}
+            >
+              Workload
             </div>
-
-          </div>}
+          </div>
+        }
       </div>
       <div
-        style={{ display: "flex", alignItems: "center", marginTop: "5em",  }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "2px solid white", height: '7em', padding: '6px' ,borderRadius:'10px'}}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -161,13 +167,15 @@ const Sidebar = () => {
           // height="140px"
           key={"SystemProfile"}
           width="2em"
-          height="8.5em"
+          height="7em"
+           border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
           <div style={{
             transform: show["SystemProfile"] ? "" : "rotate(-90deg)"
             , whiteSpace: "nowrap"
+
           }}>
             {"System Profile"}
           </div>
@@ -185,55 +193,89 @@ const Sidebar = () => {
             {SystemProfile.map((SystemPro, index) => (
               <div style={{ marginTop: index === 0 ? "0" : "22px" }}
                 onClick={(e) => {
-                e.stopPropagation()
-                handlesubmenu(SystemPro, SystemPro.mainKey); // Passes the full object
+                  e.stopPropagation()
+                  handlesubmenu(SystemPro, SystemPro.mainKey); // Passes the full object
                 }}>
-                <Card width="18em" height="8em" alignItems="center">
+                <Card width="18em" height="6em" alignItems="center" border="1px solid white" marginTop="8px">
                   {SystemPro.value}  {/* Display only the value */}
                 </Card>
               </div>
             ))}
-          </div> : <div
+          </div> : 
+          // <div
+          //   style={{
+          //     display: "flex",
+          //     flexDirection: "column",
+          //     marginLeft: "10px",
+          //     width: "100%",
+          //   }}
+
+          // >
+
+          //   <div style={{ }}>
+          //     <Card
+          //       // width="100%"
+          //       // height="30px"
+          //       width="16em"
+          //       height="7em"
+          //       alignItems="center"
+
+          //     >
+          //       System Profile
+          //     </Card>
+          //   </div>
+
+          // </div>
+          <div
             style={{
-              display: "flex",
-              flexDirection: "column",
               marginLeft: "10px",
               width: "100%",
+              display: "flex",
+              height: '7em',
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
             }}
-
           >
-
-            <div style={{ marginTop: "22px" }}>
-              <Card
-                // width="100%"
-                // height="30px"
-                width="16em"
-                height="15em"
-                alignItems="center"
-
-              >
-                System Profile
-              </Card>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                color: 'white',
+                height: "100%", // Ensure it takes up space for centering
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShow("SystemProfile");
+              }}
+            >
+               System Profile
             </div>
-
-          </div>}
+          </div>
+          
+          }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px",  }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "25px",height:"15em", padding:"10px", border: "1px solid white" ,borderRadius:'10px'}}
         onClick={() => handleShow("Economics")}
       >
         {!show["Economics"] && <Card
           // width="30px"
           // height="224px"
           width="2em"
-          height="10em"
+          height="15em"
+            border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
           <div style={{
             transform: show["Economics"] ? "" : "rotate(-90deg)"
             , whiteSpace: "nowrap"
-          }}>
+            
+          }}
+          >
             {"Economics"}
           </div>
         </Card>}
@@ -245,64 +287,77 @@ const Sidebar = () => {
               flexDirection: "column",
               marginLeft: "10px",
               width: "100%",
+              height:"100%",
+              alignItems: "center", // Centers items horizontally
+              justifyContent: "space-evenly", // Distributes them evenly
+              // gap: "22px", // Adds equal spacing between items
             }}
           >
 
-            {/* {Economics.map((type, index) => (
-              <div
-                style={{
-                  marginTop: index === 0 ? "0" : "10px",
-                  fontSize: "11px",
-                }}
-              >
-                <Card
-                  // width="100%"
-                  // height="30px"
-                  width="20em"
-                  height="3em"
-                  // backgroundColor="rgba(0, 0, 0, 1)"
-                  alignItems="center"
-                  key={index}
-                >
-                  {type}
-                </Card>
-              </div>
-            ))} */}
+            
             {Economics.map((economic, index) => (
               <div style={{ marginTop: index === 0 ? "0" : "22px" }}
                 onClick={(e) => {
-                e.stopPropagation()
-                handlesubmenu(economic, economic.mainKey); // Passes the full object
-                }}>
-                <Card width="18em" height="4em" alignItems="center">
+                  e.stopPropagation()
+                  handlesubmenu(economic, economic.mainKey); // Passes the full object
+                }}
+                >
+                <Card width="18em" height="4em" alignItems="center" border="1px solid white">
                   {economic.value}  {/* Display only the value */}
                 </Card>
               </div>
             ))}
-          </div> : <div
+          </div> :
+          //  <div
+          //   style={{
+          //     display: "flex",
+          //     flexDirection: "column",
+          //     marginLeft: "10px",
+
+          //     width: "100%",
+          //   }}
+
+          // >
+
+          //   <div style={{  }}>
+          //     <Card
+          //       // width="100%"
+          //       // height="30px"
+          //       width="15em"
+          //       height="15em"
+          //       alignItems="center"
+          //     >
+          //       Economics
+          //     </Card>
+          //   </div>
+
+          // </div>
+          <div
+          style={{
+            marginLeft: "10px",
+            width: "100%",
+            display: "flex",
+            height: '15em',
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              marginLeft: "10px",
-
+              justifyContent: "center",
+              alignItems: "center",
               width: "100%",
+              color: 'white',
+              height: "100%", // Ensure it takes up space for centering
             }}
-
+          
           >
-
-            <div style={{ marginTop: "22px", marginLeft: '5px' }}>
-              <Card
-                // width="100%"
-                // height="30px"
-                width="15em"
-                height="15em"
-                alignItems="center"
-              >
-                Economics
-              </Card>
-            </div>
-
-          </div>}
+             System Profile
+          </div>
+        </div>
+          }
       </div>
     </>
   );
