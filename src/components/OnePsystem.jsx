@@ -6,190 +6,7 @@ import { useMqtt } from "./Mqtt/MqttContext";
 import { SubtabsContext } from "./SubtabsContext";
 
 const OnePsystem = () => {
-  // const styles = {
-  //   card: {
-  //     backgroundColor: '#115e59',
-  //     borderRadius: '8px',
-  //     maxWidth: '500px',
-  //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  //     overflow: 'hidden', // This ensures the header background extends fully
-  //     height:'15em',
-  //     marginTop:'5px'
-  //   },
-  //   header: {
-  //     backgroundColor: '#0d4a44', // Darker shade for header
-  //     color: 'white',
-  //     fontSize: '20px',
-  //     fontWeight: '600',
-  //     padding: '16px',
-  //     textAlign: 'center',
-  //     marginBottom: '20px'
-  //   },
-  //   contentArea: {
-  //     padding: '0 24px 24px 24px'
-  //   },
-  //   metricsGrid: {
-  //     display: 'grid',
-  //     gridTemplateColumns: '1fr 1px 1fr',
-  //     gap: '10px',
-  //     position: 'relative'
-  //   },
-  //   metric: {
-  //     display: 'flex',
-  //     flexDirection: 'column',
-  //     position: 'relative',
-  //     alignItems: 'center',
-  //   },
-  //   metricLabel: {
-  //     color: '#99f6e4',
-  //     fontSize: '14px',
-  //     marginBottom: '4px'
-  //   },
-  //   metricValue: {
-  //     color: 'white',
-  //     fontSize: '24px',
-  //     fontWeight: 'bold'
-  //   },
-  //   verticalDivider: {
-  //     width: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     height: '100%'
-  //   },
-  //   horizontalDivider: {
-  //     height: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     width: '100%',
-  //     gridColumn: '1 / span 3',
-  //     margin: '12px 0'
-  //   },
-   
-  // };
-  const styling = {
-    card1: {
-      backgroundColor: '#115e59',
-      borderRadius: '8px',
-      maxWidth: '500px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-      overflow: 'hidden'
-    },
-    header1: {
-      backgroundColor: '#0d4a44',
-      color: 'white',
-      fontSize: '20px',
-      fontWeight: '600',
-      padding: '16px',
-      textAlign: 'center',
-      marginBottom: '20px'
-    },
-    contentArea1: {
-      padding: '0 24px 24px 24px',
-      display: 'flex',           // Added flex display
-      justifyContent: 'center',  // Center horizontally
-      alignItems: 'center',      // Center vertically
-      minHeight: '100px'         // Give some minimum height for vertical centering
-    },
-    metricsGrid1: {
-      display: 'flex',           // Changed to flex for better centering
-      justifyContent: 'center',  // Center horizontally
-      alignItems: 'center',      // Center vertically
-      width: '100%'             // Take full width
-    },
-    metric1: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center'
-    },
-    metricLabel1: {
-      color: '#99f6e4',
-      fontSize: '14px',
-      marginBottom: '4px'
-    },
-    metricValue1: {
-      color: 'white',
-      fontSize: '24px',
-      fontWeight: 'bold'
-    }
-  };
-  // const styles = {
-  //   card: {
-  //     backgroundColor: '#115e59',
-  //     borderRadius: '8px',
-  //     // maxWidth: '500px',
-  //     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  //     overflow: 'hidden' // This ensures the header background extends fully
-  //   },
-  //   header: {
-  //     backgroundColor: '#0d4a44', // Darker shade for header
-  //     color: 'white',
-  //     fontSize: '20px',
-  //     fontWeight: '600',
-  //     padding: '16px',
-  //     textAlign: 'center',
-  //     marginBottom: '20px'
-  //   },
-  //   contentArea: {
-  //     padding: '0 24px 24px 24px'
-  //   },
-  //   metricsGrid: {
-  //     display: 'grid',
-  //     gridTemplateColumns: '1fr 1px 1fr',
-  //     gap: '24px',
-  //     position: 'relative'
-  //   },
-  //   metric: {
-  //     display: 'flex',
-  //     flexDirection: 'column',
-  //     position: 'relative',
-  //     alignItems: 'center',
-  //   },
-  //   metricLabel: {
-  //     color: '#99f6e4',
-  //     fontSize: '14px',
-  //     marginBottom: '4px'
-  //   },
-  //   metricValue: {
-  //     color: 'white',
-  //     fontSize: '24px',
-  //     fontWeight: 'bold'
-  //   },
-  //   verticalDivider: {
-  //     width: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     height: '100%'
-  //   },
-  //   horizontalDivider: {
-  //     height: '1px',
-  //     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-  //     width: '100%',
-  //     gridColumn: '1 / span 3',
-  //     margin: '12px 0'
-  //   },
-   
-  // };
-  // const data = [
-  //   {
-  //     "Concurrent User": 10,
-  //     "Tokens/s": 10,
-  //     "Total Latency (ms)": 10,
-  //     "TTFT (ms)": 10,
-  //   },
-  //   {
-  //     "Concurrent User": 10,
-  //     "Tokens/s": 10,
-  //     "Total Latency (ms)": 10,
-  //     "TTFT (ms)": 10,
-  //   },
-  //   {
-  //     "Concurrent User": 10,
-  //     "Tokens/s": 10,
-  //     "Total Latency (ms)": 10,
-  //     "TTFT (ms)": 10,
-  //   },
-  // ];
 
-  //  const two = 
   const getGridStyle = (dataLength) => {
     const baseStyle = {
       display: 'grid',
@@ -309,23 +126,23 @@ const OnePsystem = () => {
       "Jitter (ms)": 10,
     },
   ];
-  const { messages, setMessage } = useMqtt()
-  console.log(messages, "messages");
+  const { workloadData, messages2P } = useMqtt()
+  console.log(workloadData, "workloadData",messages2P);
   function convertToReadableFormat(text) {
     return text
       .split('_')                  // Split the text by underscores
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))  // Capitalize each word
       .join(' ');                  // Join the words with a space
   }
-  const [data, setData] = useState(messages);
+  const [data, setData] = useState(workloadData);
   const updateElement = (newMessage) => {
     setData(newMessage); // Assuming `prev` is an array
   };
 
   useEffect(() => {
-    if (typeof messages !== 'undefined')
-      updateElement(messages)
-  }, [messages])
+    if (typeof workloadData !== 'undefined')
+      updateElement(workloadData)
+  }, [workloadData])
 
   console.log("data", data)
   return (
@@ -462,7 +279,7 @@ const OnePsystem = () => {
        {Object.entries(tabs).map(([category, categoryTabs]) => {
   return Object.entries(categoryTabs).map(([key, isSelected]) => {
     const dataKey = data[key];
-    console.log( "key",isSelected);
+    console.log( "key",isSelected ,category , categoryTabs);
     
     if (isSelected && dataKey) {
       const entries = Object.entries(dataKey);

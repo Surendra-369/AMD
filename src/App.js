@@ -12,16 +12,16 @@ function App() {
   return (
     <>
     
-    <MqttProvider>
     <SubtabsProvider>
+    <MqttProvider>
     <VisibilityProvider>
       <Header />
       <Home />
       <Footer />
       <MqttClient/>
       </VisibilityProvider>
-      </SubtabsProvider>
       </MqttProvider>
+      </SubtabsProvider>
     </>
   );
 }
