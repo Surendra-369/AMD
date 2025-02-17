@@ -126,7 +126,7 @@ const OnePsystem = ({ getShow }) => {
           ...baseStyle,
           gridTemplateColumns: '1fr 1fr 1fr',
         };
-        
+
       default:
         return {
           ...baseStyle,
@@ -170,14 +170,14 @@ const OnePsystem = ({ getShow }) => {
     },
     metricLabel: {
       color: 'white',
-      fontSize:"20px",
-      fontWeight:"200",
+      fontSize: "20px",
+      fontWeight: "200",
       marginBottom: '0.25em'
     },
     metricValue: {
       color: 'white',
-      fontSize:"25px",
-      fontWeight:"400",
+      fontSize: "25px",
+      fontWeight: "400",
     }
   };
   const data2 = [
@@ -195,9 +195,9 @@ const OnePsystem = ({ getShow }) => {
     { key: "ACL/rules", value: 10 }
   ];
   const data4 = [
-    { value: 60 },
-    { value: "zero" },
-    { value: "825W" },
+    { value: "CPU Util" },
+    { value: "Memory" },
+    { value: "Power" },
   ];
   const data5 = [
     { value: "TCO Savings" },
@@ -234,8 +234,22 @@ const OnePsystem = ({ getShow }) => {
     "Users",
     "Latency (ms)",
     "Tokens/S",
-    "TTFT(ms)"
+    "TTFT(ms)",
   ]
+  const emptySystemProfile = [
+    "CPU Utilization",
+    "Power",
+  ]
+  const emptyShowSystemProfile=[
+    "CPU Util",
+    "Memory",
+    "Network",
+    "Power",
+  ]
+  const emptyEconmics = [
+    "TCO Saving"
+  ]
+
   const { workloadData, messages2P } = useMqtt()
   console.log(workloadData, "workloadData", messages2P);
   const [hoveredCards, setHoveredCards] = useState({
@@ -363,7 +377,7 @@ const OnePsystem = ({ getShow }) => {
           color='rgba(255, 255, 255, 1)'
         >
           {titleData.value.split('\n').map((line, i) => (
-            <div key={i} style={{fontSize:'20px' , fontWeight:'500'}}>{line}</div>
+            <div key={i} style={{ fontSize: '20px', fontWeight: '500' }}>{line}</div>
           ))}
         </Card>
 
@@ -398,14 +412,14 @@ const OnePsystem = ({ getShow }) => {
                 display: "flex", // Use flexbox to align items
                 justifyContent: "center", // Center items horizontally
                 alignItems: "center", // Center items vertically
-                fontSize:"20px",
-        fontWeight:"200"
+                fontSize: "20px",
+                fontWeight: "200"
               }}
             >
               {userListData.value}
             </div>
             <div style={{ marginRight: "10px", display: "flex", alignItems: "center" }}>
-              <Icon icon="line-md:account"  height="25px" width="25px" />
+              <Icon icon="line-md:account" height="25px" width="25px" />
             </div>
           </div>
 
@@ -421,8 +435,8 @@ const OnePsystem = ({ getShow }) => {
             ...styles.header,
 
             background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
-             fontSize:"20px",
-        fontWeight:"300"
+            fontSize: "20px",
+            fontWeight: "300"
           }}
           >
 
@@ -442,95 +456,160 @@ const OnePsystem = ({ getShow }) => {
 
 
           }}>
-            {Object.entries(tabs).map(([category, categoryTabs]) =>
-              Object.entries(categoryTabs).map(([key, isSelected]) => {
-                if (!isSelected) return null;
+            {!show["Workloads"] ? (
+              Object.entries(tabs).map(([category, categoryTabs]) =>
+                Object.entries(categoryTabs).map(([key, isSelected]) => {
+                  if (!isSelected) return null;
 
-                const workloadKey = key.toUpperCase();
-                const dataKey = cardWorkloadData[workloadKey];
+                  const workloadKey = key.toUpperCase();
+                  const dataKey = cardWorkloadData[workloadKey];
 
-                console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+                  console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
 
-                if (!dataKey) return null;
+                  if (!dataKey) return null;
 
-                const entries = Object.entries(dataKey);
-                const gridStyle = getGridStyle(entries.length);
+                  const entries = Object.entries(dataKey);
+                  const gridStyle = getGridStyle(entries.length);
 
-                return (
-                  <div key={key} style={gridStyle}>
-                    {entries.map(([metricKey, metricValue], idx) => {
-                      // Get the title from workloadDataKeys, or use the metricKey if no match is found
-                      const title = workloadDataKeys[metricKey] || convertToReadableFormat(metricKey);
+                  return (
+                    <div key={key} style={gridStyle}>
+                      {entries.map(([metricKey, metricValue], idx) => {
+                        // Get the title from workloadDataKeys, or use the metricKey if no match is found
+                        const title = workloadDataKeys[metricKey];
 
-                      return (
-                        <div key={idx} style={styles.metricContainer}>
-                          <span style={styles.metricLabel}>{title}</span>
-                          <span style={styles.metricValue}>
-                            {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
-                          </span>
-                        </div>
-                      );
-                    })}
+                        return (
+                          <div key={idx} style={styles.metricContainer}>
+                            <span style={styles.metricLabel}>{title}</span>
+                            <span style={styles.metricValue}>
+                              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  );
+                })
+              )
+            ) : (
+              <div style={{ ...getGridStyle(emptyWorkload.length), marginTop: '30px' }}>
+                {emptyWorkload.map((title, idx) => (
+                  <div key={idx} style={styles.metricContainer}>
+                    <span style={styles.metricLabel}>{title}</span>
+                    <span style={styles.metricValue}>- - -</span>
                   </div>
-                );
-              })
+                ))}
+              </div>
             )}
 
           </div>
         </div>
 
         {/* System Profile Card */}
-        <Card
-          width="20em"
-          height="12em"
-          marginTop="15px"
-          alignItems="normal"
-          background={index === 0
-            ? "linear-gradient(to right, #00B1CA, #000F13)"
-            : index === 1
-              ? "linear-gradient(to right, #007487, #000C0F)"
-              : "linear-gradient(to right, #00303C, #000405)"
-          }
-        >
-          {!show["SystemProfile"] ? (
+        <div style={{
+  ...styles.card,
+  background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' 
+    : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' 
+    : 'linear-gradient(to right, #00303C, #000405)')
+}}>
+  <div style={{
+    ...styles.contentArea,
+    background: index === 0 
+      ? 'linear-gradient(to right, #00B1CA, #000F13)' 
+      : (index === 1 
+        ? 'linear-gradient(to right, #007487, #000C0F)' 
+        : 'linear-gradient(to right, #00303C, #000405)')
+  }}>
+    {!show["SystemProfile"] ? (
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        gap: "10px",
+      }}>
+        {/* Kept the commented code as is */}
+        {/* {data4.map((item, idx) => (
+          <Card
+            key={idx}
+            width="19em"
+            height="3em"
+            border="0.81px solid rgba(255, 255, 255, 1)"
+          >
             <div style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column",
-              gap: "10px",
-
+              width: "100%",
             }}>
-              {data4.map((item, idx) => (
-                <Card
-                  key={idx}
-                  width="19em"
-                  height="3em"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-
-                >
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-
-                  }}>
-                    {item.value}
-                  </div>
-                </Card>
-              ))}
+              {item.value}
             </div>
-          ) : (
-            <div className="flex-center">
-              {`100 W`}
+          </Card>
+        ))} */}
+        
+        {Object.entries(tabs).map(([category, categoryTabs]) =>
+          Object.entries(categoryTabs).map(([key, isSelected]) => {
+            if (!isSelected) return null;
+
+            const workloadKey = key.toUpperCase();
+            const dataKey = null;
+
+            console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+
+            if (!dataKey) {
+              // If dataKey is missing, show emptySystemProfile
+              return (
+                <div key={key} style={{...getGridStyle(emptySystemProfile.length-1)}}>
+                  {emptySystemProfile.map((title, idx) => (
+                    <div key={idx} style={styles.metricContainer}>
+                      <span style={styles.metricLabel}>{title}</span>
+                      <span style={styles.metricValue}>- - -</span>
+                    </div>
+                  ))}
+                </div>
+              );
+            }
+
+            const entries = Object.entries(dataKey);
+            const gridStyle = getGridStyle(entries.length);
+
+            return (
+              <div key={key} style={gridStyle}>
+                {entries.map(([metricKey, metricValue], idx) => {
+                  const title = workloadDataKeys[metricKey];
+
+                  return (
+                    <div key={idx} style={styles.metricContainer}>
+                      <span style={styles.metricLabel}>{title}</span>
+                      <span style={styles.metricValue}>
+                        {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })
+        )}
+      </div>
+    ) : (
+      <div className="flex-center">
+        <div style={{ ...getGridStyle(emptySystemProfile.length-1), marginTop: '30px' }}>
+          {emptySystemProfile.map((title, idx) => (
+            <div key={idx} style={styles.metricContainer}>
+              <span style={styles.metricLabel}>{title}</span>
+              <span style={styles.metricValue}>- - -</span>
             </div>
-          )}
-        </Card>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
 
         {/* Economics Card */}
 
-         {/* fontSize= 35px and fontWeight:400 */}
+        {/* fontSize= 35px and fontWeight:400 */}
         <Card
           width="20em"
           height="11em"
@@ -573,7 +652,14 @@ const OnePsystem = ({ getShow }) => {
             </div>
           ) : (
             <div className="flex-center">
-              {`$9,085`}
+              <div style={{ ...getGridStyle(emptyEconmics.length), marginTop: '30px' }}>
+                {emptyEconmics.map((title, idx) => (
+                  <div key={idx} style={styles.metricContainer}>
+                    <span style={styles.metricLabel}>{title}</span>
+                    <span style={styles.metricValue}>- - -</span>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </Card>
