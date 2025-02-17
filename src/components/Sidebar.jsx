@@ -208,7 +208,7 @@ const Sidebar = () => {
         }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "1px solid #0AA3BB", height: '11em', padding: '6px', borderRadius: '10px' }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "1px solid #0AA3BB", height: '14em', padding: '6px', borderRadius: '10px' }}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -216,7 +216,7 @@ const Sidebar = () => {
           // height="140px"
           key={"SystemProfile"}
           width="2em"
-          height="11em"
+          height="13em"
           backgroundColor="black !important"
           border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
