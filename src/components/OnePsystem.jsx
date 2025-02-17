@@ -103,8 +103,7 @@ const OnePsystem = ({ getShow }) => {
   const getGridStyle = (dataLength) => {
     const baseStyle = {
       display: 'grid',
-      gap: '4rem',
-      gap: '4rem',
+      gap: '2rem',
       width: '100%',
     };
 
@@ -148,7 +147,7 @@ const OnePsystem = ({ getShow }) => {
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
       overflow: 'hidden',
       height: '15em',
-      marginTop: '0.25em'
+      marginTop: '1em'
     },
     header: {
       // backgroundColor: '#035369',
@@ -171,13 +170,14 @@ const OnePsystem = ({ getShow }) => {
     },
     metricLabel: {
       color: 'white',
-      fontSize: '0.875em',
+      fontSize:"20px",
+      fontWeight:"200",
       marginBottom: '0.25em'
     },
     metricValue: {
       color: 'white',
-      fontSize: '1.5em',
-      fontWeight: 'bold'
+      fontSize:"25px",
+      fontWeight:"400",
     }
   };
   const data2 = [
@@ -363,7 +363,7 @@ const OnePsystem = ({ getShow }) => {
           color='rgba(255, 255, 255, 1)'
         >
           {titleData.value.split('\n').map((line, i) => (
-            <div key={i}>{line}</div>
+            <div key={i} style={{fontSize:'20px' , fontWeight:'500'}}>{line}</div>
           ))}
         </Card>
 
@@ -398,12 +398,14 @@ const OnePsystem = ({ getShow }) => {
                 display: "flex", // Use flexbox to align items
                 justifyContent: "center", // Center items horizontally
                 alignItems: "center", // Center items vertically
+                fontSize:"20px",
+        fontWeight:"200"
               }}
             >
               {userListData.value}
             </div>
             <div style={{ marginRight: "10px", display: "flex", alignItems: "center" }}>
-              <Icon icon="iconamoon:profile-bold" />
+              <Icon icon="line-md:account"  height="25px" width="25px" />
             </div>
           </div>
 
@@ -418,7 +420,9 @@ const OnePsystem = ({ getShow }) => {
           {!show["Workloads"] && <div style={{
             ...styles.header,
 
-            background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)"
+            background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
+             fontSize:"20px",
+        fontWeight:"300"
           }}
           >
 
@@ -478,8 +482,8 @@ const OnePsystem = ({ getShow }) => {
         {/* System Profile Card */}
         <Card
           width="20em"
-          height="8em"
-          marginTop="20px"
+          height="12em"
+          marginTop="15px"
           alignItems="normal"
           background={index === 0
             ? "linear-gradient(to right, #00B1CA, #000F13)"
@@ -501,7 +505,7 @@ const OnePsystem = ({ getShow }) => {
                 <Card
                   key={idx}
                   width="19em"
-                  height="2em"
+                  height="3em"
                   border="0.81px solid rgba(255, 255, 255, 1)"
 
                 >
@@ -525,9 +529,11 @@ const OnePsystem = ({ getShow }) => {
         </Card>
 
         {/* Economics Card */}
+
+         {/* fontSize= 35px and fontWeight:400 */}
         <Card
           width="20em"
-          height="15em"
+          height="11em"
           marginTop="20px"
           alignItems="normal"
           background={index === 0
