@@ -18,21 +18,21 @@ const Sidebar = () => {
         ...prev,
         [index]: !prev[index] // Toggle the visibility of the clicked part
       };
-      
+
       // Check if the section is being shown and set default behavior for certain sections
-        if (index === "Workloads") {
-          // Set the first workload sub-menu to true by default
-          const firstWorkload = workloads[0]; // Assuming workloads is an array          
-          handlesubmenu(firstWorkload, firstWorkload.mainKey); // Set the first sub-menu as active
-        } else if (index === "SystemProfile") {
-          // Set the first item for SystemProfile or any default logic for SystemProfile
-          const firstSystemProfile = SystemProfile[0]; // Assuming systemProfiles is an array
-          handlesubmenu(firstSystemProfile, firstSystemProfile.mainKey);
-        } else if (index === "Economics") {
-          // Set the first item for Economics or any default logic for Economics
-          const firstEconomics = Economics[0]; // Assuming economics is an array
-          handlesubmenu(firstEconomics, firstEconomics.mainKey);
-        }
+      if (index === "Workloads") {
+        // Set the first workload sub-menu to true by default
+        const firstWorkload = workloads[0]; // Assuming workloads is an array          
+        handlesubmenu(firstWorkload, firstWorkload.mainKey); // Set the first sub-menu as active
+      } else if (index === "SystemProfile") {
+        // Set the first item for SystemProfile or any default logic for SystemProfile
+        const firstSystemProfile = SystemProfile[0]; // Assuming systemProfiles is an array
+        handlesubmenu(firstSystemProfile, firstSystemProfile.mainKey);
+      } else if (index === "Economics") {
+        // Set the first item for Economics or any default logic for Economics
+        const firstEconomics = Economics[0]; // Assuming economics is an array
+        handlesubmenu(firstEconomics, firstEconomics.mainKey);
+      }
 
       return newState;
     });
@@ -78,36 +78,38 @@ const Sidebar = () => {
       return updatedTabs;
     });
   };
-const logo = "/logo.jpg"
+  const logo = "/logo.jpg"
+  const amdlogo = "/Amdepiclogo.png"
   return (
     <>
-    <Card>
-    <span>
-          <img src={logo} alt="Amd" />
-          </span>
-      
-    </Card>
-    
+      <div>
+        <span style={{ height: "70px", width: "140px", display: "inline-block", paddingLeft: '50px' }}>
+          <img src={amdlogo} alt="Amd" style={{ height: "100%", width: "100%" }} />
+        </span>
+      </div>
+
       <Card
         // width="100%"
         // height="41px"
         // marginTop="37%"
         width="20em"
-        height="2em"
-        marginTop="2em"
+        height="4em"
+        marginTop="1.4em"
         alignItems="anchor-center"
         background="black"
         style={{
           borderRadius: "10px", // Adjust as needed
           border: "1px solid #0AA3BB",
-          backgroundColor:'black',
-          
+          backgroundColor: 'rgb(15,15,14)',
+          marginLeft: '10px'
         }}
       >
-        <p style={{fontSize:"18px",
-        fontWeight:"300"}}>
+        <p style={{
+          fontSize: "18px",
+          fontWeight: "400"
+        }}>
 
-        Subscribers
+          Subscribers
         </p>
       </Card>
       <div
@@ -128,7 +130,8 @@ const logo = "/logo.jpg"
           <div style={{
             transform: show["Workloads"] ? "" : "rotate(-90deg)"
             , whiteSpace: "nowrap",
-
+            fontSize: "18px",
+            fontWeight: "200"
           }}>
             {"Workloads"}
           </div>
@@ -154,11 +157,13 @@ const logo = "/logo.jpg"
               >
                 <div className="flex-center"
                   style={{
-                    backgroundColor: 'black',
+                    backgroundColor: 'rgb(15,15,14)',
                     width: '24em',
                     height: '3em',
                     border: `1px solid ${tabs["workload"][workload.key] ? '#0AA3BB' : 'white'}`,
                     borderRadius: '10px',
+                    fontSize: "12px",
+                    fontWeight: "200"
                   }}
                 >
                   <Card >
@@ -189,6 +194,8 @@ const logo = "/logo.jpg"
                 width: "100%",
                 color: 'white',
                 height: "100%", // Ensure it takes up space for centering
+                fontSize: '18px',
+                fontWeight: '200'
               }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -201,7 +208,7 @@ const logo = "/logo.jpg"
         }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "1px solid #0AA3BB", height: '7em', padding: '6px', borderRadius: '10px' }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "1px solid #0AA3BB", height: '11em', padding: '6px', borderRadius: '10px' }}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -209,7 +216,7 @@ const logo = "/logo.jpg"
           // height="140px"
           key={"SystemProfile"}
           width="2em"
-          height="7em"
+          height="11em"
           backgroundColor="black !important"
           border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
@@ -217,8 +224,9 @@ const logo = "/logo.jpg"
         >
           <div style={{
             transform: show["SystemProfile"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap"
-
+            , whiteSpace: "nowrap",
+            fontSize: "18px",
+            fontWeight: "200"
           }}>
             {"System Profile"}
           </div>
@@ -241,10 +249,12 @@ const logo = "/logo.jpg"
                 }}>
                 <div className="flex-center"
                   style={{
-                    width: "18em",
-                    height: "6em",
+                    width: "24em",
+                    height: "13em",
                     border: `1px solid ${tabs["systemprofile"][SystemPro.key] ? '#0AA3BB' : 'white'}`,
-                    marginTop: "8px", backgroundColor: "black", borderRadius: '10px'
+                    marginTop: "8px", backgroundColor: "black", borderRadius: '10px',
+                    fontSize: "12px",
+                    fontWeight: "200"
                   }}>
                   <Card >
                     {SystemPro.value}  {/* Display only the value */}
@@ -282,7 +292,7 @@ const logo = "/logo.jpg"
               marginLeft: "10px",
               width: "100%",
               display: "flex",
-              height: '7em',
+              height: '11em',
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
@@ -296,6 +306,8 @@ const logo = "/logo.jpg"
                 width: "100%",
                 color: 'white',
                 height: "100%", // Ensure it takes up space for centering
+                fontSize: '18px',
+                fontWeight: '200'
               }}
               onClick={(e) => {
                 e.stopPropagation();
@@ -309,14 +321,14 @@ const logo = "/logo.jpg"
         }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "25px", height: "15em", padding: "10px", border: "1px solid #0AA3BB", borderRadius: '10px' }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "25px", height: "10em", padding: "10px", border: "1px solid #0AA3BB", borderRadius: '10px' }}
         onClick={() => handleShow("Economics")}
       >
         {!show["Economics"] && <Card
           // width="30px"
           // height="224px"
           width="2em"
-          height="15em"
+          height="10em"
           backgroundColor="black !important"
           border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
@@ -324,7 +336,9 @@ const logo = "/logo.jpg"
         >
           <div style={{
             transform: show["Economics"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap"
+            , whiteSpace: "nowrap",
+            fontSize: "18px",
+            fontWeight: "200"
 
           }}
           >
@@ -355,9 +369,12 @@ const logo = "/logo.jpg"
                 }}
               >
                 <div className="flex-center" style={{
-                  width: "18em", height: "4em",
+                  width: "24em",
+                  height: "4em",
                   border: `1px solid ${tabs["economics"][economic.key] ? '#0AA3BB' : 'white'}`,
-                  backgroundColor: "black", borderRadius: '10px'
+                  backgroundColor: "black", borderRadius: '10px',
+                  fontSize: "12px",
+                  fontWeight: "200"
                 }}>
 
 
@@ -397,7 +414,7 @@ const logo = "/logo.jpg"
               marginLeft: "10px",
               width: "100%",
               display: "flex",
-              height: '15em',
+              height: '10em',
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
@@ -411,6 +428,8 @@ const logo = "/logo.jpg"
                 width: "100%",
                 color: 'white',
                 height: "100%", // Ensure it takes up space for centering
+                fontSize: '18px',
+                fontWeight: '200'
               }}
 
             >
