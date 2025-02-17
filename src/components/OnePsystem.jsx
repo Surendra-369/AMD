@@ -25,8 +25,8 @@ console.log(selectedCard, "ghj",show)
   const handleCardClick = (index) => {
     setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
   };
-  
-  
+
+
 
   useEffect(() => {
     getShow(selectedCard);
@@ -119,20 +119,22 @@ console.log(selectedCard, "ghj",show)
       case 2:
         return {
           ...baseStyle,
-          gridTemplateColumns: '1fr 1fr'
+          gridTemplateColumns: '1fr 1fr',
+
         };
       case 3:
         return {
           ...baseStyle,
-          gridTemplateColumns: '1fr 1fr 1fr'
+          gridTemplateColumns: '1fr 1fr 1fr',
         };
+        
       default:
         return {
           ...baseStyle,
           gridTemplateColumns: '1fr 1fr',
           '@media (min-width: 768px)': {
             gridTemplateColumns: '1fr 1fr 1fr 1fr'
-          }
+          },
         };
     }
   };
@@ -198,24 +200,28 @@ console.log(selectedCard, "ghj",show)
     { value: "825W" },
   ];
   const data5 = [
-    { value: "575 w - 825w" },
-    { value: "825w" },
-    { value: "$9,085" },
-    { value: "$12,130" },
-    { value: "$1130" },
-    { value: "$120" },
+    { value: "TCO Savings" },
+
   ];
 
- 
+
   const { tabs, setTabs } = useContext(SubtabsContext);
   console.log("tabs", tabs)
   const workloadDataKeys = {
-    "concurrent_user": "Concurrent User",
-    "token_latency": "Token Latency",
-    "tokens_per_sec": "Tokens Per Sec",
-    "ttft": "TTFT"
+    "concurrent_user": "Users",
+    "token_latency": "Latency (ms)",
+    "tokens_per_sec": "Tokens/S",
+    "ttft": "TTFT(ms)",
+    "samples_per_sec": "Samples/S",
+    "": "ACL Rules/s",
+    "": "Throughput",
   };
-
+  const systemProfileDataKeys = {
+    "": "CPU Util",
+    "": "Memory",
+    "": "Network",
+    "": "Power",
+  }
   const temp = [
     {
       "Concurrent Packets": 10,
@@ -224,6 +230,12 @@ console.log(selectedCard, "ghj",show)
       "Jitter (ms)": 10,
     },
   ];
+  const emptyWorkload = [
+    "Users",
+    "Latency (ms)",
+    "Tokens/S",
+    "TTFT(ms)"
+  ]
   const { workloadData, messages2P } = useMqtt()
   console.log(workloadData, "workloadData", messages2P);
   const [hoveredCards, setHoveredCards] = useState({
@@ -280,19 +292,19 @@ console.log(selectedCard, "ghj",show)
   const subHeaderTitle = {
     "1P_LLM_LLAMA": {
       value: "AI: Llama 3.x 1B",
-   
+
     },
     "1P_VIT": {
       value: "ML: Vision Transformer",
-      
+
     },
     "1P_FW": {
       value: "Enterprise: Firewall",
-     
+
     },
     "1P_POWER": {
       value: "UPF",
-    
+
     },
   };
   // Function to get appropriate workload data based on card index
@@ -344,8 +356,8 @@ console.log(selectedCard, "ghj",show)
 
       }}
         onClick={() => handleCardClick(index)}
-        // onMouseEnter={() => handleCardHover(index, true)}  
-        // onMouseLeave={() => handleCardHover(index, false)}
+      // onMouseEnter={() => handleCardHover(index, true)}  
+      // onMouseLeave={() => handleCardHover(index, false)}
       >
         {/* Title Card */}
         <Card
@@ -382,7 +394,7 @@ console.log(selectedCard, "ghj",show)
           noborder="true"
         >
           <div className="flex-spaceBetween" style={{
-            border:'1px solid black',
+            border: '1px solid black',
             borderRadius: "10px", background:
               index === 0
                 ? "linear-gradient(to right, #00B1CA, #000F13)"
@@ -394,8 +406,7 @@ console.log(selectedCard, "ghj",show)
               style={{
                 textAlign: "center",
                 flex: 1,
- 
-                height: "2em",
+                height: "3em",
                 display: "flex", // Use flexbox to align items
                 justifyContent: "center", // Center items horizontally
                 alignItems: "center", // Center items vertically
@@ -407,12 +418,12 @@ console.log(selectedCard, "ghj",show)
               <Icon icon="iconamoon:profile-bold" />
             </div>
           </div>
- 
+
         </Card>
 
         {/* Workload Data Card */}
         <div style={{
-          ...styles.card, 
+          ...styles.card,
           background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
 
         }}>
@@ -421,7 +432,7 @@ console.log(selectedCard, "ghj",show)
  
   background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)"
           }}
- >
+          >
 
   {activeKey && subHeaderTitle?.[activeKey]?.value && (
     <div
@@ -454,20 +465,24 @@ console.log(selectedCard, "ghj",show)
 
                 return (
                   <div key={key} style={gridStyle}>
-                    {entries.map(([metricKey, metricValue], idx) => (
-                      <div key={idx} style={styles.metricContainer}>
-                        <span style={styles.metricLabel}>
-                          {convertToReadableFormat(metricKey)}
-                        </span>
-                        <span style={styles.metricValue}>
-                          {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
-                        </span>
-                      </div>
-                    ))}
+                    {entries.map(([metricKey, metricValue], idx) => {
+                      // Get the title from workloadDataKeys, or use the metricKey if no match is found
+                      const title = workloadDataKeys[metricKey] || convertToReadableFormat(metricKey);
+
+                      return (
+                        <div key={idx} style={styles.metricContainer}>
+                          <span style={styles.metricLabel}>{title}</span>
+                          <span style={styles.metricValue}>
+                            {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })
             )}
+
           </div>
         </div>
 
@@ -477,11 +492,11 @@ console.log(selectedCard, "ghj",show)
           height="8em"
           marginTop="20px"
           alignItems="normal"
-          background={index === 0 
+          background={index === 0
             ? "linear-gradient(to right, #00B1CA, #000F13)"
             : index === 1
-            ? "linear-gradient(to right, #007487, #000C0F)"
-            : "linear-gradient(to right, #00303C, #000405)"
+              ? "linear-gradient(to right, #007487, #000C0F)"
+              : "linear-gradient(to right, #00303C, #000405)"
           }
         >
           {!show["SystemProfile"] ? (
@@ -491,7 +506,7 @@ console.log(selectedCard, "ghj",show)
               alignItems: "center",
               flexDirection: "column",
               gap: "10px",
-              
+
             }}>
               {data4.map((item, idx) => (
                 <Card
@@ -499,7 +514,7 @@ console.log(selectedCard, "ghj",show)
                   width="19em"
                   height="2em"
                   border="0.81px solid rgba(255, 255, 255, 1)"
-                 
+
                 >
                   <div style={{
                     display: "flex",
@@ -526,11 +541,11 @@ console.log(selectedCard, "ghj",show)
           height="15em"
           marginTop="20px"
           alignItems="normal"
-          background={index === 0 
+          background={index === 0
             ? "linear-gradient(to right, #00B1CA, #000F13)"
             : index === 1
-            ? "linear-gradient(to right, #007487, #000C0F)"
-            : "linear-gradient(to right, #00303C, #000405)"
+              ? "linear-gradient(to right, #007487, #000C0F)"
+              : "linear-gradient(to right, #00303C, #000405)"
           }
         >
           {!show["Economics"] ? (
@@ -570,8 +585,6 @@ console.log(selectedCard, "ghj",show)
       </div>
     );
   };
-
-  // Return three instances of the card wrapped in a flex container
   return (
     <div style={styling.containerStyle}>
       {[0, 1, 2].map((index) => (
