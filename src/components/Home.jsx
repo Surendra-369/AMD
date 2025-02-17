@@ -69,11 +69,13 @@ const getShow = (val)=>{
         <div className="four-parts">
       <div
         className="part"
+        // style={{ marginTop: "0px" }}
       >
         <Sidebar />
       </div>
       <div
         className="part border"
+        
         // style={{ display: show[0] ? 'block' : 'none' }}
         // onClick={() => handleShow(0)}
       >

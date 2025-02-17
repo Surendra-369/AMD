@@ -1,5 +1,5 @@
 import React from "react";
-
+ 
 const Card = ({
   width,
   height,
@@ -36,5 +36,5 @@ const Card = ({
     </div>
   );
 };
-
+ 
 export default Card;
