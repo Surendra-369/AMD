@@ -198,12 +198,20 @@ const OnePsystem = ({ getShow }) => {
   const { tabs, setTabs } = useContext(SubtabsContext);
   console.log("tabs", tabs)
   const workloadDataKeys = {
-    "concurrent_user": "Concurrent User",
-    "token_latency": "Token Latency",
-    "tokens_per_sec": "Tokens Per Sec",
-    "ttft": "TTFT"
+    "concurrent_user": "Users",
+    "token_latency": "Latency (ms)",
+    "tokens_per_sec": "Tokens/S",
+    "ttft": "TTFT(ms)",
+    "samples_per_sec":"Samples/S",
+    "":"ACL Rules/s",
+    "":"Throughput",
   };
-
+  const systemProfileDataKeys ={
+    "":"CPU Util",
+    "":"Memory",
+    "":"Network",
+    "":"Power",
+  }
   const temp = [
     {
       "Concurrent Packets": 10,
@@ -212,6 +220,12 @@ const OnePsystem = ({ getShow }) => {
       "Jitter (ms)": 10,
     },
   ];
+  const emptyWorkload = [
+    "Users",
+    "Latency (ms)",
+    "Tokens/S",
+    "TTFT(ms)"
+    ]
   const { workloadData, messages2P } = useMqtt()
   console.log(workloadData, "workloadData", messages2P);
   const [hoveredCards, setHoveredCards] = useState({
@@ -265,15 +279,24 @@ const OnePsystem = ({ getShow }) => {
     { key: "2p", value: "1200-1900" },
     { key: "2*2p", value: "1300-1700" }
   ];
-  const subHeaderTitle = [
-
-    { key: "1p", value: "AI - Model Llama 3.x 1B" },
-    {
-      key: "2p", value: "ML - Vision Transformer"
-    },
-    { key: "2*2p", value: "Enterprise - Firewall" }
-
-  ]
+  // const subHeaderTitle = {
+  //   "1P_LLM_LLAMA": {
+  //     value: "AI: Llama 3.x 1B",
+  //     // isSelected: true,
+  //   },
+  //   "1P_VIT": {
+  //     value: "ML: Vision Transformer",
+  //     // isSelected: true,
+  //   },
+  //   "1P_FW": {
+  //     value: "Enterprise: Firewall",
+  //     // isSelected: false,
+  //   },
+  //   "1P_POWER": {
+  //     value: "UPF",
+  //     // isSelected: false,
+  //   },
+  // };
   // Function to get appropriate workload data based on card index
   const getWorkloadData = (index) => {
     switch (index) {
@@ -297,7 +320,7 @@ const OnePsystem = ({ getShow }) => {
     }
   };
 
-  // Create a SingleCard component that contains your existing card structure
+  
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
     const subtitleData = subtitle[index];
@@ -390,6 +413,7 @@ const OnePsystem = ({ getShow }) => {
           }}>
 
             {/* AI: Llama 3.x 1B */}
+  
           </div>
           <div style={styles.contentArea}>
   {!show["Workloads"] ? (
@@ -402,9 +426,12 @@ const OnePsystem = ({ getShow }) => {
 
         console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
 
-        if (!dataKey) return null;
+        // if (!dataKey) return null;
 
-        const entries = Object.entries(dataKey);
+        const entries =
+        !dataKey || Object.keys(dataKey).length === 0
+          ? emptyWorkload.map((label) => [label, "- - -"]) // If dataKey is empty or undefined
+          : Object.entries(dataKey); // If dataKey has content
         const gridStyle = getGridStyle(entries.length);
 
         return (
@@ -412,7 +439,8 @@ const OnePsystem = ({ getShow }) => {
             {entries.map(([metricKey, metricValue], idx) => (
               <div key={idx} style={styles.metricContainer}>
                 <span style={styles.metricLabel}>
-                  {convertToReadableFormat(metricKey)}
+                  {convertToReadableFormat(metricKey)  }
+                  
                 </span>
                 <span style={styles.metricValue}>
                   {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
@@ -427,15 +455,17 @@ const OnePsystem = ({ getShow }) => {
     (() => {
       const gridStyle = getGridStyle(4);
       return (
+        <div style={styles.contentArea}>
         <div style={gridStyle}>
-          {/* <div style={styles.metricContainer}>
-            <span style={styles.metricLabel}>Users</span>
-            <span style={styles.metricValue}>---</span>
-            <span style={styles.metricLabel}>Users</span>
-            <span style={styles.metricValue}>---</span>
-            <span style={styles.metricLabel}>Users</span>
-            <span style={styles.metricValue}>---</span>
-          </div> */}
+          <div style={gridStyle}>
+          {emptyWorkload.map((label, idx) => (
+            <div key={idx} style={styles.metricContainer}>
+              <span style={styles.metricLabel}>{label}</span>
+              <span style={styles.metricValue}>---</span>
+            </div>
+          ))}
+        </div>
+        </div>
         </div>
       );
     })()
