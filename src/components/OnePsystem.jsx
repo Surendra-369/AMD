@@ -7,18 +7,27 @@ import { SubtabsContext } from "./SubtabsContext";
 
 const OnePsystem = ({ getShow }) => {
 
-  // Add state for tracking selected card
-  const [selectedCard, setSelectedCard] = useState(null);
+  // // Add state for tracking selected card
+  // const [selectedCard, setSelectedCard] = useState(null);
 
+  // Keep all your existing constants and hooks
+  const { show, setShow, selectedCard, setSelectedCard } = useVisibility();
+  console.log(selectedCard, "ghj")
+  // const handleCardClick = (index) => {
+  //   if (selectedCard === index) {
+  //     // If clicking the same card, show all cards
+  //     setSelectedCard(null);
+  //   } else {
+  //     // Show only the clicked card
+  //     setSelectedCard(index);
+  //   }
+  // };
   const handleCardClick = (index) => {
-    if (selectedCard === index) {
-      // If clicking the same card, show all cards
-      setSelectedCard(null);
-    } else {
-      // Show only the clicked card
-      setSelectedCard(index);
-    }
+    setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
   };
+
+
+
   useEffect(() => {
     getShow(selectedCard);
   }, [selectedCard])
@@ -110,20 +119,22 @@ const OnePsystem = ({ getShow }) => {
       case 2:
         return {
           ...baseStyle,
-          gridTemplateColumns: '1fr 1fr'
+          gridTemplateColumns: '1fr 1fr',
+
         };
       case 3:
         return {
           ...baseStyle,
-          gridTemplateColumns: '1fr 1fr 1fr'
+          gridTemplateColumns: '1fr 1fr 1fr',
         };
+        
       default:
         return {
           ...baseStyle,
           gridTemplateColumns: '1fr 1fr',
           '@media (min-width: 768px)': {
             gridTemplateColumns: '1fr 1fr 1fr 1fr'
-          }
+          },
         };
     }
   };
@@ -145,7 +156,7 @@ const OnePsystem = ({ getShow }) => {
       color: 'white',
       fontSize: '1.25em',
       fontWeight: '600',
-      padding: '1em',
+      padding: '0.5em',
       textAlign: 'center',
       marginBottom: '1.25em'
     },
@@ -193,8 +204,7 @@ const OnePsystem = ({ getShow }) => {
 
   ];
 
-  // Keep all your existing constants and hooks
-  const { show, setShow } = useVisibility();
+
   const { tabs, setTabs } = useContext(SubtabsContext);
   console.log("tabs", tabs)
   const workloadDataKeys = {
@@ -202,15 +212,15 @@ const OnePsystem = ({ getShow }) => {
     "token_latency": "Latency (ms)",
     "tokens_per_sec": "Tokens/S",
     "ttft": "TTFT(ms)",
-    "samples_per_sec":"Samples/S",
-    "":"ACL Rules/s",
-    "":"Throughput",
+    "samples_per_sec": "Samples/S",
+    "": "ACL Rules/s",
+    "": "Throughput",
   };
-  const systemProfileDataKeys ={
-    "":"CPU Util",
-    "":"Memory",
-    "":"Network",
-    "":"Power",
+  const systemProfileDataKeys = {
+    "": "CPU Util",
+    "": "Memory",
+    "": "Network",
+    "": "Power",
   }
   const temp = [
     {
@@ -225,7 +235,7 @@ const OnePsystem = ({ getShow }) => {
     "Latency (ms)",
     "Tokens/S",
     "TTFT(ms)"
-    ]
+  ]
   const { workloadData, messages2P } = useMqtt()
   console.log(workloadData, "workloadData", messages2P);
   const [hoveredCards, setHoveredCards] = useState({
@@ -279,24 +289,24 @@ const OnePsystem = ({ getShow }) => {
     { key: "2p", value: "1200-1900" },
     { key: "2*2p", value: "1300-1700" }
   ];
-  // const subHeaderTitle = {
-  //   "1P_LLM_LLAMA": {
-  //     value: "AI: Llama 3.x 1B",
-  //     // isSelected: true,
-  //   },
-  //   "1P_VIT": {
-  //     value: "ML: Vision Transformer",
-  //     // isSelected: true,
-  //   },
-  //   "1P_FW": {
-  //     value: "Enterprise: Firewall",
-  //     // isSelected: false,
-  //   },
-  //   "1P_POWER": {
-  //     value: "UPF",
-  //     // isSelected: false,
-  //   },
-  // };
+  const subHeaderTitle = {
+    "1P_LLM_LLAMA": {
+      value: "AI: Llama 3.x 1B",
+
+    },
+    "1P_VIT": {
+      value: "ML: Vision Transformer",
+
+    },
+    "1P_FW": {
+      value: "Enterprise: Firewall",
+
+    },
+    "1P_POWER": {
+      value: "UPF",
+
+    },
+  };
   // Function to get appropriate workload data based on card index
   const getWorkloadData = (index) => {
     switch (index) {
@@ -319,8 +329,8 @@ const OnePsystem = ({ getShow }) => {
         return {};
     }
   };
-
-  
+  const activeKey = Object.keys(tabs?.workload || {}).find((key) => tabs.workload[key]);
+  // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
     const subtitleData = subtitle[index];
@@ -342,8 +352,8 @@ const OnePsystem = ({ getShow }) => {
 
       }}
         onClick={() => handleCardClick(index)}
-        onMouseEnter={() => handleCardHover(index, true)}  // Handle hover using onMouseEnter
-        onMouseLeave={() => handleCardHover(index, false)}
+      // onMouseEnter={() => handleCardHover(index, true)}  
+      // onMouseLeave={() => handleCardHover(index, false)}
       >
         {/* Title Card */}
         <Card
@@ -372,7 +382,7 @@ const OnePsystem = ({ getShow }) => {
           noborder="true"
         >
           <div className="flex-spaceBetween" style={{
-            border:'1px solid black',
+            border: '1px solid black',
             borderRadius: "10px", background:
               index === 0
                 ? "linear-gradient(to right, #00B1CA, #000F13)"
@@ -384,8 +394,7 @@ const OnePsystem = ({ getShow }) => {
               style={{
                 textAlign: "center",
                 flex: 1,
-
-                height: "2em",
+                height: "3em",
                 display: "flex", // Use flexbox to align items
                 justifyContent: "center", // Center items horizontally
                 alignItems: "center", // Center items vertically
@@ -406,72 +415,64 @@ const OnePsystem = ({ getShow }) => {
           background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
 
         }}>
-          <div style={{
+          {!show["Workloads"] && <div style={{
             ...styles.header,
-            background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
+
+            background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)"
+          }}
+          >
+
+            {activeKey && subHeaderTitle?.[activeKey]?.value && (
+              <div
+
+              >{subHeaderTitle[activeKey].value}</div>
+            )}
+          </div>}
+          <div style={{
+            ...styles.contentArea,
+            background: index === 0
+              ? 'linear-gradient(to right, #00B1CA, #000F13)'
+              : (index === 1
+                ? 'linear-gradient(to right, #007487, #000C0F)'
+                : 'linear-gradient(to right, #00303C, #000405)')
+
 
           }}>
+            {Object.entries(tabs).map(([category, categoryTabs]) =>
+              Object.entries(categoryTabs).map(([key, isSelected]) => {
+                if (!isSelected) return null;
 
-            {/* AI: Llama 3.x 1B */}
-  
+                const workloadKey = key.toUpperCase();
+                const dataKey = cardWorkloadData[workloadKey];
+
+                console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+
+                if (!dataKey) return null;
+
+                const entries = Object.entries(dataKey);
+                const gridStyle = getGridStyle(entries.length);
+
+                return (
+                  <div key={key} style={gridStyle}>
+                    {entries.map(([metricKey, metricValue], idx) => {
+                      // Get the title from workloadDataKeys, or use the metricKey if no match is found
+                      const title = workloadDataKeys[metricKey] || convertToReadableFormat(metricKey);
+
+                      return (
+                        <div key={idx} style={styles.metricContainer}>
+                          <span style={styles.metricLabel}>{title}</span>
+                          <span style={styles.metricValue}>
+                            {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })
+            )}
+
           </div>
-          <div style={styles.contentArea}>
-  {!show["Workloads"] ? (
-    Object.entries(tabs).map(([category, categoryTabs]) => 
-      Object.entries(categoryTabs).map(([key, isSelected]) => {
-        if (!isSelected) return null;
-
-        const workloadKey = key.toUpperCase();
-        const dataKey = cardWorkloadData[workloadKey];
-
-        console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
-
-        // if (!dataKey) return null;
-
-        const entries =
-        !dataKey || Object.keys(dataKey).length === 0
-          ? emptyWorkload.map((label) => [label, "- - -"]) // If dataKey is empty or undefined
-          : Object.entries(dataKey); // If dataKey has content
-        const gridStyle = getGridStyle(entries.length);
-
-        return (
-          <div key={key} style={gridStyle}>
-            {entries.map(([metricKey, metricValue], idx) => (
-              <div key={idx} style={styles.metricContainer}>
-                <span style={styles.metricLabel}>
-                  {convertToReadableFormat(metricKey)  }
-                  
-                </span>
-                <span style={styles.metricValue}>
-                  {typeof metricValue === 'number' ? metricValue.toFixed(2) : metricValue}
-                </span>
-              </div>
-            ))}
-          </div>
-        );
-      })
-    )
-  ) : (
-    (() => {
-      const gridStyle = getGridStyle(4);
-      return (
-        <div style={styles.contentArea}>
-        <div style={gridStyle}>
-          <div style={gridStyle}>
-          {emptyWorkload.map((label, idx) => (
-            <div key={idx} style={styles.metricContainer}>
-              <span style={styles.metricLabel}>{label}</span>
-              <span style={styles.metricValue}>---</span>
-            </div>
-          ))}
-        </div>
-        </div>
-        </div>
-      );
-    })()
-  )}
-</div>
-
         </div>
 
         {/* System Profile Card */}
@@ -547,7 +548,12 @@ const OnePsystem = ({ getShow }) => {
 
             }}>
               {data5.map((item, idx) => (
-
+                <Card
+                  key={idx}
+                  width="19em"
+                  height="2em"
+                  border="0.81px solid rgba(255, 255, 255, 1)"
+                >
                   <div style={{
                     display: "flex",
                     justifyContent: "center",
@@ -556,6 +562,7 @@ const OnePsystem = ({ getShow }) => {
                   }}>
                     {item.value}
                   </div>
+                </Card>
               ))}
             </div>
           ) : (
@@ -567,8 +574,6 @@ const OnePsystem = ({ getShow }) => {
       </div>
     );
   };
-
-  // Return three instances of the card wrapped in a flex container
   return (
     <div style={styling.containerStyle}>
       {[0, 1, 2].map((index) => (

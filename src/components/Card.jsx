@@ -12,7 +12,9 @@ const Card = ({
   border,
   opacity,
   background,
-  noborder
+  noborder,
+  fontSize,
+  fontWeight
 }) => {
   const cardStyle = {
     width: width,
@@ -25,7 +27,9 @@ const Card = ({
     color:color ? color : "rgba(255, 255, 255, 1)",
     border: border ? border :  noborder==="true" ? "":"1px solid rgba(0, 0, 0, 1)",
     opacity:opacity ? opacity : "",
-     background: background || ""
+     background: background || "",
+     fontSize: fontSize && fontSize,
+     fontWeight:fontWeight && fontWeight,
   };
   //1px solid rgba(255, 255, 255, 1)
   //  border="1px solid rgba(0, 0, 0, 1)"

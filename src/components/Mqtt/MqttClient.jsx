@@ -9,7 +9,7 @@ const MqttClient = () => {
   const { workloadData, setWorkloadData, systemProfileData, setSystemProfileData,economicsData, setEconomicsData } = useMqtt();
   console.log(workloadData,"workloadData",systemProfileData)
   useEffect(() => {
-    const eventSource = new EventSource("http://192.168.0.26:5002/stream");
+    const eventSource = new EventSource("http://52.40.12.183:5002/stream");
   
     eventSource.onmessage = (event) => {
       try {
@@ -72,7 +72,6 @@ const MqttClient = () => {
       eventSource.close();
     };
   }, []); 
-  // console.log("Received Message",messages);
   return (
     <>
     </>

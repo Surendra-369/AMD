@@ -10,9 +10,10 @@ export function VisibilityProvider({ children }) {
     SystemProfile: true,
     Economics: true,
   });
-
+   // Add state for tracking selected card globally
+   const [selectedCard, setSelectedCard] = useState(null);
   return (
-    <VisibilityContext.Provider value={{ show, setShow }}>
+    <VisibilityContext.Provider value={{ show, setShow ,selectedCard, setSelectedCard}}>
       {children}
     </VisibilityContext.Provider>
   );

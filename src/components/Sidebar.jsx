@@ -48,6 +48,7 @@ const Sidebar = () => {
     { mainKey: "workload", key: "1P_LLM_LLAMA", value: "AI - Model Llama 3.x 1B" },
     { mainKey: "workload", key: "1P_VIT", value: "ML - Vision Transformer" },
     { mainKey: "workload", key: "1P_FW", value: "Enterprise - Firewall" },
+    { mainKey: "workload", key: "1P_POWER", value: "UPF" },
   ];
   const SystemProfile = [{ mainKey: "systemprofile", key: "system_Metrics", value: "System Metrics" },];
 
@@ -77,25 +78,37 @@ const Sidebar = () => {
       return updatedTabs;
     });
   };
-
+const logo = "/logo.jpg"
   return (
     <>
+    <Card>
+    <span>
+          <img src={logo} alt="Amd" />
+          </span>
+      
+    </Card>
+    
       <Card
         // width="100%"
         // height="41px"
         // marginTop="37%"
         width="20em"
         height="2em"
-        marginTop="7.3em"
+        marginTop="2em"
         alignItems="anchor-center"
         background="black"
         style={{
           borderRadius: "10px", // Adjust as needed
           border: "1px solid #0AA3BB",
-          backgroundColor:'black'
+          backgroundColor:'black',
+          
         }}
       >
+        <p style={{fontSize:"18px",
+        fontWeight:"300"}}>
+
         Subscribers
+        </p>
       </Card>
       <div
         className="sidebar-font"
@@ -143,7 +156,7 @@ const Sidebar = () => {
                   style={{
                     backgroundColor: 'black',
                     width: '24em',
-                    height: '3.5em',
+                    height: '3em',
                     border: `1px solid ${tabs["workload"][workload.key] ? '#0AA3BB' : 'white'}`,
                     borderRadius: '10px',
                   }}
