@@ -12,6 +12,7 @@ body {
   flex-direction: column;
   background-color: #000000;
   color: white;
+  margin: 0;
 }
 
 .list-items {
@@ -31,6 +32,8 @@ body {
 .centered {
   text-align: center; /* Center the second heading */
   flex: 2; /* Make the centered text occupy more space */
+  margin: 0;
+  margin-top: 10px;
 }
 
 /* Home CSS */

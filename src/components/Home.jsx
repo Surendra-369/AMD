@@ -56,6 +56,7 @@ const getShow = (val)=>{
     },
   ];
   const data3 = [{}];
+  const logo = "/logo.jpg";
   return (
     <div className="container">
       <div className="content-left" style={{ flex: show===null ? "0 0 0%" : "0 0 00%"}}>
@@ -67,10 +68,14 @@ const getShow = (val)=>{
           </div>
         </div> */}
         <div className="four-parts">
+          
       <div
         className="part"
         // style={{ marginTop: "0px" }}
       >
+        {/* <h1 className="left">
+          <img src={logo} alt="Amd" />
+        </h1> */}
         <Sidebar />
       </div>
       <div
@@ -97,7 +102,7 @@ const getShow = (val)=>{
       </div> */}
     </div>
       </div>
-      <div className="content-right" style={{ flex: show===null ? "0 0 40%" : "0 0 67%"}}>
+      <div className="content-right" style={{ flex: show===null ? "0 0 23%" : "0 0 60%"}}>
         <div style={{marginRight:'10px'}}>
 
         <Info/>

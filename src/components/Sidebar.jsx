@@ -62,15 +62,23 @@ const Sidebar = () => {
       return updatedTabs;
     });
   };
+  const logo = "/logo.jpg";
   return (
     <>
+    <Card>
+    <span>
+          <img src={logo} alt="Amd" />
+          </span>
+      
+    </Card>
+    
       <Card
         // width="100%"
         // height="41px"
         // marginTop="37%"
         width="20em"
         height="2em"
-        marginTop="7.3em"
+        marginTop="2em"
         alignItems="anchor-center"
         backgroundColor="black !important"
         style={{

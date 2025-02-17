@@ -7,8 +7,11 @@ import { SubtabsContext } from "./SubtabsContext";
 
 const OnePsystem = ({ getShow }) => {
 
-  // Add state for tracking selected card
-  const [selectedCard, setSelectedCard] = useState(null);
+  // // Add state for tracking selected card
+  // const [selectedCard, setSelectedCard] = useState(null);
+
+   // Keep all your existing constants and hooks
+   const { show, setShow,selectedCard, setSelectedCard } = useVisibility();
 
   const handleCardClick = (index) => {
     if (selectedCard === index) {
@@ -197,8 +200,7 @@ const OnePsystem = ({ getShow }) => {
     { value: "$120" },
   ];
 
-  // Keep all your existing constants and hooks
-  const { show, setShow } = useVisibility();
+ 
   const { tabs, setTabs } = useContext(SubtabsContext);
   console.log("tabs", tabs)
   const workloadDataKeys = {
