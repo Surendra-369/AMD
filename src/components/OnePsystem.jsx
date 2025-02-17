@@ -243,6 +243,7 @@ console.log(selectedCard, "ghj",show)
     1: false,
     2: false
   });
+  
   const handleCardHover = (index, ishover) => {
 
     setHoveredCards(prev => ({

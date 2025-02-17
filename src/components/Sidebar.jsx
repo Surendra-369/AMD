@@ -94,7 +94,7 @@ const Sidebar = () => {
         // marginTop="37%"
         width="20em"
         height="4em"
-        marginTop="1.4em"
+        marginTop="2.4em"
         alignItems="anchor-center"
         background="black"
         style={{
@@ -433,7 +433,7 @@ const Sidebar = () => {
               }}
 
             >
-              System Profile
+              Economics
             </div>
           </div>
         }
