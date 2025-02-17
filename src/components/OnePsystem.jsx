@@ -12,16 +12,22 @@ const OnePsystem = ({ getShow }) => {
 
    // Keep all your existing constants and hooks
    const { show, setShow,selectedCard, setSelectedCard } = useVisibility();
-
+console.log(selectedCard, "ghj")
+  // const handleCardClick = (index) => {
+  //   if (selectedCard === index) {
+  //     // If clicking the same card, show all cards
+  //     setSelectedCard(null);
+  //   } else {
+  //     // Show only the clicked card
+  //     setSelectedCard(index);
+  //   }
+  // };
   const handleCardClick = (index) => {
-    if (selectedCard === index) {
-      // If clicking the same card, show all cards
-      setSelectedCard(null);
-    } else {
-      // Show only the clicked card
-      setSelectedCard(index);
-    }
+    setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
   };
+  
+  
+
   useEffect(() => {
     getShow(selectedCard);
   }, [selectedCard])
@@ -148,7 +154,7 @@ const OnePsystem = ({ getShow }) => {
       color: 'white',
       fontSize: '1.25em',
       fontWeight: '600',
-      padding: '1em',
+      padding: '0.5em',
       textAlign: 'center',
       marginBottom: '1.25em'
     },
@@ -271,15 +277,24 @@ const OnePsystem = ({ getShow }) => {
     { key: "2p", value: "1200-1900" },
     { key: "2*2p", value: "1300-1700" }
   ];
-  const subHeaderTitle = [
-
-    { key: "1p", value: "AI - Model Llama 3.x 1B" },
-    {
-      key: "2p", value: "ML - Vision Transformer"
+  const subHeaderTitle = {
+    "1P_LLM_LLAMA": {
+      value: "AI: Llama 3.x 1B",
+   
     },
-    { key: "2*2p", value: "Enterprise - Firewall" }
-
-  ]
+    "1P_VIT": {
+      value: "ML: Vision Transformer",
+      
+    },
+    "1P_FW": {
+      value: "Enterprise: Firewall",
+     
+    },
+    "1P_POWER": {
+      value: "UPF",
+    
+    },
+  };
   // Function to get appropriate workload data based on card index
   const getWorkloadData = (index) => {
     switch (index) {
@@ -302,7 +317,7 @@ const OnePsystem = ({ getShow }) => {
         return {};
     }
   };
-
+  const activeKey = Object.keys(tabs?.workload || {}).find((key) => tabs.workload[key]);
   // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
@@ -325,8 +340,8 @@ const OnePsystem = ({ getShow }) => {
 
       }}
         onClick={() => handleCardClick(index)}
-        onMouseEnter={() => handleCardHover(index, true)}  // Handle hover using onMouseEnter
-        onMouseLeave={() => handleCardHover(index, false)}
+        // onMouseEnter={() => handleCardHover(index, true)}  
+        // onMouseLeave={() => handleCardHover(index, false)}
       >
         {/* Title Card */}
         <Card
@@ -389,14 +404,28 @@ const OnePsystem = ({ getShow }) => {
           background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
 
         }}>
-          <div style={{...styles.header,
-                background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
+          <div style={{
+  ...styles.header,
+ 
+  background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)"
+          }}
+ >
+
+  {activeKey && subHeaderTitle?.[activeKey]?.value && (
+    <div
+   
+    >{subHeaderTitle[activeKey].value}</div>
+  )}
+</div>
+          <div style={{...styles.contentArea,
+           background: index === 0 
+           ? 'linear-gradient(to right, #00B1CA, #000F13)' 
+           : (index === 1 
+             ? 'linear-gradient(to right, #007487, #000C0F)' 
+             : 'linear-gradient(to right, #00303C, #000405)')
+      
 
           }}>
-
-            {/* AI: Llama 3.x 1B */}
-          </div>
-          <div style={styles.contentArea}>
             {Object.entries(tabs).map(([category, categoryTabs]) =>
               Object.entries(categoryTabs).map(([key, isSelected]) => {
                 if (!isSelected) return null;
