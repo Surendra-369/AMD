@@ -12,7 +12,7 @@ const OnePsystem = ({ getShow }) => {
 
    // Keep all your existing constants and hooks
    const { show, setShow,selectedCard, setSelectedCard } = useVisibility();
-console.log(selectedCard, "ghj")
+console.log(selectedCard, "ghj",show)
   // const handleCardClick = (index) => {
   //   if (selectedCard === index) {
   //     // If clicking the same card, show all cards
@@ -318,6 +318,10 @@ console.log(selectedCard, "ghj")
     }
   };
   const activeKey = Object.keys(tabs?.workload || {}).find((key) => tabs.workload[key]);
+  const p1="/1P.jpg"
+  const p2="/2P.jpg"
+  const p4="/4P.jpg"
+  const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
   // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
@@ -346,10 +350,18 @@ console.log(selectedCard, "ghj")
         {/* Title Card */}
         <Card
           width="20em"
-          height="4em"
+          height="5em"
           alignItems="center"
           color='rgba(255, 255, 255, 1)'
+          style={{
+            // backgroundImage: `url(${p1})`, 
+            backgroundImage: `url(${images[index]})`, 
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
+           
+
           {titleData.value.split('\n').map((line, i) => (
             <div key={i}>{line}</div>
           ))}
@@ -404,7 +416,7 @@ console.log(selectedCard, "ghj")
           background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
 
         }}>
-          <div style={{
+      {  !show["Workloads"]  && <div style={{
   ...styles.header,
  
   background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)"
@@ -416,7 +428,7 @@ console.log(selectedCard, "ghj")
    
     >{subHeaderTitle[activeKey].value}</div>
   )}
-</div>
+</div>}
           <div style={{...styles.contentArea,
            background: index === 0 
            ? 'linear-gradient(to right, #00B1CA, #000F13)' 
