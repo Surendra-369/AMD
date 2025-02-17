@@ -69,7 +69,7 @@ const getShow = (val)=>{
         <div className="four-parts">
       <div
         className="part"
-        style={{ marginTop: "30px" }}
+        // style={{ marginTop: "0px" }}
       >
         <Sidebar />
       </div>

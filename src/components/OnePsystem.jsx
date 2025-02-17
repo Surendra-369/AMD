@@ -339,10 +339,10 @@ const OnePsystem = ({ getShow }) => {
         </Card>
 
         {/* Subtitle */}
-        <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
+        {/* <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
           <div style={{ padding: "10px" }}>({subtitleData.value})</div>
           <div>200Gb NIC</div>
-        </div>
+        </div> */}
 
         {/* User Count Card */}
         <Card

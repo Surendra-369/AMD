@@ -70,18 +70,20 @@ const Sidebar = () => {
         // marginTop="37%"
         width="20em"
         height="2em"
-        marginTop="8.3em"
+        marginTop="7.3em"
         alignItems="anchor-center"
+        backgroundColor="black !important"
         style={{
           borderRadius: "10px", // Adjust as needed
-          border: "2px solid white",
+          border: "1px solid #0AA3BB",
+          
         }}
       >
         Subscribers
       </Card>
       <div
         className="sidebar-font"
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.5em", border: "2px solid white", height: '18em', padding: '6px' ,borderRadius:'10px'}}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.5em", border: "1px solid #0AA3BB", height: '18em', padding: '6px' ,borderRadius:'10px'}}
         onClick={() => handleShow("Workloads")}
       >
         {!show["Workloads"] && <Card
@@ -91,6 +93,7 @@ const Sidebar = () => {
           height="18em"
           alignItems="center"
           border="1px solid white"
+          backgroundColor="black !important"
           style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)", }}
         >
           <div style={{
@@ -120,7 +123,7 @@ const Sidebar = () => {
                 }}
                 key={`${workload.key}-${index}`} // Ensures unique key
               >
-                <Card width="24em" height="3.5em" alignItems="center" border="1px solid white">
+                <Card width="24em" height="3.5em" alignItems="center" border="1px solid white" backgroundColor="black !important">
                   {workload.value}  {/* Display only the value */}
                 </Card>
               </div>
@@ -159,7 +162,7 @@ const Sidebar = () => {
         }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "2px solid white", height: '7em', padding: '6px' ,borderRadius:'10px'}}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "1px solid #0AA3BB", height: '7em', padding: '6px' ,borderRadius:'10px'}}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -168,6 +171,7 @@ const Sidebar = () => {
           key={"SystemProfile"}
           width="2em"
           height="7em"
+          backgroundColor="black !important"
            border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
@@ -196,7 +200,7 @@ const Sidebar = () => {
                   e.stopPropagation()
                   handlesubmenu(SystemPro, SystemPro.mainKey); // Passes the full object
                 }}>
-                <Card width="18em" height="6em" alignItems="center" border="1px solid white" marginTop="8px">
+                <Card width="18em" height="6em" alignItems="center" border="1px solid white" marginTop="8px" backgroundColor="black !important">
                   {SystemPro.value}  {/* Display only the value */}
                 </Card>
               </div>
@@ -258,7 +262,7 @@ const Sidebar = () => {
           }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "25px",height:"15em", padding:"10px", border: "1px solid white" ,borderRadius:'10px'}}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "25px",height:"15em", padding:"10px", border: "1px solid #0AA3BB" ,borderRadius:'10px'}}
         onClick={() => handleShow("Economics")}
       >
         {!show["Economics"] && <Card
@@ -266,6 +270,7 @@ const Sidebar = () => {
           // height="224px"
           width="2em"
           height="15em"
+          backgroundColor="black !important"
             border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
@@ -302,7 +307,7 @@ const Sidebar = () => {
                   handlesubmenu(economic, economic.mainKey); // Passes the full object
                 }}
                 >
-                <Card width="18em" height="4em" alignItems="center" border="1px solid white">
+                <Card width="18em" height="4em" alignItems="center" border="1px solid white" backgroundColor="black !important">
                   {economic.value}  {/* Display only the value */}
                 </Card>
               </div>
