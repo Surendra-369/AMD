@@ -9,8 +9,8 @@ const MqttClient = () => {
   const { workloadData, setWorkloadData, systemProfileData, setSystemProfileData,economicsData, setEconomicsData } = useMqtt();
   console.log(workloadData,"workloadData",systemProfileData)
   useEffect(() => {
-    const eventSource = new EventSource("http://10.86.16.33:5002/stream");
-    // 10.86.16.33:5002/stream AMD SERVER
+    const eventSource = new EventSource("http://10.86.20.178:5002/stream");
+    // 10.86.20.178:5002/stream AMD SERVER
     // http://52.40.12.183:5002/stream  Local server
   
     eventSource.onmessage = (event) => {

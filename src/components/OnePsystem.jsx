@@ -359,26 +359,33 @@ console.log(selectedCard, "ghj",show)
       // onMouseEnter={() => handleCardHover(index, true)}  
       // onMouseLeave={() => handleCardHover(index, false)}
       >
-        {/* Title Card */}
+         {/* Title Card */}
+         <div style={{
+            // backgroundImage: `url(${p1})`, 
+            backgroundImage: `url(${images[index]})`, 
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "20em",
+            height: "5em",
+          }}>
         <Card
           width="20em"
           height="5em"
           alignItems="center"
           color='rgba(255, 255, 255, 1)'
-          style={{
-            // backgroundImage: `url(${p1})`, 
-            backgroundImage: `url(${images[index]})`, 
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
+          
         >
            
 
-          {titleData.value.split('\n').map((line, i) => (
-            <div key={i} style={{fontSize:'20px' , fontWeight:'500'}}>{line}</div>
-          ))}
-        </Card>
+           
 
+          {titleData.value.split('\n').map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
+          
+        </Card>
+        </div>
         {/* Subtitle */}
         {/* <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
           <div style={{ padding: "10px" }}>({subtitleData.value})</div>
