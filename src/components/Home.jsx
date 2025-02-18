@@ -71,7 +71,7 @@ const getShow = (val)=>{
           
       <div
         className="part"
-        // style={{ marginTop: "0px" }}
+         style={{ marginTop: "10px" }}
       >
         {/* <h1 className="left">
           <img src={logo} alt="Amd" />

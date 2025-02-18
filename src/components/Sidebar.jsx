@@ -92,7 +92,7 @@ const Sidebar = () => {
         // width="100%"
         // height="41px"
         // marginTop="37%"
-        width="20em"
+        width="22em"
         height="4em"
         marginTop="2.4em"
         alignItems="anchor-center"
@@ -208,7 +208,7 @@ const Sidebar = () => {
         }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.6em", border: "1px solid #0AA3BB", height: '14em', padding: '6px', borderRadius: '10px' }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.5em", border: "1px solid #0AA3BB", height: '14em', padding: '6px', borderRadius: '10px' }}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -216,7 +216,7 @@ const Sidebar = () => {
           // height="140px"
           key={"SystemProfile"}
           width="2em"
-          height="13em"
+          height="14em"
           backgroundColor="black !important"
           border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
@@ -250,7 +250,7 @@ const Sidebar = () => {
                 <div className="flex-center"
                   style={{
                     width: "24em",
-                    height: "13em",
+                    height: "17em",
                     border: `1px solid ${tabs["systemprofile"][SystemPro.key] ? '#0AA3BB' : 'white'}`,
                     marginTop: "8px", backgroundColor: "black", borderRadius: '10px',
                     fontSize: "12px",
@@ -292,7 +292,7 @@ const Sidebar = () => {
               marginLeft: "10px",
               width: "100%",
               display: "flex",
-              height: '11em',
+              height: '14em',
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
@@ -321,14 +321,14 @@ const Sidebar = () => {
         }
       </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "25px", height: "10em", padding: "10px", border: "1px solid #0AA3BB", borderRadius: '10px' }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px", height: "14em", padding: "10px", border: "1px solid #0AA3BB", borderRadius: '10px' }}
         onClick={() => handleShow("Economics")}
       >
         {!show["Economics"] && <Card
           // width="30px"
           // height="224px"
           width="2em"
-          height="10em"
+          height="14em"
           backgroundColor="black !important"
           border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
@@ -414,7 +414,7 @@ const Sidebar = () => {
               marginLeft: "10px",
               width: "100%",
               display: "flex",
-              height: '10em',
+              height: '14em',
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
@@ -433,7 +433,7 @@ const Sidebar = () => {
               }}
 
             >
-              Economics
+             Economics
             </div>
           </div>
         }
