@@ -22,6 +22,9 @@ const OnePsystem = ({ getShow }) => {
   //     setSelectedCard(index);
   //   }
   // };
+  console.log(show, "show");
+  const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
+ 
   const handleCardClick = (index) => {
     setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
   };
@@ -147,7 +150,7 @@ const OnePsystem = ({ getShow }) => {
       boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
       overflow: 'hidden',
       height: '15em',
-      marginTop: '1em'
+      marginTop: '1em',
     },
     header: {
       // backgroundColor: '#035369',
@@ -160,7 +163,7 @@ const OnePsystem = ({ getShow }) => {
       marginBottom: '1.25em'
     },
     contentArea: {
-      padding: '0 1.5em 1.5em 1.5em'
+      padding: '0 1.5em 0em 1.5em'
     },
     metricContainer: {
       display: 'flex',
@@ -240,7 +243,7 @@ const OnePsystem = ({ getShow }) => {
     "CPU Utilization",
     "Power",
   ]
-  const emptyShowSystemProfile=[
+  const emptyShowSystemProfile = [
     "CPU Util",
     "Memory",
     "Network",
@@ -321,6 +324,21 @@ const OnePsystem = ({ getShow }) => {
 
     },
   };
+
+  const workloadNoData = {
+    "1P_LLM_LLAMA": ["Users", "Latency (ms)", "Tokens/S", "TTFT(ms)"],
+    "1P_VIT": ["Samples/S"],
+    "1P_FW": [],
+    "1P_POWER": []
+  };
+  const system_MetricsNoData = {
+    "11": ["CPU Util", "Memory", "Network", "Power",],
+  }
+
+  const economicsNoData = {
+    "12": ["TCO Saving"]
+  }
+
   // Function to get appropriate workload data based on card index
   const getWorkloadData = (index) => {
     switch (index) {
@@ -343,6 +361,7 @@ const OnePsystem = ({ getShow }) => {
         return {};
     }
   };
+
   const activeKey = Object.keys(tabs?.workload || {}).find((key) => tabs.workload[key]);
   // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
@@ -350,6 +369,7 @@ const OnePsystem = ({ getShow }) => {
     const subtitleData = subtitle[index];
     const userListData = userList[index];
     const cardWorkloadData = getWorkloadData(index);
+    console.log(activeKey, "activeKey", workloadNoData[activeKey]);
 
     // Only render if no card is selected or this is the selected card
     if (selectedCard !== null && selectedCard !== index) {
@@ -370,16 +390,32 @@ const OnePsystem = ({ getShow }) => {
       // onMouseLeave={() => handleCardHover(index, false)}
       >
         {/* Title Card */}
+        <div style={{
+            // backgroundImage: `url(${p1})`,
+            backgroundImage: `url(${images[index]})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "10px",
+            width: "20em",
+            height: "5em",
+          }}>
         <Card
           width="20em"
-          height="4em"
+          height="5em"
           alignItems="center"
           color='rgba(255, 255, 255, 1)'
+         
         >
+           
+ 
+           
+ 
           {titleData.value.split('\n').map((line, i) => (
             <div key={i} style={{ fontSize: '20px', fontWeight: '500' }}>{line}</div>
           ))}
+         
         </Card>
+        </div>
 
         {/* Subtitle */}
         {/* <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
@@ -428,34 +464,55 @@ const OnePsystem = ({ getShow }) => {
         {/* Workload Data Card */}
         <div style={{
           ...styles.card,
-          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
-
+          background: index === 0
+            ? 'linear-gradient(to right, #00B1CA, #000F13)'
+            : (index === 1
+              ? 'linear-gradient(to right, #007487, #000C0F)'
+              : 'linear-gradient(to right, #00303C, #000405)')
         }}>
-          {!show["Workloads"] && <div style={{
-            ...styles.header,
-
-            background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
-            fontSize: "20px",
-            fontWeight: "300"
-          }}
-          >
-
-            {activeKey && subHeaderTitle?.[activeKey]?.value && (
-              <div
-
-              >{subHeaderTitle[activeKey].value}</div>
-            )}
-          </div>}
+          {!show["Workloads"] && (
+            <div style={{
+              ...styles.header,
+              background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
+              fontSize: "20px",
+              fontWeight: "300"
+            }}>
+              {activeKey && subHeaderTitle?.[activeKey]?.value && (
+                <div>{subHeaderTitle[activeKey].value}</div>
+              )}
+            </div>
+          )}
           <div style={{
             ...styles.contentArea,
             background: index === 0
               ? 'linear-gradient(to right, #00B1CA, #000F13)'
               : (index === 1
                 ? 'linear-gradient(to right, #007487, #000C0F)'
-                : 'linear-gradient(to right, #00303C, #000405)')
-
-
+                : 'linear-gradient(to right, #00303C, #000405)'),
+            position: 'relative',  // Added for absolute positioning of lines
+            minHeight: '150px'    // Added to ensure consistent height
           }}>
+
+            {!show["Workloads"] && activeKey && subHeaderTitle?.[activeKey]?.value === "AI: Llama 3.x 1B" && (<><div style={{
+              position: 'absolute',
+              left: '0',
+              right: '0',
+              top: '50%',
+              height: '1px',
+              background: 'rgba(255, 255, 255, 0.2)',
+              pointerEvents: 'none'  // Ensures line doesn't interfere with clicks
+            }} />
+              <div style={{
+                position: 'absolute',
+                top: '0',
+                bottom: '0',
+                left: '50%',
+                width: '1px',
+                background: 'rgba(255, 255, 255, 0.2)',
+                pointerEvents: 'none'  // Ensures line doesn't interfere with clicks
+              }} />
+            </>)}
+
             {!show["Workloads"] ? (
               Object.entries(tabs).map(([category, categoryTabs]) =>
                 Object.entries(categoryTabs).map(([key, isSelected]) => {
@@ -466,19 +523,41 @@ const OnePsystem = ({ getShow }) => {
 
                   console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
 
-                  if (!dataKey) return null;
-
+                  // Check if dataKey is missing or empty
+                  if (dataKey === null || dataKey === undefined) {
+                    return null
+                  }
+                  if (Object?.keys(dataKey)?.length === 0) {
+                    // Show empty values ( - - - )
+                    return (
+                      <div key={key} style={{ ...getGridStyle(workloadNoData[activeKey].length), position: 'relative', zIndex: 1 }}>
+                        {workloadNoData[activeKey].map((title, idx) => (
+                          <div key={idx} style={{ ...styles.metricContainer, position: 'relative', zIndex: 2 }}>
+                            <span style={styles.metricLabel}>{title}</span>
+                            <span style={styles.metricValue}>- - -</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
                   const entries = Object.entries(dataKey);
-                  const gridStyle = getGridStyle(entries.length);
+                  const gridStyle = {
+                    ...getGridStyle(entries.length),
+                    position: 'relative',
+                    zIndex: 1,
+                  };
 
                   return (
                     <div key={key} style={gridStyle}>
                       {entries.map(([metricKey, metricValue], idx) => {
-                        // Get the title from workloadDataKeys, or use the metricKey if no match is found
                         const title = workloadDataKeys[metricKey];
 
                         return (
-                          <div key={idx} style={styles.metricContainer}>
+                          <div key={idx} style={{
+                            ...styles.metricContainer,
+                            position: 'relative',
+                            zIndex: 2,
+                          }}>
                             <span style={styles.metricLabel}>{title}</span>
                             <span style={styles.metricValue}>
                               {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
@@ -490,45 +569,75 @@ const OnePsystem = ({ getShow }) => {
                   );
                 })
               )
+
             ) : (
-              <div style={{ ...getGridStyle(emptyWorkload.length), marginTop: '30px' }}>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%', // Ensure it takes full width
+              }}>
                 {emptyWorkload.map((title, idx) => (
-                  <div key={idx} style={styles.metricContainer}>
-                    <span style={styles.metricLabel}>{title}</span>
-                    <span style={styles.metricValue}>- - -</span>
+                  <div key={idx} style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto', // First column takes full width, second auto-sizes
+                    padding: "10px",
+                    alignItems: "center", // Vertically center items
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.3)", // Optional for separation
+                  }}>
+                    {/* Label (Left Column) */}
+                    <span style={{
+                      fontSize: "20px",
+                      fontWeight: "200",
+                      textAlign: "left", // Align text to left
+                      color: 'white',
+                    }}>
+                      {title}:
+                    </span>
+
+                    {/* Value (Right Column) */}
+                    <span style={{
+                      fontSize: "25px",
+                      fontWeight: "400",
+                      textAlign: "right", // Align text to right
+                      color: 'white',
+                    }}>
+                      - - -
+                    </span>
                   </div>
                 ))}
               </div>
             )}
-
           </div>
         </div>
 
+
         {/* System Profile Card */}
         <div style={{
-  ...styles.card,
-  background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' 
-    : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' 
-    : 'linear-gradient(to right, #00303C, #000405)')
-}}>
-  <div style={{
-    ...styles.contentArea,
-    background: index === 0 
-      ? 'linear-gradient(to right, #00B1CA, #000F13)' 
-      : (index === 1 
-        ? 'linear-gradient(to right, #007487, #000C0F)' 
-        : 'linear-gradient(to right, #00303C, #000405)')
-  }}>
-    {!show["SystemProfile"] ? (
-      <div style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-        gap: "10px",
-      }}>
-        {/* Kept the commented code as is */}
-        {/* {data4.map((item, idx) => (
+          ...styles.card,
+          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)'
+            : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)'
+              : 'linear-gradient(to right, #00303C, #000405)')
+        }}>
+          <div style={{
+            ...styles.contentArea,
+            background: index === 0
+              ? 'linear-gradient(to right, #00B1CA, #000F13)'
+              : (index === 1
+                ? 'linear-gradient(to right, #007487, #000C0F)'
+                : 'linear-gradient(to right, #00303C, #000405)')
+                
+          }}>
+            {!show["SystemProfile"] ? (
+              <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "10px",
+              }}>
+                {/* Kept the commented code as is */}
+                {/* {data4.map((item, idx) => (
           <Card
             key={idx}
             width="19em"
@@ -545,124 +654,226 @@ const OnePsystem = ({ getShow }) => {
             </div>
           </Card>
         ))} */}
-        
-        {Object.entries(tabs).map(([category, categoryTabs]) =>
-          Object.entries(categoryTabs).map(([key, isSelected]) => {
-            if (!isSelected) return null;
 
-            const workloadKey = key.toUpperCase();
-            const dataKey = null;
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    if (!isSelected) return null;
 
-            console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = null;
 
-            if (!dataKey) {
-              // If dataKey is missing, show emptySystemProfile
-              return (
-                <div key={key} style={{...getGridStyle(emptySystemProfile.length-1)}}>
-                  {emptySystemProfile.map((title, idx) => (
-                    <div key={idx} style={styles.metricContainer}>
-                      <span style={styles.metricLabel}>{title}</span>
-                      <span style={styles.metricValue}>- - -</span>
-                    </div>
-                  ))}
-                </div>
-              );
-            }
+                    console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+                    if (dataKey === null || dataKey === undefined) {
+                      return null
+                    }
+                    if (Object.keys(dataKey)?.length == 0) {
+                      // If dataKey is missing, show emptySystemProfile
+                      return (
+                        <div key={key} style={{ ...getGridStyle(system_MetricsNoData[activeKey]?.length - 1) }}>
+                          {system_MetricsNoData[activeKey]?.map((title, idx) => (
+                            <div key={idx} style={styles.metricContainer}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>- - -</span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
 
-            const entries = Object.entries(dataKey);
-            const gridStyle = getGridStyle(entries.length);
+                    const entries = Object.entries(dataKey);
+                    const gridStyle = getGridStyle(entries.length);
 
-            return (
-              <div key={key} style={gridStyle}>
-                {entries.map(([metricKey, metricValue], idx) => {
-                  const title = workloadDataKeys[metricKey];
+                    return (
+                      <div key={key} style={gridStyle}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title = workloadDataKeys[metricKey];
 
-                  return (
-                    <div key={idx} style={styles.metricContainer}>
-                      <span style={styles.metricLabel}>{title}</span>
-                      <span style={styles.metricValue}>
-                        {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
-                      </span>
-                    </div>
-                  );
-                })}
+                          return (
+                            <div key={idx} style={styles.metricContainer}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>
+                                {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
               </div>
-            );
-          })
-        )}
-      </div>
-    ) : (
-      <div className="flex-center">
-        <div style={{ ...getGridStyle(emptySystemProfile.length-1), marginTop: '30px' }}>
-          {emptySystemProfile.map((title, idx) => (
-            <div key={idx} style={styles.metricContainer}>
-              <span style={styles.metricLabel}>{title}</span>
-              <span style={styles.metricValue}>- - -</span>
-            </div>
-          ))}
+            ) : (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%', // Ensure it takes full width
+              }}>
+                {emptyShowSystemProfile.map((title, idx) => (
+                  <div key={idx} style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto', // First column takes full width, second auto-sizes
+                    padding: "10px",
+                    alignItems: "center", // Vertically center items
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.3)", // Optional for separation
+                  }}>
+                    {/* Label (Left Column) */}
+                    <span style={{
+                      fontSize: "20px",
+                      fontWeight: "200",
+                      textAlign: "left", // Align text to left
+                      color: 'white',
+                    }}>
+                      {title}:
+                    </span>
+
+                    {/* Value (Right Column) */}
+                    <span style={{
+                      fontSize: "25px",
+                      fontWeight: "400",
+                      textAlign: "right", // Align text to right
+                      color: 'white',
+                    }}>
+                      - - -
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-    )}
-  </div>
-</div>
 
 
         {/* Economics Card */}
 
         {/* fontSize= 35px and fontWeight:400 */}
-        <Card
-          width="20em"
-          height="11em"
-          marginTop="20px"
-          alignItems="normal"
-          background={index === 0
-            ? "linear-gradient(to right, #00B1CA, #000F13)"
-            : index === 1
-              ? "linear-gradient(to right, #007487, #000C0F)"
-              : "linear-gradient(to right, #00303C, #000405)"
-          }
-        >
-          {!show["Economics"] ? (
+        <div style={{
+          ...styles.card,
+          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)'
+            : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)'
+              : 'linear-gradient(to right, #00303C, #000405)')
+        }}>
+          <div style={{
+            ...styles.contentArea,
+            background: index === 0
+              ? 'linear-gradient(to right, #00B1CA, #000F13)'
+              : (index === 1
+                ? 'linear-gradient(to right, #007487, #000C0F)'
+                : 'linear-gradient(to right, #00303C, #000405)')
+          }}>
+            {!show["Economics"] ? (
+              <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "10px",
+              }}>
+                {/* Kept the commented code as is */}
+                {/* {data4.map((item, idx) => (
+          <Card
+            key={idx}
+            width="19em"
+            height="3em"
+            border="0.81px solid rgba(255, 255, 255, 1)"
+          >
             <div style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column",
               width: "100%",
-              gap: "5px",
-
             }}>
-              {data5.map((item, idx) => (
-                <Card
-                  key={idx}
-                  width="19em"
-                  height="2em"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                  <div style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                  }}>
-                    {item.value}
-                  </div>
-                </Card>
-              ))}
+              {item.value}
             </div>
-          ) : (
-            <div className="flex-center">
-              <div style={{ ...getGridStyle(emptyEconmics.length), marginTop: '30px' }}>
+          </Card>
+        ))} */}
+
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    if (!isSelected) return null;
+
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = null;
+
+                    console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+                    if (dataKey === null || dataKey === undefined) {
+                      return null
+                    }
+                    if (Object.keys(dataKey)?.length === 0) {
+                      // If dataKey is missing, show emptySystemProfile
+                      return (
+                        <div key={key} style={{ ...getGridStyle(economicsNoData[activeKey]?.length - 1) }}>
+                          {economicsNoData[activeKey]?.map((title, idx) => (
+                            <div key={idx} style={styles.metricContainer}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>- - -</span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+
+                    const entries = Object.entries(dataKey);
+                    const gridStyle = getGridStyle(entries.length);
+
+                    return (
+                      <div key={key} style={gridStyle}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title = workloadDataKeys[metricKey];
+
+                          return (
+                            <div key={idx} style={styles.metricContainer}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>
+                                {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            ) : (
+              <div  style={{
+                display: 'flex',
+                 flexDirection: 'column',
+                 justifyContent: 'space-between',
+                 width: '100%', // Ensure it takes full width
+              }}>
                 {emptyEconmics.map((title, idx) => (
-                  <div key={idx} style={styles.metricContainer}>
-                    <span style={styles.metricLabel}>{title}</span>
-                    <span style={styles.metricValue}>- - -</span>
+                  <div key={idx} style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto', // First column takes full width, second auto-sizes
+                    padding: "10px",
+                    justifyContent:"center",
+                    alignItems: "center", // Vertically center items
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.3)", // Optional for separation
+                  }}>
+                    <span style={{
+                      fontSize: "20px",
+                      fontWeight: "200",
+                      textAlign: "left", // Align text to left
+                      color: 'white',
+                    }}>
+                      {title}:
+                    </span>
+
+                    <span style={{
+                      fontSize: "25px",
+                      fontWeight: "400",
+                      textAlign: "right", // Align text to right
+                      color: 'white',
+                    }}>
+                      - - -
+                    </span>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-        </Card>
+            )}
+          </div>
+        </div>
       </div>
     );
   };
