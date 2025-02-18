@@ -23,7 +23,7 @@ console.log(selectedCard, "ghj",show)
   //   }
   // };
   console.log(show, "show");
-  const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
+  // const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
  
   const handleCardClick = (index) => {
     setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
@@ -293,13 +293,13 @@ console.log(selectedCard, "ghj",show)
   const titles = [
     { key: "1p", value: "1P AMD EPYC™\n9575F - (64 cores)" },
     { key: "2p", value: "2P AMD EPYC™\n9575F - (128 cores)" },
-    { key: "2*2p", value: "4P AMD EPYC™\n9575F - (256 cores)" }
+    { key: "2*2p", value: "2*2p AMD EPYC™\n9575F - (256 cores)" }
   ];
 
   const subtitle = [
     { key: "1p", value: "1P AMD EPYC™" },
     { key: "2p", value: "2P AMD EPYC™" },
-    { key: "2*2p", value: "4P AMD EPYC™" }
+    { key: "2*2p", value: "2*2p AMD EPYC™" }
   ];
 
   const userList = [
