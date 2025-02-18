@@ -11,6 +11,7 @@ export const SubtabsProvider = ({ children }) => {
           "1P_VIT": false,
           "1P_FW": false,
           "1P_POWER": false,
+          "1P_CPU": false,
           "2P_LLM_LLAME": false,
           "2P_LLM_DS": false,
           "2P_VIT": false,

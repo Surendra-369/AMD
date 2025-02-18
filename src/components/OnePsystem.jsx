@@ -160,7 +160,7 @@ console.log(selectedCard, "ghj",show)
       marginBottom: '1.25em'
     },
     contentArea: {
-      padding: '0 1.5em 1.5em 1.5em'
+      // padding: '0 1.5em 1.5em 1.5em'
     },
     metricContainer: {
       display: 'flex',
@@ -361,6 +361,7 @@ console.log(selectedCard, "ghj",show)
       return null;
     }
 
+    console.log(activeKey && subHeaderTitle?.[activeKey]?.value,"dfghjk")
     return (
       <div style={{
         minWidth: '20em',
@@ -447,81 +448,120 @@ console.log(selectedCard, "ghj",show)
 
         {/* Workload Data Card */}
         <div style={{
-          ...styles.card,
-          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)' : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)' : 'linear-gradient(to right, #00303C, #000405)')
-
-        }}>
-          {!show["Workloads"] && <div style={{
-            ...styles.header,
-
-            background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
-            fontSize: "20px",
-            fontWeight: "300"
-          }}
-          >
-
-  {activeKey && subHeaderTitle?.[activeKey]?.value && (
-    <div
-   
-    >{subHeaderTitle[activeKey].value}</div>
+  ...styles.card,
+  background: index === 0 
+    ? 'linear-gradient(to right, #00B1CA, #000F13)' 
+    : (index === 1 
+      ? 'linear-gradient(to right, #007487, #000C0F)' 
+      : 'linear-gradient(to right, #00303C, #000405)')
+}}>
+  {!show["Workloads"] && (
+    <div style={{
+      ...styles.header,
+      background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
+      fontSize: "20px",
+      fontWeight: "300"
+    }}>
+      {activeKey && subHeaderTitle?.[activeKey]?.value && (
+        <div>{subHeaderTitle[activeKey].value}</div>
+      )}
+    </div>
   )}
-</div>}
-          <div style={{...styles.contentArea,
-           background: index === 0 
-           ? 'linear-gradient(to right, #00B1CA, #000F13)' 
-           : (index === 1 
-             ? 'linear-gradient(to right, #007487, #000C0F)' 
-             : 'linear-gradient(to right, #00303C, #000405)')
-      
+  <div style={{
+    ...styles.contentArea,
+    background: index === 0 
+      ? 'linear-gradient(to right, #00B1CA, #000F13)' 
+      : (index === 1 
+        ? 'linear-gradient(to right, #007487, #000C0F)' 
+        : 'linear-gradient(to right, #00303C, #000405)'),
+    position: 'relative',  // Added for absolute positioning of lines
+    minHeight: '150px'    // Added to ensure consistent height
+  }}>
+   
+   { activeKey && subHeaderTitle?.[activeKey]?.value === "AI: Llama 3.x 1B" &&(<><div style={{
+      position: 'absolute',
+      left: '0',
+      right: '0',
+      top: '50%',
+      height: '1px',
+      background: 'rgba(255, 255, 255, 0.2)',
+      pointerEvents: 'none'  // Ensures line doesn't interfere with clicks
+    }} />
 
-          }}>
-            {!show["Workloads"] ? (
-              Object.entries(tabs).map(([category, categoryTabs]) =>
-                Object.entries(categoryTabs).map(([key, isSelected]) => {
-                  if (!isSelected) return null;
+   
+    <div style={{
+      position: 'absolute',
+      top: '0',
+      bottom: '0',
+      left: '50%',
+      width: '1px',
+      background: 'rgba(255, 255, 255, 0.2)',
+      pointerEvents: 'none'  // Ensures line doesn't interfere with clicks
+    }} />
+    </>)}
 
-                  const workloadKey = key.toUpperCase();
-                  const dataKey = cardWorkloadData[workloadKey];
+    {!show["Workloads"] ? (
+      Object.entries(tabs).map(([category, categoryTabs]) =>
+        Object.entries(categoryTabs).map(([key, isSelected]) => {
+          if (!isSelected) return null;
 
-                  console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+          const workloadKey = key.toUpperCase();
+          const dataKey = cardWorkloadData[workloadKey];
 
-                  if (!dataKey) return null;
+          console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
 
-                  const entries = Object.entries(dataKey);
-                  const gridStyle = getGridStyle(entries.length);
+          if (!dataKey) return null;
 
-                  return (
-                    <div key={key} style={gridStyle}>
-                      {entries.map(([metricKey, metricValue], idx) => {
-                        // Get the title from workloadDataKeys, or use the metricKey if no match is found
-                        const title = workloadDataKeys[metricKey];
+          const entries = Object.entries(dataKey);
+          const gridStyle = {
+            ...getGridStyle(entries.length),
+            position: 'relative',  // Added for proper positioning
+            zIndex: 1            // Ensures content appears above lines
+          };
 
-                        return (
-                          <div key={idx} style={styles.metricContainer}>
-                            <span style={styles.metricLabel}>{title}</span>
-                            <span style={styles.metricValue}>
-                              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
-                })
-              )
-            ) : (
-              <div style={{ ...getGridStyle(emptyWorkload.length), marginTop: '30px' }}>
-                {emptyWorkload.map((title, idx) => (
-                  <div key={idx} style={styles.metricContainer}>
+          return (
+            <div key={key} style={gridStyle}>
+              {entries.map(([metricKey, metricValue], idx) => {
+                const title = workloadDataKeys[metricKey];
+
+                return (
+                  <div key={idx} style={{
+                    ...styles.metricContainer,
+                    position: 'relative',  // Added for proper positioning
+                    zIndex: 2            // Ensures metrics appear above lines
+                  }}>
                     <span style={styles.metricLabel}>{title}</span>
-                    <span style={styles.metricValue}>- - -</span>
+                    <span style={styles.metricValue}>
+                      {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                    </span>
                   </div>
-                ))}
-              </div>
-            )}
-
+                );
+              })}
+            </div>
+          );
+        })
+      )
+    ) : (
+      <div style={{ 
+        ...getGridStyle(emptyWorkload.length), 
+        marginTop: '30px',
+        position: 'relative',  // Added for proper positioning
+        zIndex: 1            // Ensures content appears above lines
+      }}>
+        {emptyWorkload.map((title, idx) => (
+          <div key={idx} style={{
+            ...styles.metricContainer,
+            position: 'relative',  // Added for proper positioning
+            zIndex: 2            // Ensures metrics appear above lines
+          }}>
+            <span style={styles.metricLabel}>{title}</span>
+            <span style={styles.metricValue}>- - -</span>
           </div>
-        </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
 
         {/* System Profile Card */}
         <div style={{
