@@ -45,12 +45,15 @@ const Sidebar = () => {
   //   "Enterprise - Firewall",
   // ];
   const workloads = [
-    { mainKey: "workload", key: "1P_LLM_LLAMA", value: "AI - Model Llama 3.x 1B" },
+    { mainKey: "workload", key: "1P_LLM", value: "AI - Model Llama 3.x 1B" },
     { mainKey: "workload", key: "1P_VIT", value: "ML - Vision Transformer" },
     { mainKey: "workload", key: "1P_FW", value: "Enterprise - Firewall" },
-    { mainKey: "workload", key: "1P_POWER", value: "UPF" },
+    { mainKey: "workload", key: "1P_UPF", value: "UPF" },
   ];
-  const SystemProfile = [{ mainKey: "systemprofile", key: "system_Metrics", value: "System Metrics" },];
+  const SystemProfile = [
+    { mainKey: "systemprofile", key: "1P_SYSTEM", value: "System Metrics" },
+    { mainKey: "systemprofile", key: "1P_POWER", value: "System Metrics" },
+  ];
 
   const Economics = [
     { mainKey: "economics", key: "TCO_Active", value: "TCO(active mgmt)" },

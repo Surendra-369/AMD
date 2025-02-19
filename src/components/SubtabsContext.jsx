@@ -6,10 +6,11 @@ export const SubtabsContext = createContext();
 export const SubtabsProvider = ({ children }) => {
     const [tabs, setTabs] = useState({
         "workload": {
-          "1P_LLM_LLAMA": false,
+          "1P_LLM": false,
           "1P_LLM_DS": false,
           "1P_VIT": false,
           "1P_FW": false,
+          "1P_UPF": false,
           "1P_POWER": false,
           "2P_LLM_LLAME": false,
           "2P_LLM_DS": false,
@@ -23,7 +24,8 @@ export const SubtabsProvider = ({ children }) => {
           "4PC_POWER": false,
         },
         "systemprofile": {
-          "system_Metrics": false,
+          "1P_SYSTEM": false,
+          "1P_POWER": false,
         },
         "economics": {
           "TCO_INActive": false,
