@@ -245,6 +245,7 @@ const OnePsystem = ({ getShow }) => {
     "used_gib": "Used gib",
     "sent_gib": "Sent gib",
     "received_gib": "Received gib",
+    "util":"CPU Util"
   }
   const showData = {
     "cpu": {
@@ -429,6 +430,7 @@ const OnePsystem = ({ getShow }) => {
   };
 
   const activeKey = Object.keys(tabs?.workload || {}).find((key) => tabs.workload[key]);
+  const activeKey2 = Object.keys(tabs?.systemprofile || {}).find((key) => tabs.systemprofile[key]);
   // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
@@ -436,7 +438,7 @@ const OnePsystem = ({ getShow }) => {
     const userListData = userList[index];
     const cardWorkloadData = getWorkloadData(index);
     const cardSystemProfileData = getSystemProfileData(index);
-    console.log(activeKey, "activeKey", workloadNoData[activeKey]);
+    console.log(activeKey2, "activeKey", system_MetricsNoData[activeKey2]);
 
     // Only render if no card is selected or this is the selected card
     if (selectedCard !== null && selectedCard !== index) {
@@ -627,7 +629,7 @@ const OnePsystem = ({ getShow }) => {
                           }}>
                             <span style={styles.metricLabel}>{title}</span>
                             <span style={styles.metricValue}>
-                              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                              {typeof metricValue === "number" ? metricValue.toFixed(2) :metricValue}
                             </span>
                           </div>
                         );
@@ -712,20 +714,22 @@ const OnePsystem = ({ getShow }) => {
                     const dataKey = cardSystemProfileData[SystemProfileKey];
 
                     console.log(dataKey, "dataKey", SystemProfileKey, cardSystemProfileData);
-                    if (!dataKey) return null;
-
-                    if (Object.keys(dataKey).length === 0) {
-                      return (
-                        <div key={key} style={{ ...getGridStyle(system_MetricsNoData[activeKey]?.length - 1) }}>
-                          {system_MetricsNoData[activeKey]?.map((title, idx) => (
-                            <div key={idx} style={styles.metricContainer}>
-                              <span style={styles.metricLabel}>{title}</span>
-                              <span style={styles.metricValue}>- - -</span>
-                            </div>
-                          ))}
-                        </div>
-                      );
+                    if (dataKey === null || dataKey === undefined) {
+                      return null
                     }
+
+                    // if (Object.keys(dataKey).length === 0) {
+                    //   return (
+                    //     <div key={key} style={{ ...getGridStyle(system_MetricsNoData[activeKey2]?.length) }}>
+                    //       {system_MetricsNoData[activeKey2]?.map((title, idx) => (
+                    //         <div key={idx} style={styles.metricContainer}>
+                    //           <span style={styles.metricLabel}>{title}</span>
+                    //           <span style={styles.metricValue}>- - -</span>
+                    //         </div>
+                    //       ))}
+                    //     </div>
+                    //   );
+                    // }
 
                     // Filter data based on `showData`
                     const entries = Object.entries(dataKey).flatMap(([metricKey, metricValue]) => {
@@ -745,7 +749,7 @@ const OnePsystem = ({ getShow }) => {
 
                       return [{ title: systemProfileDataKeys[metricKey] || metricKey, value: metricValue }];
                     });
-
+                    
                     const gridStyle = getGridStyle(entries.length);
 
                     return (
@@ -760,9 +764,6 @@ const OnePsystem = ({ getShow }) => {
                     );
                   })
                 )}
-
-
-
               </div>
             ) : (
               <div style={{

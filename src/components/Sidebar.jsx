@@ -52,7 +52,7 @@ const Sidebar = () => {
   ];
   const SystemProfile = [
     { mainKey: "systemprofile", key: "1P_SYSTEM", value: "System Metrics" },
-    { mainKey: "systemprofile", key: "1P_POWER", value: "System Metrics" },
+    // { mainKey: "systemprofile", key: "1P_POWER", value: "System Metrics" },
   ];
 
   const Economics = [
