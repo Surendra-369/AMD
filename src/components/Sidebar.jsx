@@ -61,7 +61,9 @@ const Sidebar = () => {
   ];
 
   const { tabs, setTabs } = useContext(SubtabsContext);
-  const handlesubmenu = (workload, mainTabKey) => {
+  const handlesubmenu = (data, mainTabKey) => {
+    console.log(data, mainTabKey, "data, mainTabKey");
+ 
     setTabs(prevState => {
       const updatedTabs = JSON.parse(JSON.stringify(prevState));
 
@@ -70,13 +72,45 @@ const Sidebar = () => {
         const subtabKeys = Object.keys(updatedTabs[mainTabKey]);
 
         // Set all subtabs to false
+        
         subtabKeys.forEach(key => {
           updatedTabs[mainTabKey][key] = false;
         });
 
         // Set the clicked subtab to true
-        updatedTabs[mainTabKey][workload.key] = true;
+        updatedTabs[mainTabKey][data.key] = true;
+
       }
+              
+      if(data?.mainKey==="systemprofile"){
+        updatedTabs[mainTabKey]["1P_SYSTEM"] = true;
+        updatedTabs[mainTabKey]["1P_POWER"] = true;
+        updatedTabs[mainTabKey]["2P_SYSTEM"] = true;
+        updatedTabs[mainTabKey]["2P_POWER"] = true;
+        updatedTabs[mainTabKey]["2PC_SYSTEM_A"] = true;
+        updatedTabs[mainTabKey]["2PC_SYSTEM_B"] = true;
+        updatedTabs[mainTabKey]["2PC_POWER_A"] = true;
+        updatedTabs[mainTabKey]["2PC_POWER_B"] = true;
+      }
+      if (data?.mainKey === "workload") {
+        if (data?.key === "1P_LLM") {
+            updatedTabs[mainTabKey]["1P_LLM"] = true;
+            updatedTabs[mainTabKey]["2P_LLM"] = true;
+            updatedTabs[mainTabKey]["2PC_LLM"] = true;
+        } else if (data?.key === "1P_VIT") {
+            updatedTabs[mainTabKey]["1P_VIT"] = true;
+            updatedTabs[mainTabKey]["2P_VIT"] = true;
+            updatedTabs[mainTabKey]["2PC_VIT"] = true;
+        } else if (data?.key === "1P_FW") {
+            updatedTabs[mainTabKey]["1P_FW"] = true;
+            updatedTabs[mainTabKey]["2P_FW"] = true;
+            updatedTabs[mainTabKey]["2PC_FW"] = true;
+        } else if (data?.key === "1P_UPF") {
+            updatedTabs[mainTabKey]["1P_UPF"] = true;
+            updatedTabs[mainTabKey]["2P_UPF"] = true;
+            updatedTabs[mainTabKey]["2PC_UPF"] = true;
+        }
+    }
 
       return updatedTabs;
     });
