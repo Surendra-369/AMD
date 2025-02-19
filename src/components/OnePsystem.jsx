@@ -413,9 +413,6 @@ console.log(selectedCard, "ghj",show)
          
         >
            
- 
-           
- 
           {titleData.value.split('\n').map((line, i) => (
             <div key={i} style={{ fontSize: '20px', fontWeight: '500' }}>{line}</div>
           ))}
