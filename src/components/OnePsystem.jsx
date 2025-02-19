@@ -216,8 +216,9 @@ console.log(selectedCard, "ghj",show)
     "tokens_per_sec": "Tokens/S",
     "ttft": "TTFT(ms)",
     "samples_per_sec": "Samples/S",
-    "": "ACL Rules/s",
-    "": "Throughput",
+    "sample_size":"Sample Size",
+    "pkts/sec":"Packets/S" , 
+    "Mbits/sec":"Mbits/S",
   };
   const systemProfileDataKeys = {
     "": "CPU Util",
@@ -308,7 +309,7 @@ console.log(selectedCard, "ghj",show)
     { key: "2*2p", value: "1300-1700" }
   ];
   const subHeaderTitle = {
-    "1P_LLM_LLAMA": {
+    "1P_LLM": {
       value: "AI: Llama 3.x 1B",
 
     },
@@ -320,20 +321,21 @@ console.log(selectedCard, "ghj",show)
       value: "Enterprise: Firewall",
 
     },
-    "1P_POWER": {
+    "1P_UPF": {
       value: "UPF",
 
     },
   };
 
   const workloadNoData = {
-    "1P_LLM_LLAMA": ["Users", "Latency (ms)", "Tokens/S", "TTFT(ms)"],
+    "1P_LLM": ["Users", "Latency (ms)", "Tokens/S", "TTFT(ms)"],
     "1P_VIT": ["Samples/S"],
-    "1P_FW": [],
-    "1P_POWER": []
+    "1P_FW": ["Packets/S" , "Mbits/S"],
+    "1P_UPF":["Packets/S"],
   };
   const system_MetricsNoData = {
-    "11": ["CPU Util", "Memory", "Network", "Power",],
+    "1P_SYSTEM": ["CPU Util", "Memory", "Network", "Power",],
+    "1P_POWER": ["Watts/S", "Watts/H"]
   }
 
   const economicsNoData = {
@@ -345,18 +347,46 @@ console.log(selectedCard, "ghj",show)
     switch (index) {
       case 0: // 1P system
         return {
-          "1P_LLM_LLAMA": workloadData["1P_LLM_LLAMA"] || {},
-          "1P_VIT": workloadData["1P_VIT"] || {}
+          "1P_LLM": workloadData["1P_LLM"] || {},
+          "1P_VIT": workloadData["1P_VIT"] || {},
+          "1P_FW": workloadData["1P_FW"] || {},
+          "1P_UPF": workloadData["1P_UPF"] || {},
         };
       case 1: // 2P system
         return {
-          "1P_LLM_LLAMA": workloadData["2P_LLM_LLAMA"] || {},
-          "1P_VIT": workloadData["2P_VIT"] || {}
+          "1P_LLM": workloadData["2P_LLM"] || {},
+          "1P_VIT": workloadData["2P_VIT"] || {},
+          "1P_FW": workloadData["2P_FW"] || {},
+          "1P_UPF": workloadData["2P_UPF"] || {},
         };
       case 2: // 4P system
         return {
-          "1P_LLM_LLAMA": workloadData["4P_LLM_LLAMA"] || {},
-          "1P_VIT": workloadData["4P_VIT"] || {}
+          "1P_LLM": workloadData["2PC_LLM"] || {},
+          "1P_VIT": workloadData["4P_VIT"] || {},
+          "1P_FW": workloadData["4P_FW"] || {},
+          "1P_UPF": workloadData["4P_UPF"] || {},
+        };
+      default:
+        return {};
+    }
+  };
+
+  const getSystemProfileData = (index) => {
+    switch (index) {
+      case 0: // 1P system
+        return {
+          "1P_SYSTEM": workloadData["1P_SYSTEM"] || {},
+          "1P_POWER": workloadData["1P_POWER"] || {}
+        };
+      case 1: // 2P system
+        return {
+          "1P_SYSTEM": workloadData["2P_SYSTEM"] || {},
+          "1P_POWER": workloadData["2P_POWER"] || {}
+        };
+      case 2: // 4P system
+        return {
+          "1P_SYSTEM": workloadData["4P_SYSTEM"] || {},
+          "1P_POWER": workloadData["2P_POWER"] || {}
         };
       default:
         return {};
@@ -374,6 +404,7 @@ console.log(selectedCard, "ghj",show)
     const subtitleData = subtitle[index];
     const userListData = userList[index];
     const cardWorkloadData = getWorkloadData(index);
+    const cardSystemProfileData = getSystemProfileData(index);
     console.log(activeKey, "activeKey", workloadNoData[activeKey]);
 
     // Only render if no card is selected or this is the selected card
@@ -662,10 +693,10 @@ console.log(selectedCard, "ghj",show)
                   Object.entries(categoryTabs).map(([key, isSelected]) => {
                     if (!isSelected) return null;
 
-                    const workloadKey = key.toUpperCase();
-                    const dataKey = null;
+                    const SystemProfileKey = key.toUpperCase();
+                    const dataKey = cardSystemProfileData[SystemProfileKey];
 
-                    console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+                    console.log(dataKey, "dataKey", SystemProfileKey, cardSystemProfileData);
                     if (dataKey === null || dataKey === undefined) {
                       return null
                     }
