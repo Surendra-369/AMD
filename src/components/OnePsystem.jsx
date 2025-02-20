@@ -222,12 +222,15 @@ const OnePsystem = ({ getShow }) => {
   };
   const systemProfileDataKeys = {
 
-    "cpu": "CPU Util",
+    "cpu_util_perc": "CPU Util",
     "1P_SYSTEM": "Memory",
     "1P_SYSTEM": "Network",
     "1P_POWER": "Power",
-    "watth": "Watth",
+    // "watth": "Watth",
     "watts": "Power",
+    "power":"Power",
+    "memory_used_gib": "Memory",
+    "network_bw_bytes": "Network",
     "memory": [
       "usage_percent",
       "total_gib",
@@ -245,7 +248,7 @@ const OnePsystem = ({ getShow }) => {
     "used_gib": "Used gib",
     "sent_gib": "Sent gib",
     "received_gib": "Received gib",
-    "util":"CPU Util"
+    "util": "CPU Util"
   }
   const showData = {
     "cpu": {
@@ -305,6 +308,27 @@ const OnePsystem = ({ getShow }) => {
       [index]: ishover
     }));
   };
+  function mergeSystemAndPower(data) {
+    let result = {};
+    for (let key in data) {
+        if (key.includes("POWER")) continue; // Skip POWER keys
+        let systemKey = key;
+        let powerKey = key.replace("SYSTEM", "POWER");
+        
+        // Clone system data
+        result[systemKey] = { ...data[systemKey] };
+        
+        // Merge only `watts` if power data exists
+        if (data[powerKey] && data[powerKey].watts !== undefined) {
+            result[systemKey].power = data[powerKey].watts; // Store only watts
+        }
+    }
+    return result;
+}
+
+const mergedData = mergeSystemAndPower(systemProfileData);
+console.log(mergedData, "mergedData");
+
   function convertToReadableFormat(text) {
     return text
       .split('_')                  // Split the text by underscores
@@ -411,18 +435,18 @@ const OnePsystem = ({ getShow }) => {
     switch (index) {
       case 0: // 1P system
         return {
-          "1P_SYSTEM": systemProfileData["1P_SYSTEM"] || {},
-          "1P_POWER": systemProfileData["1P_POWER"] || {}
+          "1P_SYSTEM": mergedData["1P_SYSTEM"] || {},
+          "1P_POWER": mergedData["1P_POWER"] || {}
         };
       case 1: // 2P system
         return {
-          "1P_SYSTEM": systemProfileData["2P_SYSTEM"] || {},
-          "1P_POWER": systemProfileData["2P_POWER"] || {}
+          "1P_SYSTEM": mergedData["2P_SYSTEM"] || {},
+          "1P_POWER": mergedData["2P_POWER"] || {}
         };
       case 2: // 4P system
         return {
-          "1P_SYSTEM": systemProfileData["2PC_SYSTEM_A"] || {},
-          "1P_POWER": systemProfileData["2PC_POWER_A"] || {}
+          "1P_SYSTEM": mergedData["2PC_SYSTEM_A"] || {},
+          "1P_POWER": mergedData["2PC_POWER_A"] || {}
         };
       default:
         return {};
@@ -629,7 +653,7 @@ const OnePsystem = ({ getShow }) => {
                           }}>
                             <span style={styles.metricLabel}>{title}</span>
                             <span style={styles.metricValue}>
-                              {typeof metricValue === "number" ? metricValue.toFixed(2) :metricValue}
+                              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
                             </span>
                           </div>
                         );
@@ -683,128 +707,110 @@ const OnePsystem = ({ getShow }) => {
 
         {/* System Profile Card */}
         <div style={{
-          ...styles.card,
-          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)'
-            : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)'
-              : 'linear-gradient(to right, #00303C, #000405)')
-        }}>
-          <div style={{
-            ...styles.contentArea,
-            background: index === 0
-              ? 'linear-gradient(to right, #00B1CA, #000F13)'
-              : (index === 1
-                ? 'linear-gradient(to right, #007487, #000C0F)'
-                : 'linear-gradient(to right, #00303C, #000405)')
+  ...styles.card,
+  background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)'
+    : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)'
+      : 'linear-gradient(to right, #00303C, #000405)')
+}}>
+  <div style={{
+    ...styles.contentArea,
+    background: index === 0
+      ? 'linear-gradient(to right, #00B1CA, #000F13)'
+      : (index === 1
+        ? 'linear-gradient(to right, #007487, #000C0F)'
+        : 'linear-gradient(to right, #00303C, #000405)')
 
+  }}>
+  
+    {!show["SystemProfile"] ? (
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)", // Ensure a 2-column grid
+        position: "relative",
+        width: "100%",
+      }}>
+        {Object.entries(tabs).map(([category, categoryTabs]) =>
+          Object.entries(categoryTabs).map(([key, isSelected]) => {
+            if (!isSelected) return null;
+
+            const workloadKey = key.toUpperCase();
+            const dataKey = cardSystemProfileData[workloadKey];
+
+            if (!dataKey) return null;
+
+            const entries = Object.entries(dataKey);
+            return (
+              <div key={key} style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)",
+                position: "relative",
+                width: "100%",
+              }}>
+                {entries.map(([metricKey, metricValue], idx) => {
+                  const title = systemProfileDataKeys[metricKey];
+
+                  return (
+                    <div key={idx} style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: "8px 12px",
+                      minWidth: "120px",
+                      minHeight: "90px",
+                      borderBottom: idx < entries.length - 2 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                      borderRight: idx % 2 === 0 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                    }}>
+                      <span style={styles.metricLabel}>{title}</span>
+                      <span style={styles.metricValue}>
+                        {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })
+        )}
+      </div>
+    ) : (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        width: '100%',
+      }}>
+        {emptyShowSystemProfile.map((title, idx) => (
+          <div key={idx} style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto',
+            padding: "10px",
+            alignItems: "center",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.3)",
           }}>
-            {!show["SystemProfile"] ? (
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: "10px",
-              }}>
-                {Object.entries(tabs).map(([category, categoryTabs]) =>
-                  Object.entries(categoryTabs).map(([key, isSelected]) => {
-                    // console.log(categoryTabs,"categoryTabs",key, isSelected)
-                    if (!isSelected) return null;
-
-                    const SystemProfileKey = key.toUpperCase();
-                    const dataKey = cardSystemProfileData[SystemProfileKey];
-
-                    console.log(dataKey, "dataKey", SystemProfileKey, cardSystemProfileData);
-                    if (dataKey === null || dataKey === undefined) {
-                      return null
-                    }
-
-                    // if (Object.keys(dataKey).length === 0) {
-                    //   return (
-                    //     <div key={key} style={{ ...getGridStyle(system_MetricsNoData[activeKey2]?.length) }}>
-                    //       {system_MetricsNoData[activeKey2]?.map((title, idx) => (
-                    //         <div key={idx} style={styles.metricContainer}>
-                    //           <span style={styles.metricLabel}>{title}</span>
-                    //           <span style={styles.metricValue}>- - -</span>
-                    //         </div>
-                    //       ))}
-                    //     </div>
-                    //   );
-                    // }
-
-                    // Filter data based on `showData`
-                    const entries = Object.entries(dataKey).flatMap(([metricKey, metricValue]) => {
-                      if (!showData[metricKey]) return []; // Skip if not in `showData`
-
-                      // If it's a nested object, extract only allowed sub-keys
-
-
-                      if (typeof metricValue === "object" && metricValue !== null) {
-                        return Object.entries(metricValue)
-                          .filter(([subKey]) => showData[metricKey][subKey]) // Only allow listed sub-keys
-                          .map(([subKey, subValue]) => ({
-                            title: nestedSytemProfileKeys[subKey] || subKey, // Show only valid nested titles
-                            value: subValue,
-                          }));
-                      }
-
-                      return [{ title: systemProfileDataKeys[metricKey] || metricKey, value: metricValue }];
-                    });
-                    
-                    const gridStyle = getGridStyle(entries.length);
-
-                    return (
-                      <div key={key} style={gridStyle}>
-                        {entries.map(({ title, value }, idx) => (
-                          <div key={idx} style={{ ...styles.metricContainer, position: "relative", zIndex: 2 }}>
-                            <span style={styles.metricLabel}>{title}</span>
-                            <span style={styles.metricValue}>{typeof value === "number" ? value.toFixed(2) : value}</span>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-            ) : (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'space-between',
-                width: '100%', // Ensure it takes full width
-              }}>
-                {emptyShowSystemProfile.map((title, idx) => (
-                  <div key={idx} style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr auto', // First column takes full width, second auto-sizes
-                    padding: "10px",
-                    alignItems: "center", // Vertically center items
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.3)", // Optional for separation
-                  }}>
-                    {/* Label (Left Column) */}
-                    <span style={{
-                      fontSize: "20px",
-                      fontWeight: "200",
-                      textAlign: "left", // Align text to left
-                      color: 'white',
-                    }}>
-                      {title}:
-                    </span>
-
-                    {/* Value (Right Column) */}
-                    <span style={{
-                      fontSize: "25px",
-                      fontWeight: "400",
-                      textAlign: "right", // Align text to right
-                      color: 'white',
-                    }}>
-                      - - -
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
+            <span style={{
+              fontSize: "20px",
+              fontWeight: "200",
+              textAlign: "left",
+              color: 'white',
+            }}>
+              {title}:
+            </span>
+            <span style={{
+              fontSize: "25px",
+              fontWeight: "400",
+              textAlign: "right",
+              color: 'white',
+            }}>
+              - - -
+            </span>
           </div>
-        </div>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
 
 
         {/* Economics Card */}
