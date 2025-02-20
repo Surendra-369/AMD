@@ -394,8 +394,8 @@ console.log(mergedData, "mergedData");
     "1P_UPF": ["Packets/S"],
   };
   const system_MetricsNoData = {
-    "1P_SYSTEM": ["CPU Util", "Memory", "Network", "Power",],
-    "1P_POWER": ["Watts/S", "Watts/H"]
+    "1P_SYSTEM": ["CPU Util", "Memory", "Network", "Power"],
+    // "1P_POWER": ["Watts/S", "Watts/H"]
   }
 
   const economicsNoData = {
@@ -436,17 +436,17 @@ console.log(mergedData, "mergedData");
       case 0: // 1P system
         return {
           "1P_SYSTEM": mergedData["1P_SYSTEM"] || {},
-          "1P_POWER": mergedData["1P_POWER"] || {}
+          // "1P_POWER": mergedData["1P_POWER"] || {}
         };
       case 1: // 2P system
         return {
           "1P_SYSTEM": mergedData["2P_SYSTEM"] || {},
-          "1P_POWER": mergedData["2P_POWER"] || {}
+          // "1P_POWER": mergedData["2P_POWER"] || {}
         };
       case 2: // 4P system
         return {
           "1P_SYSTEM": mergedData["2PC_SYSTEM_A"] || {},
-          "1P_POWER": mergedData["2PC_POWER_A"] || {}
+          // "1P_POWER": mergedData["2PC_POWER_A"] || {}
         };
       default:
         return {};
@@ -736,8 +736,37 @@ console.log(mergedData, "mergedData");
             const workloadKey = key.toUpperCase();
             const dataKey = cardSystemProfileData[workloadKey];
 
-            if (!dataKey) return null;
+            if (dataKey===null || dataKey===undefined) return null;
+            console.log(dataKey, "dataKey", workloadKey, cardSystemProfileData);
 
+            if (Object?.keys(dataKey)?.length === 0) {
+              // Show empty values ( - - - )
+              return (
+                <div key={key} style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  position: "relative",
+                  width: "100%",
+                }}>
+                  {system_MetricsNoData[activeKey2].map((title, idx) => (
+                    <div key={idx} style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: "8px 18px",
+                      minWidth: "100px",
+                      minHeight: "90px",
+                      borderBottom: idx < 2 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                      borderRight: idx % 2 === 0 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                    }}>
+                      <span style={styles.metricLabel}>{title}</span>
+                      <span style={styles.metricValue}>- - -</span>
+                    </div>
+                  ))}
+                </div>
+              );
+            }
             const entries = Object.entries(dataKey);
             return (
               <div key={key} style={{
