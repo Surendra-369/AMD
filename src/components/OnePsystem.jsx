@@ -23,8 +23,8 @@ console.log(selectedCard, "ghj",show)
   //   }
   // };
   console.log(show, "show");
-  // const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
- 
+  const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
+
   const handleCardClick = (index) => {
     setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
   };
@@ -216,15 +216,51 @@ console.log(selectedCard, "ghj",show)
     "tokens_per_sec": "Tokens/S",
     "ttft": "TTFT(ms)",
     "samples_per_sec": "Samples/S",
-    "sample_size":"Sample Size",
-    "pkts/sec":"Packets/S" , 
-    "Mbits/sec":"Mbits/S",
+    "sample_size": "Sample Size",
+    "pkts/sec": "Packets/S",
+    "Mbits/sec": "Mbits/S",
   };
   const systemProfileDataKeys = {
-    "": "CPU Util",
-    "": "Memory",
-    "": "Network",
-    "": "Power",
+
+    "cpu": "CPU Util",
+    "1P_SYSTEM": "Memory",
+    "1P_SYSTEM": "Network",
+    "1P_POWER": "Power",
+    "watth": "Watth",
+    "watts": "Power",
+    "memory": [
+      "usage_percent",
+      "total_gib",
+      "used_gib",
+    ],
+    "network": [
+      "sent_gib",
+      "received_gib",
+    ]
+
+  }
+  const nestedSytemProfileKeys = {
+    "usage_percent": "Usage",
+    "total_gib": "Total gib",
+    "used_gib": "Used gib",
+    "sent_gib": "Sent gib",
+    "received_gib": "Received gib",
+  }
+  const showData = {
+    "cpu": {
+      "util": "util"
+    },
+    "memory": {
+      // "usage_percent": "usage_percent",
+      // "total_gib": "total_gib",
+      "used_gib": "used_gib"
+    },
+    "network": {
+      // "sent_gib": "sent_gib",
+      "received_gib": "received_gib"
+    },
+    "watts": "watts",
+    //"watth": "watth",
   }
   const temp = [
     {
@@ -254,8 +290,8 @@ console.log(selectedCard, "ghj",show)
     "TCO Saving"
   ]
 
-  const { workloadData, messages2P } = useMqtt()
-  console.log(workloadData, "workloadData", messages2P);
+  const { workloadData, systemProfileData } = useMqtt()
+  console.log(systemProfileData, "systemProfileData");
   const [hoveredCards, setHoveredCards] = useState({
     0: false,
     1: false,
@@ -330,8 +366,8 @@ console.log(selectedCard, "ghj",show)
   const workloadNoData = {
     "1P_LLM": ["Users", "Latency (ms)", "Tokens/S", "TTFT(ms)"],
     "1P_VIT": ["Samples/S"],
-    "1P_FW": ["Packets/S" , "Mbits/S"],
-    "1P_UPF":["Packets/S"],
+    "1P_FW": ["Packets/S", "Mbits/S"],
+    "1P_UPF": ["Packets/S"],
   };
   const system_MetricsNoData = {
     "1P_SYSTEM": ["CPU Util", "Memory", "Network", "Power",],
@@ -362,9 +398,9 @@ console.log(selectedCard, "ghj",show)
       case 2: // 4P system
         return {
           "1P_LLM": workloadData["2PC_LLM"] || {},
-          "1P_VIT": workloadData["4P_VIT"] || {},
-          "1P_FW": workloadData["4P_FW"] || {},
-          "1P_UPF": workloadData["4P_UPF"] || {},
+          "1P_VIT": workloadData["2PC_VIT"] || {},
+          "1P_FW": workloadData["2PC_FW"] || {},
+          "1P_UPF": workloadData["2PC_UPF"] || {},
         };
       default:
         return {};
@@ -375,18 +411,18 @@ console.log(selectedCard, "ghj",show)
     switch (index) {
       case 0: // 1P system
         return {
-          "1P_SYSTEM": workloadData["1P_SYSTEM"] || {},
-          "1P_POWER": workloadData["1P_POWER"] || {}
+          "1P_SYSTEM": systemProfileData["1P_SYSTEM"] || {},
+          "1P_POWER": systemProfileData["1P_POWER"] || {}
         };
       case 1: // 2P system
         return {
-          "1P_SYSTEM": workloadData["2P_SYSTEM"] || {},
-          "1P_POWER": workloadData["2P_POWER"] || {}
+          "1P_SYSTEM": systemProfileData["2P_SYSTEM"] || {},
+          "1P_POWER": systemProfileData["2P_POWER"] || {}
         };
       case 2: // 4P system
         return {
-          "1P_SYSTEM": workloadData["4P_SYSTEM"] || {},
-          "1P_POWER": workloadData["2P_POWER"] || {}
+          "1P_SYSTEM": systemProfileData["2PC_SYSTEM_A"] || {},
+          "1P_POWER": systemProfileData["2PC_POWER_A"] || {}
         };
       default:
         return {};
@@ -397,7 +433,7 @@ console.log(selectedCard, "ghj",show)
   const p1="/1P.jpg"
   const p2="/2P.jpg"
   const p4="/4P.jpg"
-  const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
+  // const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
   // Create a SingleCard component that contains your existing card structure
   const SingleCard = ({ index }) => {
     const titleData = titles[index];
@@ -428,27 +464,30 @@ console.log(selectedCard, "ghj",show)
       >
         {/* Title Card */}
         <div style={{
-            // backgroundImage: `url(${p1})`,
-            backgroundImage: `url(${images[index]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            borderRadius: "10px",
-            width: "20em",
-            height: "5em",
-          }}>
-        <Card
-          width="20em"
-          height="5em"
-          alignItems="center"
-          color='rgba(255, 255, 255, 1)'
-         
-        >
-           
-          {titleData.value.split('\n').map((line, i) => (
-            <div key={i} style={{ fontSize: '20px', fontWeight: '500' }}>{line}</div>
-          ))}
-         
-        </Card>
+          // backgroundImage: `url(${p1})`,
+          backgroundImage: `url(${images[index]})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "20em",
+          height: "5em",
+        }}>
+          <Card
+            width="20em"
+            height="5em"
+            alignItems="center"
+            color='rgba(255, 255, 255, 1)'
+
+          >
+
+
+
+
+            {titleData.value.split('\n').map((line, i) => (
+              <div key={i} style={{ fontSize: '20px', fontWeight: '500' }}>{line}</div>
+            ))}
+
+          </Card>
         </div>
 
         {/* Subtitle */}
@@ -660,7 +699,7 @@ console.log(selectedCard, "ghj",show)
               : (index === 1
                 ? 'linear-gradient(to right, #007487, #000C0F)'
                 : 'linear-gradient(to right, #00303C, #000405)')
-                
+
           }}>
             {!show["SystemProfile"] ? (
               <div style={{
@@ -670,38 +709,18 @@ console.log(selectedCard, "ghj",show)
                 flexDirection: "column",
                 gap: "10px",
               }}>
-                {/* Kept the commented code as is */}
-                {/* {data4.map((item, idx) => (
-          <Card
-            key={idx}
-            width="19em"
-            height="3em"
-            border="0.81px solid rgba(255, 255, 255, 1)"
-          >
-            <div style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-            }}>
-              {item.value}
-            </div>
-          </Card>
-        ))} */}
-
                 {Object.entries(tabs).map(([category, categoryTabs]) =>
                   Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    // console.log(categoryTabs,"categoryTabs",key, isSelected)
                     if (!isSelected) return null;
 
                     const SystemProfileKey = key.toUpperCase();
                     const dataKey = cardSystemProfileData[SystemProfileKey];
 
                     console.log(dataKey, "dataKey", SystemProfileKey, cardSystemProfileData);
-                    if (dataKey === null || dataKey === undefined) {
-                      return null
-                    }
-                    if (Object.keys(dataKey)?.length == 0) {
-                      // If dataKey is missing, show emptySystemProfile
+                    if (!dataKey) return null;
+
+                    if (Object.keys(dataKey).length === 0) {
                       return (
                         <div key={key} style={{ ...getGridStyle(system_MetricsNoData[activeKey]?.length - 1) }}>
                           {system_MetricsNoData[activeKey]?.map((title, idx) => (
@@ -714,27 +733,42 @@ console.log(selectedCard, "ghj",show)
                       );
                     }
 
-                    const entries = Object.entries(dataKey);
+                    // Filter data based on `showData`
+                    const entries = Object.entries(dataKey).flatMap(([metricKey, metricValue]) => {
+                      if (!showData[metricKey]) return []; // Skip if not in `showData`
+
+                      // If it's a nested object, extract only allowed sub-keys
+
+
+                      if (typeof metricValue === "object" && metricValue !== null) {
+                        return Object.entries(metricValue)
+                          .filter(([subKey]) => showData[metricKey][subKey]) // Only allow listed sub-keys
+                          .map(([subKey, subValue]) => ({
+                            title: nestedSytemProfileKeys[subKey] || subKey, // Show only valid nested titles
+                            value: subValue,
+                          }));
+                      }
+
+                      return [{ title: systemProfileDataKeys[metricKey] || metricKey, value: metricValue }];
+                    });
+
                     const gridStyle = getGridStyle(entries.length);
 
                     return (
                       <div key={key} style={gridStyle}>
-                        {entries.map(([metricKey, metricValue], idx) => {
-                          const title = workloadDataKeys[metricKey];
-
-                          return (
-                            <div key={idx} style={styles.metricContainer}>
-                              <span style={styles.metricLabel}>{title}</span>
-                              <span style={styles.metricValue}>
-                                {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
-                              </span>
-                            </div>
-                          );
-                        })}
+                        {entries.map(({ title, value }, idx) => (
+                          <div key={idx} style={{ ...styles.metricContainer, position: "relative", zIndex: 2 }}>
+                            <span style={styles.metricLabel}>{title}</span>
+                            <span style={styles.metricValue}>{typeof value === "number" ? value.toFixed(2) : value}</span>
+                          </div>
+                        ))}
                       </div>
                     );
                   })
                 )}
+
+
+
               </div>
             ) : (
               <div style={{
@@ -870,18 +904,18 @@ console.log(selectedCard, "ghj",show)
                 )}
               </div>
             ) : (
-              <div  style={{
+              <div style={{
                 display: 'flex',
-                 flexDirection: 'column',
-                 justifyContent: 'space-between',
-                 width: '100%', // Ensure it takes full width
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%', // Ensure it takes full width
               }}>
                 {emptyEconmics.map((title, idx) => (
                   <div key={idx} style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr auto', // First column takes full width, second auto-sizes
                     padding: "10px",
-                    justifyContent:"center",
+                    justifyContent: "center",
                     alignItems: "center", // Vertically center items
                     borderBottom: "1px solid rgba(255, 255, 255, 0.3)", // Optional for separation
                   }}>
