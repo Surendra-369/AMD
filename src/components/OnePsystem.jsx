@@ -102,44 +102,88 @@ console.log(selectedCard, "ghj",show)
       fontWeight: 'bold'
     }
   };
-
   const getGridStyle = (dataLength) => {
     const baseStyle = {
-      display: 'grid',
-      gap: '2rem',
-      width: '100%',
+        display: 'grid',
+        gap: '2rem',
+        width: '100%',
+        position: 'relative',
     };
 
     switch (dataLength) {
-      case 1:
-        return {
-          ...baseStyle,
-          gridTemplateColumns: '1fr',
-          justifyItems: 'center',
-          marginTop: "4em"
-        };
-      case 2:
-        return {
-          ...baseStyle,
-          gridTemplateColumns: '1fr 1fr',
-
-        };
-      case 3:
-        return {
-          ...baseStyle,
-          gridTemplateColumns: '1fr 1fr 1fr',
-        };
-
-      default:
-        return {
-          ...baseStyle,
-          gridTemplateColumns: '1fr 1fr',
-          '@media (min-width: 768px)': {
-            gridTemplateColumns: '1fr 1fr 1fr 1fr'
-          },
-        };
+        case 1:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr',
+                justifyItems: 'center',
+                marginTop: "4em",
+            };
+        case 2:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr 1fr',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+            };
+        case 3:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr 1fr 1fr',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+            };
+        default:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr 1fr',
+                '@media (min-width: 768px)': {
+                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                },
+                position: 'relative',
+            };
     }
-  };
+};
+
+
+  // const getGridStyle = (dataLength) => {
+  //   const baseStyle = {
+  //     display: 'grid',
+  //     gap: '2rem',
+  //     width: '100%',
+  //   };
+
+  //   switch (dataLength) {
+  //     case 1:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr',
+  //         justifyItems: 'center',
+  //         marginTop: "4em"
+  //       };
+  //     case 2:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr 1fr',
+
+  //       };
+  //     case 3:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr 1fr 1fr',
+  //       };
+
+  //     default:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr 1fr',
+  //         '@media (min-width: 768px)': {
+  //           gridTemplateColumns: '1fr 1fr 1fr 1fr'
+  //         },
+  //       };
+  //   }
+  // };
 
   const styles = {
     card: {
@@ -590,25 +634,49 @@ console.log(mergedData, "mergedData");
             minHeight: '150px'    // Added to ensure consistent height
           }}>
 
-            {!show["Workloads"] && activeKey && subHeaderTitle?.[activeKey]?.value === "AI: Llama 3.x 1B" && (<><div style={{
-              position: 'absolute',
-              left: '0',
-              right: '0',
-              top: '50%',
-              height: '1px',
-              background: 'rgba(255, 255, 255, 0.2)',
-              pointerEvents: 'none'  // Ensures line doesn't interfere with clicks
-            }} />
-              <div style={{
-                position: 'absolute',
-                top: '0',
-                bottom: '0',
-                left: '50%',
-                width: '1px',
-                background: 'rgba(255, 255, 255, 0.2)',
-                pointerEvents: 'none'  // Ensures line doesn't interfere with clicks
-              }} />
-            </>)}
+{!show["Workloads"] && activeKey && (() => {
+  const value = subHeaderTitle?.[activeKey]?.value;
+  const showLines = [
+    "AI: Llama 3.x 1B",
+    "UPF",
+    "ML: Vision Transformer",
+    "Enterprise: Firewall"
+  ].includes(value);
+
+  if (!showLines) return null;
+
+  return (
+    <>
+      {/* Horizontal Line */}
+      <div
+        style={{
+          position: "absolute",
+          left: "10%",
+          right: "10%",
+          top: "50%",
+          height: "1px",
+          background: "rgba(255, 255, 255, 0.2)",
+          pointerEvents: "none",
+        }}
+      />
+      
+      {/* Vertical Line - Only for specific conditions */}
+      {(value === "AI: Llama 3.x 1B" || value === "ML: Vision Transformer" || value === "Enterprise: Firewall") && (
+        <div
+          style={{
+            position: "absolute",
+            top: value === "ML: Vision Transformer" || value === "Enterprise: Firewall" ? "55%" : "0",
+            bottom: "0",
+            left: "50%",
+            width: "1px",
+            background: "rgba(255, 255, 255, 0.2)",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+    </>
+  );
+})()}
 
             {!show["Workloads"] ? (
               Object.entries(tabs).map(([category, categoryTabs]) =>
@@ -637,33 +705,310 @@ console.log(mergedData, "mergedData");
                       </div>
                     );
                   }
+                  // const entries = Object.entries(dataKey);
+                  // const gridStyle = {
+                  //   ...getGridStyle(entries.length),
+                  //   position: 'relative',
+                  //   zIndex: 1,
+                  // };
+
+                  // return (
+                  //   <div key={key} style={gridStyle}>
+                  //     {entries.map(([metricKey, metricValue], idx) => {
+                  //       const title = workloadDataKeys[metricKey];
+
+                  //       return (
+                  //         <div key={idx} style={{
+                  //           ...styles.metricContainer,
+                  //           position: 'relative',
+                  //           zIndex: 2,
+                  //         }}>
+                  //           <span style={styles.metricLabel}>{title}</span>
+                  //           <span style={styles.metricValue}>
+                  //             {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                  //           </span>
+                  //         </div>
+                  //       );
+                  //     })}
+                  //   </div>
+                  // );
                   const entries = Object.entries(dataKey);
-                  const gridStyle = {
-                    ...getGridStyle(entries.length),
-                    position: 'relative',
-                    zIndex: 1,
-                  };
+const numEntries = entries.length;
 
-                  return (
-                    <div key={key} style={gridStyle}>
-                      {entries.map(([metricKey, metricValue], idx) => {
-                        const title = workloadDataKeys[metricKey];
+// Determine layout logic based on number of metrics
+const getContainerStyle = (count) => {
+  const baseStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+    zIndex: 1,
+    width: '100%',
+    maxWidth: 'sm',
+    overflow: 'hidden',
+    borderRadius: '0.25rem',
+    boxShadow: 'lg',
+    // backgroundColor: '#285e61', // bg-teal-800
+    color: 'white',
+  };
 
-                        return (
-                          <div key={idx} style={{
-                            ...styles.metricContainer,
-                            position: 'relative',
-                            zIndex: 2,
-                          }}>
-                            <span style={styles.metricLabel}>{title}</span>
-                            <span style={styles.metricValue}>
-                              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  );
+  return baseStyle;
+};
+
+return (
+  <div key={key} style={getContainerStyle(numEntries)}>
+ 
+   
+
+    {/* For two metrics case */}
+    {numEntries === 2 && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // padding: '0.75rem',
+        gap: '0.5rem',
+      }}>
+        {entries.map(([metricKey, metricValue], index) => (
+          <div 
+            key={index} 
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '0.25rem 0',
+            }}
+          >
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[metricKey]}
+            </div>
+            <div style={{
+              fontSize: '1.875rem',
+              fontWeight: 'bold',
+              padding: '0.25rem 0',
+            }}>
+              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+            </div>
+            {index < entries.length - 1 && (
+              <div style={{
+                width: '100%',
+                borderBottomWidth: '1px',
+                borderColor: '#2c7a7b', // border-teal-700
+                marginTop: '0.5rem',
+              }}></div>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* For three metrics case */}
+    {numEntries === 3 && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // padding: '0.75rem',
+        gap: '0.5rem',
+      }}>
+        {/* First metric (top) */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '0.25rem 0',
+        }}>
+          <div style={{
+            fontSize: '0.875rem',
+            color: '#81e6d9', // text-teal-200
+          }}>
+            {workloadDataKeys[entries[0][0]]}
+          </div>
+          <div style={{
+            fontSize: '1.875rem',
+            fontWeight: 'bold',
+            padding: '0.25rem 0',
+          }}>
+            {typeof entries[0][1] === "number" ? entries[0][1].toFixed(2) : entries[0][1]}
+          </div>
+          <div style={{
+            width: '100%',
+            borderBottomWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            marginTop: '0.5rem',
+          }}></div>
+        </div>
+        
+        {/* Second and third metrics (bottom row) */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRightWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[entries[1][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[1][1] === "number" ? entries[1][1].toFixed(2) : entries[1][1]}
+            </div>
+          </div>
+          
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[entries[2][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[2][1] === "number" ? entries[2][1].toFixed(2) : entries[2][1]}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* For four metrics case */}
+    {numEntries === 4 && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // padding: '0.75rem',
+        gap: '0.5rem',
+      }}>
+        {/* First row (top two metrics) */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRightWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[entries[0][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.875rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[0][1] === "number" ? entries[0][1].toFixed(2) : entries[0][1]}
+            </div>
+          </div>
+          
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[entries[1][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.875rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[1][1] === "number" ? entries[1][1].toFixed(2) : entries[1][1]}
+            </div>
+          </div>
+        </div>
+        
+        {/* Divider */}
+        <div style={{
+          width: '100%',
+          borderBottomWidth: '1px',
+          borderColor: 'red', // border-teal-700
+        }}></div>
+        
+        {/* Second row (bottom two metrics) */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRightWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[entries[2][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[2][1] === "number" ? entries[2][1].toFixed(2) : entries[2][1]}
+            </div>
+          </div>
+          
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+            }}>
+              {workloadDataKeys[entries[3][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[3][1] === "number" ? entries[3][1].toFixed(2) : entries[3][1]}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+);
                 })
               )
 
