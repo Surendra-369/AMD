@@ -219,6 +219,8 @@ console.log(selectedCard, "ghj",show)
     "sample_size": "Sample Size",
     "pkts/sec": "Packets/S",
     "Mbits/sec": "Mbits/S",
+    "jitter":"Jitter",
+    "dropped/sec":"Dropped/s",
   };
   const systemProfileDataKeys = {
 
