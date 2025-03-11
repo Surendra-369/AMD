@@ -1082,7 +1082,7 @@ const OnePsystem = ({ getShow }) => {
                                   textAlign: "center", // Center value text
                                   color: 'white',
                                 }}>
-                                  ${metricValue}*
+                                  $ {metricValue}
                                 </span>
                               </div>
                             );
