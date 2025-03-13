@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Card from "./Card";
 import { useVisibility } from "./VisibilityProvider";
+import { SubtabsContext, SubtabsProvider } from "./SubtabsContext";
+
 
 const Sidebar = () => {
   // const [show, setShow] = useState({
@@ -11,58 +13,162 @@ const Sidebar = () => {
 
   const { show, setShow } = useVisibility();
   const handleShow = (index) => {
+    setShow(prev => {
+      const newState = {
+        ...prev,
+        [index]: !prev[index] // Toggle the visibility of the clicked part
+      };
 
-    setShow(prev => ({
-      ...prev, // Spread the previous state to maintain other values
-      [index]: !prev[index] // Toggle the visibility of the clicked part
-    }));
+      // Check if the section is being shown and set default behavior for certain sections
+      if (index === "Workloads") {
+        // Set the first workload sub-menu to true by default
+        const firstWorkload = workloads[0]; // Assuming workloads is an array          
+        handlesubmenu(firstWorkload, firstWorkload.mainKey); // Set the first sub-menu as active
+      } else if (index === "SystemProfile") {
+        // Set the first item for SystemProfile or any default logic for SystemProfile
+        const firstSystemProfile = SystemProfile[0]; // Assuming systemProfiles is an array
+        handlesubmenu(firstSystemProfile, firstSystemProfile.mainKey);
+      } else if (index === "Economics") {
+        // Set the first item for Economics or any default logic for Economics
+        const firstEconomics = Economics[0]; // Assuming economics is an array
+        handlesubmenu(firstEconomics, firstEconomics.mainKey);
+      }
+
+      return newState;
+    });
   };
 
-  const workloads = [
-    "AI - Model Llama 3.x 1B",
-    "ML - Vision Transformer",
-    "Enterprise - Firewall",
-  ];
 
-  const SystemProfile = ["CPU in use", "Accelerator", "Watts"];
+  // const workloads = [
+  //   "AI - Model Llama 3.x 1B",
+  //   "ML - Vision Transformer",
+  //   "Enterprise - Firewall",
+  // ];
+  const workloads = [
+    { mainKey: "workload", key: "1P_LLM", value: "AI - Model Llama 3.x 1B" },
+    { mainKey: "workload", key: "1P_VIT", value: "ML - Vision Transformer" },
+    { mainKey: "workload", key: "1P_FW", value: "Enterprise - Firewall" },
+    { mainKey: "workload", key: "1P_UPF", value: "UPF" },
+  ];
+  const SystemProfile = [
+    { mainKey: "systemprofile", key: "1P_SYSTEM", value: "System Metrics" },
+    // { mainKey: "systemprofile", key: "1P_POWER", value: "System Metrics" },
+  ];
 
   const Economics = [
-    "Watts w Active Mgt / 1k Subscriber / Yr",
-    "Watts w/o Active Mgt / 1k Subscriber / Yr",
-    "TCO w Active Mgt / 1k Subscriber / Yr",
-    "TCO w/o Active Mgt / 1k Subscriber / Yr",
-    "Total Watts/h saved a week **",
-    "TCO Savings ",
+    { mainKey: "economics", key: "TCO_Active", value: "TCO(active mgmt)" },
+    { mainKey: "economics", key: "TCO_INActive", value: "TCO(inactive mgmt)" },
   ];
+
+  const { tabs, setTabs } = useContext(SubtabsContext);
+  const handlesubmenu = (data, mainTabKey) => {
+    console.log(data, mainTabKey, "data, mainTabKey");
+ 
+    setTabs(prevState => {
+      const updatedTabs = JSON.parse(JSON.stringify(prevState));
+
+      if (mainTabKey in updatedTabs) {
+        // Get all keys in the mainTabKey section
+        const subtabKeys = Object.keys(updatedTabs[mainTabKey]);
+
+        // Set all subtabs to false
+        
+        subtabKeys.forEach(key => {
+          updatedTabs[mainTabKey][key] = false;
+        });
+
+        // Set the clicked subtab to true
+        updatedTabs[mainTabKey][data.key] = true;
+
+      }
+              
+      if(data?.mainKey==="systemprofile"){
+        updatedTabs[mainTabKey]["1P_SYSTEM"] = true;
+        updatedTabs[mainTabKey]["1P_POWER"] = true;
+        updatedTabs[mainTabKey]["2P_SYSTEM"] = true;
+        updatedTabs[mainTabKey]["2P_POWER"] = true;
+        updatedTabs[mainTabKey]["2PC_SYSTEM_A"] = true;
+        updatedTabs[mainTabKey]["2PC_SYSTEM_B"] = true;
+        updatedTabs[mainTabKey]["2PC_POWER_A"] = true;
+        updatedTabs[mainTabKey]["2PC_POWER_B"] = true;
+      }
+      if (data?.mainKey === "workload") {
+        if (data?.key === "1P_LLM") {
+            updatedTabs[mainTabKey]["1P_LLM"] = true;
+            updatedTabs[mainTabKey]["2P_LLM"] = true;
+            updatedTabs[mainTabKey]["2PC_LLM"] = true;
+        } else if (data?.key === "1P_VIT") {
+            updatedTabs[mainTabKey]["1P_VIT"] = true;
+            updatedTabs[mainTabKey]["2P_VIT"] = true;
+            updatedTabs[mainTabKey]["2PC_VIT"] = true;
+        } else if (data?.key === "1P_FW") {
+            updatedTabs[mainTabKey]["1P_FW"] = true;
+            updatedTabs[mainTabKey]["2P_FW"] = true;
+            updatedTabs[mainTabKey]["2PC_FW"] = true;
+        } else if (data?.key === "1P_UPF") {
+            updatedTabs[mainTabKey]["1P_UPF"] = true;
+            updatedTabs[mainTabKey]["2P_UPF"] = true;
+            updatedTabs[mainTabKey]["2PC_UPF"] = true;
+        }
+    }
+
+      return updatedTabs;
+    });
+  };
+  const logo = "/logo.jpg"
+  const amdlogo = "/Amdepiclogo.png"
   return (
     <>
+      <div>
+        <span style={{ height: "60px", width: "140px", display: "inline-block", paddingLeft: '50px' }}>
+          <img src={amdlogo} alt="Amd" style={{ height: "100%", width: "100%" }} />
+        </span>
+      </div>
+
       <Card
         // width="100%"
         // height="41px"
         // marginTop="37%"
-        width="16em"
-        height="2em"
-        marginTop="8.3em"
+        width="22em"
+        height="4em"
+        marginTop="2.4em"
         alignItems="anchor-center"
+        background="black"
+        style={{
+          borderRadius: "10px", // Adjust as needed
+          border: "1px solid #0AA3BB",
+          backgroundColor: 'rgb(15,15,14)',
+          marginLeft: '10px'
+        }}
       >
-        Subscribers
+        <p style={{
+          fontSize: "18px",
+          fontWeight: "400"
+        }}>
+
+          Subscribers
+        </p>
       </Card>
       <div
         className="sidebar-font"
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "30px", height: "12em" }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.5em", border: "1px solid #0AA3BB", height: '18em', padding: '6px', borderRadius: '10px' }}
         onClick={() => handleShow("Workloads")}
       >
         {!show["Workloads"] && <Card
           // width="30px"
           // height="140px"
-          width="2em"
-          height="15em"
+          width="2.5em"
+          height="18em"
           alignItems="center"
-          style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)" }}
+          border="1px solid white"
+          backgroundColor="black !important"
+          style={{ transform: show["Workloads"] ? "" : "rotate(-90deg)", }}
         >
           <div style={{
             transform: show["Workloads"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap"
+            , whiteSpace: "nowrap",
+            fontSize: "18px",
+            fontWeight: "200"
           }}>
             {"Workloads"}
           </div>
@@ -77,49 +183,69 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            {workloads.map((type, index) => (
-              <div style={{ marginTop: index === 0 ? "0" : "22px" }}>
-                <Card
-                  // width="100%"
-                  // height="30px"
-                  width="18em"
-                  height="2.5em"
-                  alignItems="center"
-                  key={index}
-                  onClick={(e) => e.stopPropagation()}
+            {workloads.map((workload, index) => (
+              <div
+                style={{ marginTop: index === 0 ? "0" : "22px" }}
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent triggering handleShow
+                  handlesubmenu(workload, workload.mainKey); // Passes the full object
+                }}
+                key={`${workload.key}-${index}`} // Ensures unique key
+              >
+                <div className="flex-center"
+                  style={{
+                    backgroundColor: 'rgb(15,15,14)',
+                    width: '24em',
+                    height: '3em',
+                    border: `1px solid ${tabs["workload"][workload.key] ? '#0AA3BB' : 'white'}`,
+                    borderRadius: '10px',
+                    fontSize: "12px",
+                    fontWeight: "200"
+                  }}
                 >
-                  {type}
-                </Card>
+                  <Card >
+                    {workload.value}  {/* Display only the value */}
+                  </Card>
+                </div>
               </div>
             ))}
+
+
           </div> :
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
               marginLeft: "10px",
               width: "100%",
+              display: "flex",
+              height: '19em',
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
             }}
-
           >
-
-            <div style={{ marginTop: "22px" }}>
-              <Card
-                // width="100%"
-                // height="30px"
-                width="18em"
-                height="2.5em"
-                alignItems="center"
-
-              >
-                Workloads
-              </Card>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                color: 'white',
+                height: "100%", // Ensure it takes up space for centering
+                fontSize: '18px',
+                fontWeight: '200'
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShow("Workloads");
+              }}
+            >
+              Workload
             </div>
-
-          </div>}
+          </div>
+        }
       </div>
-      {<div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "65px", height: "8em" }}
+      <div
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "1.5em", border: "1px solid #0AA3BB", height: '14em', padding: '6px', borderRadius: '10px' }}
         onClick={() => handleShow("SystemProfile")}
       >
         {!show["SystemProfile"] && <Card
@@ -127,13 +253,17 @@ const Sidebar = () => {
           // height="140px"
           key={"SystemProfile"}
           width="2em"
-          height="8.5em"
+          height="14em"
+          backgroundColor="black !important"
+          border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
           <div style={{
             transform: show["SystemProfile"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap"
+            , whiteSpace: "nowrap",
+            fontSize: "18px",
+            fontWeight: "200"
           }}>
             {"System Profile"}
           </div>
@@ -148,64 +278,107 @@ const Sidebar = () => {
               width: "100%",
             }}
           >
-            {SystemProfile.map((type, index) => (
+            {SystemProfile.map((SystemPro, index) => (
               <div style={{ marginTop: index === 0 ? "0" : "22px" }}
-                onClick={(e) => e.stopPropagation()}>
-                <Card
-                  // width="100%"
-                  // height="30px"
-                  width="13.5em"
-                  height="2em"
-                  // backgroundColor="rgba(0, 0, 0, 1)"
-                  alignItems="center"
-                  key={index}
-
-                >
-                  {type}
-                </Card>
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handlesubmenu(SystemPro, SystemPro.mainKey); // Passes the full object
+                }}>
+                <div className="flex-center"
+                  style={{
+                    width: "24em",
+                    height: "17em",
+                    border: `1px solid ${tabs["systemprofile"][SystemPro.key] ? '#0AA3BB' : 'white'}`,
+                    marginTop: "8px", backgroundColor: "black", borderRadius: '10px',
+                    fontSize: "12px",
+                    fontWeight: "200"
+                  }}>
+                  <Card >
+                    {SystemPro.value}  {/* Display only the value */}
+                  </Card>
+                </div>
               </div>
             ))}
-          </div> : <div
+          </div> :
+          // <div
+          //   style={{
+          //     display: "flex",
+          //     flexDirection: "column",
+          //     marginLeft: "10px",
+          //     width: "100%",
+          //   }}
+
+          // >
+
+          //   <div style={{ }}>
+          //     <Card
+          //       // width="100%"
+          //       // height="30px"
+          //       width="16em"
+          //       height="7em"
+          //       alignItems="center"
+
+          //     >
+          //       System Profile
+          //     </Card>
+          //   </div>
+
+          // </div>
+          <div
             style={{
-              display: "flex",
-              flexDirection: "column",
               marginLeft: "10px",
               width: "100%",
+              display: "flex",
+              height: '14em',
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
             }}
-
           >
-
-            <div style={{ marginTop: "22px" }}>
-              <Card
-                // width="100%"
-                // height="30px"
-                width="16em"
-                height="2.5em"
-                alignItems="center"
-
-              >
-                System Profile
-              </Card>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                color: 'white',
+                height: "100%", // Ensure it takes up space for centering
+                fontSize: '18px',
+                fontWeight: '200'
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleShow("SystemProfile");
+              }}
+            >
+              System Profile
             </div>
+          </div>
 
-          </div>}
-      </div>}
+        }
+      </div>
       <div
-        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px", height: "15em" }}
+        style={{ display: "flex", alignItems: "flex-start", marginTop: "20px", height: "14em", padding: "10px", border: "1px solid #0AA3BB", borderRadius: '10px' }}
         onClick={() => handleShow("Economics")}
       >
         {!show["Economics"] && <Card
           // width="30px"
           // height="224px"
           width="2em"
-          height="15em"
+          height="14em"
+          backgroundColor="black !important"
+          border="1px solid white"
           // backgroundColor="rgba(0, 0, 0, 1)"
           alignItems="center"
         >
           <div style={{
             transform: show["Economics"] ? "" : "rotate(-90deg)"
-            , whiteSpace: "nowrap"
-          }}>
+            , whiteSpace: "nowrap",
+            fontSize: "18px",
+            fontWeight: "200"
+
+          }}
+          >
             {"Economics"}
           </div>
         </Card>}
@@ -217,53 +390,90 @@ const Sidebar = () => {
               flexDirection: "column",
               marginLeft: "10px",
               width: "100%",
+              height: "100%",
+              alignItems: "center", // Centers items horizontally
+              justifyContent: "space-evenly", // Distributes them evenly
+              // gap: "22px", // Adds equal spacing between items
             }}
           >
 
-            {Economics.map((type, index) => (
-              <div
-                style={{
-                  marginTop: index === 0 ? "0" : "10px",
-                  fontSize: "11px",
+
+            {Economics.map((economic, index) => (
+              <div style={{ marginTop: index === 0 ? "0" : "22px" }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handlesubmenu(economic, economic.mainKey); // Passes the full object
                 }}
               >
-                <Card
-                  // width="100%"
-                  // height="30px"
-                  width="20em"
-                  height="3em"
-                  // backgroundColor="rgba(0, 0, 0, 1)"
-                  alignItems="center"
-                  key={index}
-                >
-                  {type}
-                </Card>
+                <div className="flex-center" style={{
+                  width: "24em",
+                  height: "4em",
+                  border: `1px solid ${tabs["economics"][economic.key] ? '#0AA3BB' : 'white'}`,
+                  backgroundColor: "black", borderRadius: '10px',
+                  fontSize: "12px",
+                  fontWeight: "200"
+                }}>
+
+
+                  <Card >
+                    {economic.value}  {/* Display only the value */}
+                  </Card>
+                </div>
               </div>
             ))}
-          </div> : <div
+          </div> :
+          //  <div
+          //   style={{
+          //     display: "flex",
+          //     flexDirection: "column",
+          //     marginLeft: "10px",
+
+          //     width: "100%",
+          //   }}
+
+          // >
+
+          //   <div style={{  }}>
+          //     <Card
+          //       // width="100%"
+          //       // height="30px"
+          //       width="15em"
+          //       height="15em"
+          //       alignItems="center"
+          //     >
+          //       Economics
+          //     </Card>
+          //   </div>
+
+          // </div>
+          <div
             style={{
-              display: "flex",
-              flexDirection: "column",
               marginLeft: "10px",
-
               width: "100%",
+              display: "flex",
+              height: '14em',
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
             }}
-
           >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                color: 'white',
+                height: "100%", // Ensure it takes up space for centering
+                fontSize: '18px',
+                fontWeight: '200'
+              }}
 
-            <div style={{ marginTop: "22px",marginLeft:'5px' }}>
-              <Card
-                // width="100%"
-                // height="30px"
-                width="15em"
-                height="2.5em"
-                alignItems="center"
-              >
-                Economics
-              </Card>
+            >
+             Economics
             </div>
-
-          </div>}
+          </div>
+        }
       </div>
     </>
   );

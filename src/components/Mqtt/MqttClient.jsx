@@ -1,119 +1,83 @@
-import React, { useState, useEffect } from "react";
-import mqtt from "mqtt";
+
+
+import React, { useContext, useEffect } from "react";
+import { useMqtt } from "./MqttContext";
+import { SubtabsContext } from "../SubtabsContext";
 
 const MqttClient = () => {
-  const [messages, setMessages] = useState([]);
-
+  const {tabs, setTabs } = useContext(SubtabsContext)
+  const { workloadData, setWorkloadData, systemProfileData, setSystemProfileData,economicsData, setEconomicsData } = useMqtt();
+  console.log(workloadData,"workloadData",systemProfileData)
   useEffect(() => {
-    // Create an EventSource to connect to the server
     const eventSource = new EventSource("http://192.168.0.26:5002/stream");
-    // const data = fetch("http://192.168.0.26:5000/receive_data");
+  // http://10.86.20.178:5002/stream
+  //http://192.168.0.26:5002/stream
     eventSource.onmessage = (event) => {
-      // const newMessage = JSON.parse(event);
-      console.log(event?.data,"newMessage");
-      // setMessages((prevMessages) => [...prevMessages, newMessage]);
+      try {
+        const rawMessage = event?.data;
+        const validJsonMessage = rawMessage.replace(/'/g, '"');
+        const newMessage = JSON.parse(validJsonMessage);
+        
+        if (typeof newMessage === 'undefined') {
+          console.log("Undefined message received");
+          return;
+        }
+  
+        // Create separate objects for each category
+        const workloadUpdates = {};
+        const systemProfileUpdates = {};
+        const economicsUpdates = {};
+  
+        // Process each key in the new message
+        Object.entries(newMessage).forEach(([key, value]) => {
+          // Check against the tabs structure to categorize the data
+          if (tabs.workload.hasOwnProperty(key)) {
+            workloadUpdates[key] = value;
+          } 
+          else if (tabs.systemprofile.hasOwnProperty(key)) {
+            systemProfileUpdates[key] = value;
+          }
+          else if (tabs.economics.hasOwnProperty(key)) {
+            economicsUpdates[key] = value;
+          }
+        });
+  
+        // Update states only if there are updates for that category
+        if (Object.keys(workloadUpdates).length > 0) {
+          setWorkloadData(prevData => ({
+            ...prevData,
+            ...workloadUpdates
+          }));
+        }
+  
+        if (Object.keys(systemProfileUpdates).length > 0) {
+          setSystemProfileData(prevData => ({
+            ...prevData,
+            ...systemProfileUpdates
+          }));
+        }
+  
+        if (Object.keys(economicsUpdates).length > 0) {
+          setEconomicsData(prevData => ({
+            ...prevData,
+            ...economicsUpdates
+          }));
+        }
+  
+      } catch (error) {
+        console.error("Error processing message:", error);
+      }
     };
-
-    // Cleanup on component unmount
+  
     return () => {
       eventSource.close();
     };
-  }, []);
-
- 
-  
-
+  }, []); 
   return (
-    <div>
-      <h1>Real-time Messages</h1>
-      <h2>Received Messages:</h2>
-      {messages.length === 0 ? (
-        <p>No messages received yet</p>
-      ) : (
-        <ul>
-          {messages.map((msg, index) => (
-            <li key={index}>
-              <strong>{msg.topic}</strong>: {msg.payload}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
+    <>
+    </>
   );
 };
 
 export default MqttClient;
 
-// const MqttClient = () => {
-//   const [messages, setMessages] = useState([]);
-//   const [isConnected, setIsConnected] = useState(false);
-
-//   const brokerAddress = "ws://192.168.1.231:9001"; // Use WebSocket URL for MQTT
-//   const topics = [
-//     "mi210/llama3.2-1b",
-//     "mi210/vit",
-//     "turin/llama3.2-1b",
-//     "turin/vit"
-//   ];
-
-//   useEffect(() => {
-//     // Connect to the broker
-//     const client = mqtt.connect(brokerAddress);
-    
-//     // When connected, subscribe to the to  pics
-//     client.on("connect", () => {
-//       console.log("Connected to MQTT broker");
-//       setIsConnected(true);
-
-//       // Subscribe to each topic
-//       topics.forEach((topic) => {
-//         client.subscribe(topic, (err) => {
-//           if (err) {
-//             console.log(`Error subscribing to topic ${topic}:`, err);
-//           } else {
-//             console.log(`Subscribed to topic: ${topic}`);
-//           }
-//         });
-//       });
-//     });
-
-//     // When a new message is received
-//     client.on("message", (topic, payload) => {
-//       const message = {
-//         topic,
-//         payload: payload.toString()
-//       };
-
-//       // Update state with the new message
-//       setMessages((prevMessages) => [...prevMessages, message]);
-//     });
-
-//     // Clean up on component unmount
-//     return () => {
-//       client.end();
-//       setIsConnected(false);
-//     };
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>MQTT Pub/Sub in React</h1>
-//       <p>{isConnected ? "Connected to the broker" : "Connecting..."}</p>
-
-//       <h2>Received Messages:</h2>
-//       {messages.length === 0 ? (
-//         <p>No messages received yet</p>
-//       ) : (
-//         <ul>
-//           {messages.map((msg, index) => (
-//             <li key={index}>
-//               <strong>{msg.topic}</strong>: {msg.payload}
-//             </li>
-//           ))}
-//         </ul>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default MqttClient;

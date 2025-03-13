@@ -9,6 +9,8 @@ export const SidebarProvider = ({ children }) => {
     "Economics": true
   });
 
+   
+
   return (
     <SidebarContext.Provider value={{ show, setShow }}>
       {children}

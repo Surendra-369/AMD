@@ -1,298 +1,1446 @@
-import React from "react";
+import { React, useState, useEffect, useContext } from "react";
 import Card from "./Card";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useVisibility } from "./VisibilityProvider";
+import { useMqtt } from "./Mqtt/MqttContext";
+import { SubtabsContext } from "./SubtabsContext";
 
-const OnePsystem = () => {
-  const data = [
-    {
-      "Concurrent User": 10,
-      "Tokens/s": 10,
-      "Total Latency (ms)": 10,
-      "TTFT (ms)": 10,
+const OnePsystem = ({ getShow }) => {
+
+  // // Add state for tracking selected card
+  // const [selectedCard, setSelectedCard] = useState(null);
+
+   // Keep all your existing constants and hooks
+   const { show, setShow,selectedCard, setSelectedCard } = useVisibility();
+console.log(selectedCard, "ghj",show)
+  // const handleCardClick = (index) => {
+  //   if (selectedCard === index) {
+  //     // If clicking the same card, show all cards
+  //     setSelectedCard(null);
+  //   } else {
+  //     // Show only the clicked card
+  //     setSelectedCard(index);
+  //   }
+  // };
+  console.log(show, "show");
+  const images = ["/1P.jpg", "/2P.jpg", "4P.jpg"];
+
+  const handleCardClick = (index) => {
+    setSelectedCard((prev) => (prev === index ? null : index)); // Toggle selected card state
+  };
+
+
+
+  useEffect(() => {
+    getShow(selectedCard);
+  }, [selectedCard])
+  console.log(selectedCard, "selectedCard");
+
+  const styling = {
+
+    // Add cursor pointer style for clickable cards
+    clickableCard: {
+      cursor: 'pointer',
+      transition: 'transform 0.2s',
+      ':hover': {
+        transform: 'scale(1.02)'
+      }
     },
-    {
-      "Concurrent User": 10,
-      "Tokens/s": 10,
-      "Total Latency (ms)": 10,
-      "TTFT (ms)": 10,
+    containerStyle: {
+      display: 'flex',
+      justifyContent: 'space-around',
+      alignItems: 'flex-start',
+      gap: '10px',
+      // padding: '20px',
+      width: '100%',
+      overflowX: 'auto'
     },
-    {
-      "Concurrent User": 10,
-      "Tokens/s": 10,
-      "Total Latency (ms)": 10,
-      "TTFT (ms)": 10,
+    card1: {
+      backgroundColor: '#115e59',
+      borderRadius: '8px',
+      maxWidth: '500px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      overflow: 'hidden'
     },
-  ];
+    header1: {
+      backgroundColor: '#0d4a44',
+      color: 'white',
+      fontSize: '20px',
+      fontWeight: '600',
+      padding: '16px',
+      textAlign: 'center',
+      marginBottom: '20px'
+    },
+    contentArea1: {
+      padding: '0 24px 24px 24px',
+      display: 'flex',           // Added flex display
+      justifyContent: 'center',  // Center horizontally
+      alignItems: 'center',      // Center vertically
+      minHeight: '100px'         // Give some minimum height for vertical centering
+    },
+    metricsGrid1: {
+      display: 'flex',           // Changed to flex for better centering
+      justifyContent: 'center',  // Center horizontally
+      alignItems: 'center',      // Center vertically
+      width: '100%'             // Take full width
+    },
+    metric1: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center'
+    },
+    metricLabel1: {
+      color: '#99f6e4',
+      fontSize: '14px',
+      marginBottom: '4px'
+    },
+    metricValue1: {
+      color: 'white',
+      fontSize: '24px',
+      fontWeight: 'bold'
+    }
+  };
+  const getGridStyle = (dataLength) => {
+    const baseStyle = {
+        display: 'grid',
+        gap: '2rem',
+        width: '100%',
+        position: 'relative',
+    };
+
+    switch (dataLength) {
+        case 1:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr',
+                justifyItems: 'center',
+                marginTop: "4em",
+            };
+        case 2:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr 1fr',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+            };
+        case 3:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr 1fr 1fr',
+                justifyContent: 'center',
+                alignItems: 'center',
+                position: 'relative',
+            };
+        default:
+            return {
+                ...baseStyle,
+                gridTemplateColumns: '1fr 1fr',
+                '@media (min-width: 768px)': {
+                    gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                },
+                position: 'relative',
+            };
+    }
+};
+
+
+  // const getGridStyle = (dataLength) => {
+  //   const baseStyle = {
+  //     display: 'grid',
+  //     gap: '2rem',
+  //     width: '100%',
+  //   };
+
+  //   switch (dataLength) {
+  //     case 1:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr',
+  //         justifyItems: 'center',
+  //         marginTop: "4em"
+  //       };
+  //     case 2:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr 1fr',
+
+  //       };
+  //     case 3:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr 1fr 1fr',
+  //       };
+
+  //     default:
+  //       return {
+  //         ...baseStyle,
+  //         gridTemplateColumns: '1fr 1fr',
+  //         '@media (min-width: 768px)': {
+  //           gridTemplateColumns: '1fr 1fr 1fr 1fr'
+  //         },
+  //       };
+  //   }
+  // };
+
+  const styles = {
+    card: {
+      // backgroundColor: '#00788E',
+      borderRadius: '0.5rem',
+      // opacity:"0.3",
+      maxWidth: '42em',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      overflow: 'hidden',
+      height: '15em',
+      marginTop: '1em',
+    },
+    header: {
+      // backgroundColor: '#035369',
+
+      color: 'white',
+      fontSize: '1.25em',
+      fontWeight: '600',
+      padding: '0.5em',
+      textAlign: 'center',
+      marginBottom: '1.25em'
+    },
+    contentArea: {
+      padding: '1em 0em 0em 0em'
+    },
+    metricContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    },
+    metricLabel: {
+      color: 'white',
+      fontSize: "20px",
+      fontWeight: "200",
+      marginBottom: '0.25em'
+    },
+    metricValue: {
+      color: 'white',
+      fontSize: "25px",
+      fontWeight: "400",
+    }
+  };
   const data2 = [
     {
-      "Concurrent User": 10,
-      "Tokens/s": 10,
-      "Total Latency (ms)": 10,
-      "TTFT (ms)": 10,
+      "CPUs": 10,
+      "CPU Util": "10",
+      "Threads": 10,
+      "Mem (GB)": 10,
+      "Network (Gb)": 10,
     },
   ];
   const data3 = [
     { key: "Token/s", value: 10 },
-    { key: "Inference/s", value: 10 },
+    { key: "InfcontentAreaerence/s", value: 10 },
     { key: "ACL/rules", value: 10 }
   ];
   const data4 = [
-    { value: 60 },
-    { value: "zero" },
-    { value: "825W" },
+    { value: "CPU Util" },
+    { value: "Memory" },
+    { value: "Power" },
   ];
   const data5 = [
-    { value: "575 w - 825w" },
-    { value: "825w" },
-    { value: "$9,085" },
-    { value: "$12,130" },
-    { value: "$1130" },
-    { value: "$120" },
-  ];
-  const { show, setShow } = useVisibility();
-  console.log("showwwwwwwwwwww", show)
-  return (
-    <>
-      <Card
-        // width="100%" 
-        // height="60px" 
-        width="20em"
-        height="4em"
-        // flexDirection="column"
-        alignItems="center"
-        // backgroundColor='rgba(0, 0, 0, 1)'
-        color='rgba(255, 255, 255, 1)'
-      >
-        1P AMD EPYC™
-        <div>
-          9575F - (64 cores)
-        </div>
-      </Card>
-      <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
-        <div style={{ padding: "10px" }}>(1P - Single System)</div>
-        <div>200Gb NIC</div>
-      </div>
-      <Card
-        // width="100%"
-        // height="30px"
-        width="20em"
-        height="2em"
-        marginTop="20px"
-        alignItems="normal"
-      >
-        <div className="flex-spaceBetween">
-          <div style={{ textAlign: "center", flex: 1 }}>1000 - 1800</div>
-          <div style={{ marginRight: "10px" }}>
-            <Icon icon="iconamoon:profile-bold" />
-          </div>
-        </div>
-      </Card>
-      <Card
-        // width="100%" 
-        // height="200px" 
-        width="20em"
-        height="12.6em"
-        marginTop="20px"
-        flexDirection={!show["Workloads"] ? "row" : ""}
-        alignItems={!show["Workloads"] ? "" : "normal"}
-      >
-        {!show["Workloads"] ? (
-          <>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                fontSize: "10px",
-                marginLeft: "5px",
-              }}
-            >
-              {data.map((item, index) => (
-                <Card
-                  key={index}
-                  // width="200px"
-                  // height="60px"
-                  width="20em"
-                  height="6em"
-                  alignItems="normal"
-                  marginTop="5px"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                  <div
-                    style={{
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      marginLeft: "10px",
-                      marginRight: "10px",
-                    }}
-                  >
-                    {Object.entries(item).map(([key, value]) => (
-                      <div
-                        key={key}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <strong>{key}:</strong> {value}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              ))}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                flexDirection: "column",
-                fontSize: "10px",
-                // gap:"5px",
-                marginLeft: "5px",
+    { value: "TCO Savings" },
 
-              }}
-            >
-              {!show["Workloads"] && data2.map((item, index) => (
-                <Card
-                  key={index}
-                  // width="120px"
-                  // height="189px"
-                  width="10em"
-                  height="19em"
-                  alignItems="normal"
-                  flexDirection="row"
-                  marginTop="5px"
-                  border="0.81px solid rgba(255, 255, 255, 1)"
-                >
-                  <div style={{ marginTop: "10px" }}>
-                    {Object.entries(item).map(([key, value]) => (
-                      <div
-                        key={key}
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <strong>{key}:</strong> {value}
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </>
-        ) : (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {data3.map((item, index) => (
-              <div key={index}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px' }}>
-                  <span>{item.key}:</span>
-                  <span>{item.value}</span>
-                </div>
-                {index < data3.length - 1 && <hr />} {/* Adding horizontal line between rows */}
-              </div>
+  ];
+
+
+  const { tabs, setTabs } = useContext(SubtabsContext);
+  console.log("tabs", tabs)
+  const workloadDataKeys = {
+    "concurrent_user": "Users",
+    "token_latency": "Latency (ms)",
+    "tokens_per_sec": "Tokens/S",
+    "ttft": "TTFT(ms)",
+    "samples_per_sec": "Samples/S",
+    "sample_size": "Sample Size",
+    "pkts/sec": "Packets/S",
+    "Mbits/sec": "Mbits/S",
+    "jitter": "Jitter",
+    "dropped/sec": "Dropped/s",
+  };
+  const workloadKeys={
+    "tokens_per_sec": "Tokens/s (AI)",
+
+    "samples_per_sec": "Samples/s (ML)",
+
+    "pkts/sec": "Packets/s (FW)",
+
+  }
+  const systemProfileDataKeys = {
+
+    "cpu_util_perc": "CPU Util",
+    "1P_SYSTEM": "Memory",
+    "1P_SYSTEM": "Network",
+    "1P_POWER": "Power",
+    // "watth": "Watth",
+    "watts": "Power",
+    "power": "Power",
+    "memory_used_gib": "Memory",
+    "network_bw_bytes": "Network",
+    "memory": [
+      "usage_percent",
+      "total_gib",
+      "used_gib",
+    ],
+    "network": [
+      "sent_gib",
+      "received_gib",
+    ]
+
+  }
+  const systemProfileKeys ={
+    "cpu_util_perc": "CPU Utilization",
+    "power": "Power (W)",
+  }
+  const economickeys = {
+    "TCO_1":"TCO Saving",
+    // "TCO_2":"TCO2"
+  }
+  const nestedSytemProfileKeys = {
+    "usage_percent": "Usage",
+    "total_gib": "Total gib",
+    "used_gib": "Used gib",
+    "sent_gib": "Sent gib",
+    "received_gib": "Received gib",
+    "util": "CPU Util"
+  }
+  const showData = {
+    "cpu": {
+      "util": "util"
+    },
+    "memory": {
+      // "usage_percent": "usage_percent",
+      // "total_gib": "total_gib",
+      "used_gib": "used_gib"
+    },
+    "network": {
+      // "sent_gib": "sent_gib",
+      "received_gib": "received_gib"
+    },
+    "watts": "watts",
+    //"watth": "watth",
+  }
+  const temp = [
+    {
+      "Concurrent Packets": 10,
+      "Applied ACL/rules": 10,
+      "Latency (ms)": 10,
+      "Jitter (ms)": 10,
+    },
+  ];
+  const emptyWorkload = {
+    "TOKENS_PER_SEC": "Tokens/s (AI)",
+    "SAMPLES_PER_SEC": "Samples/s (ML)",
+    "PKTS/SEC_FW": "Packets/s (FW)",
+    "PKTS/SEC_UPF": "Packets/s (UPF)"
+  }
+  const cardWorkloadData = {
+    "TOKENS_PER_SEC": "Tokens/s (AI)",
+    "SAMPLES_PER_SEC": "Samples/s (ML)",
+    "PKTS/SEC_FW": "Packets/s (FW)",
+    "PKTS/SEC_UPF": "Packets/s (UPF)"
+  };
+
+  const workloadN = {
+    "concurrent_user": "Users",
+    "token_latency": "Latency (ms)",
+    "tokens_per_sec": "Tokens/S",
+    "ttft": "TTFT(ms)",
+    "samples_per_sec": "Samples/S",
+    "sample_size": "Sample Size",
+    "pkts/sec": "Packets/S",
+    "Mbits/sec": "Mbits/S",
+    "jitter": "Jitter",
+    "dropped/sec": "Dropped/s",
+  };
+  const emptySystemProfile = [
+    "CPU Utilization",
+    "Power",
+  ]
+  const emptyShowSystemProfile = [
+    "CPU Util",
+    "Memory",
+    "Network",
+    "Power",
+  ]
+  const emptyEconmics = [
+    "TCO Saving"
+  ]
+
+  const { workloadData, systemProfileData } = useMqtt()
+  console.log(workloadData, "workloadData");
+  const [hoveredCards, setHoveredCards] = useState({
+    0: false,
+    1: false,
+    2: false
+  });
+  
+  const handleCardHover = (index, ishover) => {
+
+    setHoveredCards(prev => ({
+      ...prev,
+      [index]: ishover
+    }));
+  };
+  function mergeSystemAndPower(data) {
+    let result = {};
+    for (let key in data) {
+      if (key.includes("POWER")) continue; // Skip POWER keys
+      let systemKey = key;
+      let powerKey = key.replace("SYSTEM", "POWER");
+
+      // Clone system data
+      result[systemKey] = { ...data[systemKey] };
+
+      // Merge only `watts` if power data exists
+      if (data[powerKey] && data[powerKey].watts !== undefined) {
+        result[systemKey].power = data[powerKey].watts; // Store only watts
+      }
+    }
+    return result;
+  }
+
+  const mergedData = mergeSystemAndPower(systemProfileData);
+  console.log(mergedData, "mergedData");
+
+  function convertToReadableFormat(text) {
+    return text
+      .split('_')                  // Split the text by underscores
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))  // Capitalize each word
+      .join(' ');                  // Join the words with a space
+  }
+  const [data, setData] = useState(workloadData);
+  const updateElement = (newMessage) => {
+    setData(newMessage);
+  };
+
+  useEffect(() => {
+    if (typeof workloadData !== 'undefined')
+      updateElement(workloadData)
+  }, [workloadData]);
+
+  function convertToReadableFormat(text) {
+    return text
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+  const titles = [
+    { key: "1p", value: "1P AMD EPYC™\n9575F - (64 cores)" },
+    { key: "2p", value: "2P AMD EPYC™\n9575F - (128 cores)" },
+    { key: "2*2p", value: "2*2p AMD EPYC™\n9575F - (256 cores)" }
+  ];
+
+  const subtitle = [
+    { key: "1p", value: "1P AMD EPYC™" },
+    { key: "2p", value: "2P AMD EPYC™" },
+    { key: "2*2p", value: "2*2p AMD EPYC™" }
+  ];
+
+  const userList = [
+    { key: "1p", value: "1200-1300" },
+    { key: "2p", value: "1200-1900" },
+    { key: "2*2p", value: "1300-1700" }
+  ];
+  const subHeaderTitle = {
+    "1P_LLM": {
+      value: "AI: Llama 3.x 1B",
+
+    },
+    "1P_VIT": {
+      value: "ML: Vision Transformer",
+
+    },
+    "1P_FW": {
+      value: "Enterprise: Firewall",
+
+    },
+    "1P_UPF": {
+      value: "UPF",
+
+    },
+  };
+
+  const workloadNoData = {
+    "1P_LLM": ["Users", "Latency (ms)", "Tokens/S", "TTFT(ms)"],
+    "1P_VIT": ["Samples/S"],
+    "1P_FW": ["Packets/S", "Mbits/S"],
+    "1P_UPF": ["Packets/S"],
+  };
+  const system_MetricsNoData = {
+    "1P_SYSTEM": ["CPU Util", "Memory", "Network", "Power"],
+    // "1P_POWER": ["Watts/S", "Watts/H"]
+  }
+
+  const economicsNoData = {
+    "12": ["TCO Saving"]
+  }
+
+  // Function to get appropriate workload data based on card index
+  const getWorkloadData = (index) => {
+    switch (index) {
+      case 0: // 1P system
+        return {
+          "1P_LLM": workloadData["1P_LLM"] || {},
+          "1P_VIT": workloadData["1P_VIT"] || {},
+          "1P_FW": workloadData["1P_FW"] || {},
+          "1P_UPF": workloadData["1P_UPF"] || {},
+        };
+      case 1: // 2P system
+        return {
+          "1P_LLM": workloadData["2P_LLM"] || {},
+          "1P_VIT": workloadData["2P_VIT"] || {},
+          "1P_FW": workloadData["2P_FW"] || {},
+          "1P_UPF": workloadData["2P_UPF"] || {},
+        };
+      case 2: // 4P system
+        return {
+          "1P_LLM": workloadData["2PC_LLM"] || {},
+          "1P_VIT": workloadData["2PC_VIT"] || {},
+          "1P_FW": workloadData["2PC_FW"] || {},
+          "1P_UPF": workloadData["2PC_UPF"] || {},
+        };
+      default:
+        return {};
+    }
+  };
+
+  const getSystemProfileData = (index) => {
+    switch (index) {
+      case 0: // 1P system
+        return {
+          "1P_SYSTEM": mergedData["1P_SYSTEM"] || {},
+          // "1P_POWER": mergedData["1P_POWER"] || {}
+        };
+      case 1: // 2P system
+        return {
+          "1P_SYSTEM": mergedData["2P_SYSTEM"] || {},
+          // "1P_POWER": mergedData["2P_POWER"] || {}
+        };
+      case 2: // 4P system
+        return {
+          "1P_SYSTEM": mergedData["2PC_SYSTEM_A"] || {},
+          // "1P_POWER": mergedData["2PC_POWER_A"] || {}
+        };
+      default:
+        return {};
+    }
+  };
+  const getEcnomicsData = (index) => {
+    switch (index) {
+      case 0: // 1P system
+        return {
+          "1P_TCO": workloadData["1P_TCO"] || {},
+          "1P_LLM": workloadData["2PC_LLM"] || {},
+        };
+      case 1: // 2P system
+        return {
+          "1P_TCO": workloadData["2P_TCO"] || {},
+          "1P_LLM": workloadData["2PC_LLM"] || {},
+        };
+      case 2: // 4P system
+        return {
+           "1P_LLM": workloadData["2PC_LLM"] || {},
+          "1P_TCO": workloadData["2PC_TCO"] || {},
+        };
+      default:
+        return {};
+    }
+  };
+
+  const activeKey = Object.keys(tabs?.workload || {}).find((key) => tabs.workload[key]);
+  const activeKey2 = Object.keys(tabs?.systemprofile || {}).find((key) => tabs.systemprofile[key]);
+  // Create a SingleCard component that contains your existing card structure
+  const SingleCard = ({ index }) => {
+    const titleData = titles[index];
+    const subtitleData = subtitle[index];
+    const userListData = userList[index];
+    const cardWorkloadData = getWorkloadData(index);
+    const cardSystemProfileData = getSystemProfileData(index);
+    const cardEcnomicsData = getEcnomicsData(index);
+    console.log(activeKey2, "activeKey", system_MetricsNoData[activeKey2]);
+
+    // Only render if no card is selected or this is the selected card
+    if (selectedCard !== null && selectedCard !== index) {
+      return null;
+    }
+
+    console.log(activeKey && subHeaderTitle?.[activeKey]?.value,"dfghjk")
+    return (
+      <div style={{
+        minWidth: '20em',
+        background: "rgba(0, 0, 0, 0.32)",
+        borderRadius: "15px",
+        padding: '10px',
+        border: `0.1px solid ${hoveredCards[index] ? "#0AA3BB" : "transparent"}`, // Set transparent border by default
+
+      }}
+        onClick={() => handleCardClick(index)}
+      // onMouseEnter={() => handleCardHover(index, true)}  
+      // onMouseLeave={() => handleCardHover(index, false)}
+      >
+        {/* Title Card */}
+        <div style={{
+          // backgroundImage: `url(${p1})`,
+          backgroundImage: `url(${images[index]})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          borderRadius: "10px",
+          width: "20em",
+          height: "5em",
+        }}>
+          <Card
+            width="20em"
+            height="5em"
+            alignItems="center"
+            color='rgba(255, 255, 255, 1)'
+
+          >
+
+
+
+
+            {titleData.value.split('\n').map((line, i) => (
+              <div key={i} style={{ fontSize: '20px', fontWeight: '500' }}>{line}</div>
             ))}
 
-          </div>
-        )}
+          </Card>
+        </div>
 
-      </Card>
-      <Card
-        // width="100%" 
-        // height="124px" 
-        width="20em"
-        height="8em"
-        marginTop="20px"
-        alignItems="normal"
-      >
-        {!show["SystemProfile"] ? (
-          <div
+        {/* Subtitle */}
+        {/* <div className="flex-center column" style={{ width: "20em", height: "3em" }}>
+          <div style={{ padding: "10px" }}>({subtitleData.value})</div>
+          <div>200Gb NIC</div>
+        </div> */}
+
+        {/* User Count Card */}
+        <Card
+          width="20em"
+          height="4em"
+          marginTop="20px"
+          alignItems="normal"
+          noborder="true"
+        >
+          <div className="flex-spaceBetween" style={{
+            border: '1px solid black',
+            borderRadius: "10px", background:
+              index === 0
+                ? "linear-gradient(to right, #00B1CA, #000F13)"
+                : index === 1
+                  ? "linear-gradient(to right, #007487, #000C0F)"
+                  : "linear-gradient(to right, #00303C, #000405)",
+          }}>
+            <div
+              style={{
+                textAlign: "center",
+                flex: 1,
+                height: "3em",
+                display: "flex", // Use flexbox to align items
+                justifyContent: "center", // Center items horizontally
+                alignItems: "center", // Center items vertically
+                fontSize: "20px",
+                fontWeight: "200"
+              }}
+            >
+              {userListData.value}
+            </div>
+            <div style={{ marginRight: "10px", display: "flex", alignItems: "center" }}>
+              <Icon icon="line-md:account" height="25px" width="25px" />
+            </div>
+          </div>
+
+        </Card>
+
+        {/* Workload Data Card */}
+        <div style={{
+          ...styles.card,
+          background: index === 0
+            ? 'linear-gradient(to right, #00B1CA, #000F13)'
+            : (index === 1
+              ? 'linear-gradient(to right, #007487, #000C0F)'
+              : 'linear-gradient(to right, #00303C, #000405)')
+        }}>
+          {!show["Workloads"] && (
+            <div style={{
+              ...styles.header,
+              background: "linear-gradient(90deg, #005B69 0%, #002B32 100%)",
+              fontSize: "20px",
+              fontWeight: "300"
+            }}>
+              {activeKey && subHeaderTitle?.[activeKey]?.value && (
+                <div>{subHeaderTitle[activeKey].value}</div>
+              )}
+            </div>
+          )}
+          <div style={{
+           ...(show["Workloads"] ? styles.contentArea : {}),
+            background: index === 0
+              ? 'linear-gradient(to right, #00B1CA, #000F13)'
+              : (index === 1
+                ? 'linear-gradient(to right, #007487, #000C0F)'
+                : 'linear-gradient(to right, #00303C, #000405)'),
+            position: 'relative',  // Added for absolute positioning of lines
+            minHeight: '150px'    // Added to ensure consistent height
+          }}>
+
+{!show["Workloads"] && activeKey && (() => {
+  const value = subHeaderTitle?.[activeKey]?.value;
+  const showLines = [
+    "AI: Llama 3.x 1B",
+    "UPF",
+    "ML: Vision Transformer",
+    "Enterprise: Firewall"
+  ].includes(value);
+
+  if (!showLines) return null;
+
+  return (
+    <>
+      {/* Horizontal Line */}
+      <div
+        style={{
+          position: "absolute",
+          left: "10%",
+          right: "10%",
+          top: "50%",
+          height: "1px",
+          background: "rgba(255, 255, 255, 0.2)",
+          pointerEvents: "none",
+        }}
+      />
+      
+      {/* Vertical Line - Only for specific conditions */}
+      {(value === "AI: Llama 3.x 1B" || value === "ML: Vision Transformer" || value === "Enterprise: Firewall") && (
+        <div
+          style={{
+            position: "absolute",
+            top: value === "ML: Vision Transformer" || value === "Enterprise: Firewall" ? "55%" : "0",
+            bottom: "0",
+            left: "50%",
+            width: "1px",
+            background: "rgba(255, 255, 255, 0.2)",
+            pointerEvents: "none",
+          }}
+        />
+      )}
+    </>
+  );
+})()}
+
+            {!show["Workloads"] ? (
+              Object.entries(tabs).map(([category, categoryTabs]) =>
+                Object.entries(categoryTabs).map(([key, isSelected]) => {
+                  if (!isSelected) return null;
+
+          const workloadKey = key.toUpperCase();
+          const dataKey = cardWorkloadData[workloadKey];
+
+          console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+
+                  // Check if dataKey is missing or empty
+                  if (dataKey === null || dataKey === undefined) {
+                    return null
+                  }
+                  if (Object?.keys(dataKey)?.length === 0) {
+                    // Show empty values ( - - - )
+                    return (
+                      <div key={key} style={{ ...getGridStyle(workloadNoData[activeKey].length), position: 'relative', zIndex: 1 }}>
+                        {workloadNoData[activeKey].map((title, idx) => (
+                          <div key={idx} style={{ ...styles.metricContainer, position: 'relative', zIndex: 2 }}>
+                            <span style={styles.metricLabel}>{title}</span>
+                            <span style={styles.metricValue}>- - -</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  }
+                  
+                  const entries = Object.entries(dataKey);
+const numEntries = entries.length;
+
+// Determine layout logic based on number of metrics
+const getContainerStyle = (count) => {
+  const baseStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    position: 'relative',
+    zIndex: 1,
+    width: '100%',
+    maxWidth: 'sm',
+    overflow: 'hidden',
+    borderRadius: '0.25rem',
+    boxShadow: 'lg',
+    // backgroundColor: '#285e61', // bg-teal-800
+    color: 'white',
+  };
+
+  return baseStyle;
+};
+
+return (
+  <div key={key} style={getContainerStyle(numEntries)}>
+ 
+   
+
+    {/* For two metrics case */}
+    {numEntries === 2 && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // padding: '0.75rem',
+        gap: '0.5rem',
+      }}>
+        {entries.map(([metricKey, metricValue], index) => (
+          <div 
+            key={index} 
             style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '0.25rem 0',
+            }}
+          >
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+              ...styles.metricLabel
+            }}>
+              {workloadDataKeys[metricKey]}
+            </div>
+            <div style={{
+              // fontSize: '1.875rem',
+              fontWeight: 'bold',
+              padding: '0.25rem 0',
+              ...styles.metricValue
+            }}>
+              {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+            </div>
+            {index < entries.length - 1 && (
+              <div style={{
+                width: '100%',
+                borderBottomWidth: '1px',
+                borderColor: '#2c7a7b', // border-teal-700
+                marginTop: '0.5rem',
+              }}></div>
+            )}
+          </div>
+        ))}
+      </div>
+    )}
+
+    {/* For three metrics case */}
+    {numEntries === 3 && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // padding: '0.75rem',
+        gap: '0.5rem',
+      }}>
+        {/* First metric (top) */}
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          padding: '0.25rem 0',
+        }}>
+          <div style={{
+            fontSize: '0.875rem',
+            color: '#81e6d9', // text-teal-200
+            ...styles.metricLabel
+          }}>
+            {workloadDataKeys[entries[0][0]]}
+          </div>
+          <div style={{
+            fontSize: '1.875rem',
+            fontWeight: 'bold',
+            padding: '0.25rem 0',
+            ...styles.metricValue
+          }}>
+            {typeof entries[0][1] === "number" ? entries[0][1].toFixed(2) : entries[0][1]}
+          </div>
+          <div style={{
+            width: '100%',
+            borderBottomWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            marginTop: '0.5rem',
+          }}></div>
+        </div>
+        
+        {/* Second and third metrics (bottom row) */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRightWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            padding: '0.5rem',
+            
+          }}>
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+             ...styles.metricLabel
+            }}>
+              {workloadDataKeys[entries[1][0]]}
+            </div>
+            <div style={{
+              // fontSize: '1.25rem',
+              fontWeight: 'bold',
+              ...styles.metricValue
+            }}>
+              {typeof entries[1][1] === "number" ? entries[1][1].toFixed(2) : entries[1][1]}
+            </div>
+          </div>
+          
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+             ... styles.metricLabel
+            }}>
+              {workloadDataKeys[entries[2][0]]}
+            </div>
+            <div style={{
+              // fontSize: '1.25rem',
+              fontWeight: 'bold',
+              ...styles.metricValue
+            }}>
+              {typeof entries[2][1] === "number" ? entries[2][1].toFixed(2) : entries[2][1]}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* For four metrics case */}
+    {numEntries === 4 && (
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        // padding: '0.75rem',
+        gap: '0.5rem',
+      }}>
+        {/* First row (top two metrics) */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRightWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+              ... styles.metricLabel
+            }}>
+              {workloadDataKeys[entries[0][0]]}
+            </div>
+            <div style={{
+              // fontSize: '1.875rem',
+              fontWeight: 'bold',
+              ... styles.metricValue
+            }}>
+              {typeof entries[0][1] === "number" ? entries[0][1].toFixed(2) : entries[0][1]}
+            </div>
+          </div>
+          
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+              ... styles.metricLabel
+            }}>
+              {workloadDataKeys[entries[1][0]]}
+            </div>
+            <div style={{
+              // fontSize: '1.875rem',
+              fontWeight: 'bold',
+              ... styles.metricValue
+            }}>
+              {typeof entries[1][1] === "number" ? entries[1][1].toFixed(2) : entries[1][1]}
+            </div>
+          </div>
+        </div>
+        
+        {/* Divider */}
+        <div style={{
+          width: '100%',
+          borderBottomWidth: '1px',
+          borderColor: 'red', // border-teal-700
+        }}></div>
+        
+        {/* Second row (bottom two metrics) */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            borderRightWidth: '1px',
+            borderColor: '#2c7a7b', // border-teal-700
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+              ... styles.metricLabel
+            }}>
+              {workloadDataKeys[entries[2][0]]}
+            </div>
+            <div style={{
+              // fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[2][1] === "number" ? entries[2][1].toFixed(2) : entries[2][1]}
+            </div>
+          </div>
+          
+          <div style={{
+            flex: '1 1 0%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            padding: '0.5rem',
+          }}>
+            <div style={{
+              // fontSize: '0.875rem',
+              color: '#81e6d9', // text-teal-200
+              ... styles.metricLabel
+            }}>
+              {workloadDataKeys[entries[3][0]]}
+            </div>
+            <div style={{
+              fontSize: '1.25rem',
+              fontWeight: 'bold',
+            }}>
+              {typeof entries[3][1] === "number" ? entries[3][1].toFixed(2) : entries[3][1]}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+);
+                })
+              )
+
+            ) : (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}>
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = cardWorkloadData[workloadKey];
+                    
+                    if (!dataKey) return null;
+                    
+                    const entries = Object.entries(dataKey);
+              
+                    return (
+                      <div key={key}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title = (workloadKey==="1P_UPF" && metricKey === "pkts/sec" ) ?  "Packets/s (UPF)": workloadKeys[metricKey];
+              
+                          if (metricKey === "tokens_per_sec" || metricKey === "pkts/sec" || metricKey === "samples_per_sec")
+                            return (
+                              <div key={idx} style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr auto',
+                                padding: "10px",
+                                alignItems: "center",
+                                borderBottom: `${(workloadKey==="1P_UPF" && metricKey === "pkts/sec") ? "" : "1px solid rgba(255, 255, 255, 0.3)"}`,
+                              }}>
+                                <span style={{
+                                  fontSize: "20px",
+                                  fontWeight: "200",
+                                  textAlign: "left",
+                                  color: 'white',
+                                }}>
+                                  {title}:
+                                </span>
+                                <span style={{
+                                  fontSize: "25px",
+                                  fontWeight: "400",
+                                  textAlign: "right",
+                                  color: 'white',
+                                }}>
+                                  {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                                </span>
+                              </div>
+                            );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+              
+            )}
+          </div>
+        </div>
+
+
+        {/* System Profile Card */}
+        <div style={{
+          ...styles.card,
+          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)'
+            : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)'
+              : 'linear-gradient(to right, #00303C, #000405)')
+        }}>
+          <div style={{
+            ...styles.contentArea,
+            background: index === 0
+              ? 'linear-gradient(to right, #00B1CA, #000F13)'
+              : (index === 1
+                ? 'linear-gradient(to right, #007487, #000C0F)'
+                : 'linear-gradient(to right, #00303C, #000405)')
+
+          }}>
+
+            {!show["SystemProfile"] ? (
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(2, 1fr)", // Ensure a 2-column grid
+                position: "relative",
+                width: "100%",
+              }}>
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    if (!isSelected) return null;
+
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = cardSystemProfileData[workloadKey];
+
+                    if (dataKey === null || dataKey === undefined) return null;
+                    console.log(dataKey, "dataKey", workloadKey, cardSystemProfileData);
+
+                    if (Object?.keys(dataKey)?.length === 0) {
+                      // Show empty values ( - - - )
+                      return (
+                        <div key={key} style={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(2, 1fr)",
+                          position: "relative",
+                          width: "100%",
+                        }}>
+                          {system_MetricsNoData[activeKey2].map((title, idx) => (
+                            <div key={idx} style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              padding: "8px 18px",
+                              minWidth: "100px",
+                              minHeight: "90px",
+                              borderBottom: idx < 2 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                              borderRight: idx % 2 === 0 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                            }}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>- - -</span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    const entries = Object.entries(dataKey);
+                    return (
+                      <div key={key} style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(2, 1fr)",
+                        position: "relative",
+                        width: "100%",
+                        padding: "0.5rem",
+                      }}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title = systemProfileDataKeys[metricKey];
+
+                          return (
+                            <div key={idx} style={{
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              padding: "8px 12px",
+                              minWidth: "120px",
+                              minHeight: "90px",
+                              borderBottom: idx < entries.length - 2 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                              borderRight: idx % 2 === 0 ? "1px solid rgba(255, 255, 255, 0.2)" : "none",
+                            }}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>
+                                {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            ) : (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}>
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = cardSystemProfileData[workloadKey];
+                    
+                    if (!dataKey) return null;
+                    
+                    const entries = Object.entries(dataKey);
+                    
+                    return (
+                      <div key={key}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title =  systemProfileKeys[metricKey];
+              
+                          if (metricKey === "cpu_util_perc" || metricKey === "power")
+                            return (
+                              <div key={idx} style={{
+                                display: 'grid',
+                                gridTemplateColumns: '1fr auto',
+                                padding: "30px",
+                                alignItems: "center",
+                                borderBottom: `${metricKey === "cpu_util_perc" ? "1px solid rgba(255, 255, 255, 0.3)":""}`,
+                              }}>
+                                <span style={{
+                                  fontSize: "20px",
+                                  fontWeight: "200",
+                                  textAlign: "left",
+                                  color: 'white',
+                                }}>
+                                  {title}:
+                                </span>
+                                <span style={{
+                                  fontSize: "25px",
+                                  fontWeight: "400",
+                                  textAlign: "right",
+                                  color: 'white',
+                                }}>
+                                  {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                                </span>
+                              </div>
+                            );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+
+
+
+        {/* Economics Card */}
+
+        {/* fontSize= 35px and fontWeight:400 */}
+        <div style={{
+          ...styles.card,
+          background: index === 0 ? 'linear-gradient(to right, #00B1CA, #000F13)'
+            : (index === 1 ? 'linear-gradient(to right, #007487, #000C0F)'
+              : 'linear-gradient(to right, #00303C, #000405)')
+        }}>
+          <div style={{
+            ...styles.contentArea,
+            background: index === 0
+              ? 'linear-gradient(to right, #00B1CA, #000F13)'
+              : (index === 1
+                ? 'linear-gradient(to right, #007487, #000C0F)'
+                : 'linear-gradient(to right, #00303C, #000405)')
+          }}>
+            {!show["Economics"] ? (
+              <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+                gap: "10px",
+              }}>
+                {/* Kept the commented code as is */}
+                {/* {data4.map((item, idx) => (
+          <Card
+            key={idx}
+            width="19em"
+            height="3em"
+            border="0.81px solid rgba(255, 255, 255, 1)"
+          >
+            <div style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            {data4.map((item, index) => (
-              <Card
-                key={index}
-                width="19em"
-                height="2em"
-                border="0.81px solid rgba(255, 255, 255, 1)"
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                  }}
-                >
-                  {item.value}
-                </div>
-              </Card>
-            ))}
-          </div>
-        ) : (
-          <>
-            <div className="flex-center">
-                  {`100 W`}
+              width: "100%",
+            }}>
+              {item.value}
             </div>
-          </>
-        )}
-      </Card>
-      <Card
-        // width="100%" 
-        // height="146px" 
-        width="20em"
-        height="15em"
-        marginTop="20px"
-        alignItems="normal">
-          {!show["Economics"] ?(
-       <div
-  style={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    width: "100%",
-    gap: "5px",
-  }}
->
-  {data5.map((item, index) => (
-    <Card
-      key={index}
-      width="19em"
-      height="2em"
-      border="0.81px solid rgba(255, 255, 255, 1)"
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: "100%",
-        }}
-      >
-        {item.value}
+          </Card>
+        ))} */}
+
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    if (!isSelected) return null;
+
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = null;
+
+                    console.log(dataKey, "dataKey", workloadKey, cardWorkloadData);
+                    if (dataKey === null || dataKey === undefined) {
+                      return null
+                    }
+                    if (Object.keys(dataKey)?.length === 0) {
+                      // If dataKey is missing, show emptySystemProfile
+                      return (
+                        <div key={key} style={{ ...getGridStyle(economicsNoData[activeKey]?.length - 1) }}>
+                          {economicsNoData[activeKey]?.map((title, idx) => (
+                            <div key={idx} style={styles.metricContainer}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>- - -</span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+
+                    const entries = Object.entries(dataKey);
+                    const gridStyle = getGridStyle(entries.length);
+
+                    return (
+                      <div key={key} style={gridStyle}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title = workloadDataKeys[metricKey];
+
+                          return (
+                            <div key={idx} style={styles.metricContainer}>
+                              <span style={styles.metricLabel}>{title}</span>
+                              <span style={styles.metricValue}>
+                                {typeof metricValue === "number" ? metricValue.toFixed(2) : metricValue}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            ) : (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',  // Center content vertically
+                alignItems: 'center',  // Center content horizontally
+                width: '100%',
+                height:"150px",
+              }}>
+                {Object.entries(tabs).map(([category, categoryTabs]) =>
+                  Object.entries(categoryTabs).map(([key, isSelected]) => {
+                    const workloadKey = key.toUpperCase();
+                    const dataKey = cardEcnomicsData[workloadKey];
+              
+                    if (!dataKey) return null;
+              
+                    const entries = [['TCO_1', 82], ['TCO_2', 1504]]; 
+                    
+                    return (
+                      <div key={key} style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center', // Center text horizontally
+                        justifyContent: 'center', // Center vertically
+                        textAlign: 'center', // Ensure text is centered
+                      }}>
+                        {entries.map(([metricKey, metricValue], idx) => {
+                          const title = economickeys[metricKey];
+              
+                          if (metricKey === "TCO_1")
+                            return (
+                              <div key={idx} style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center', // Center content horizontally
+                                justifyContent: 'center', // Align vertically
+                              }}>
+                                <span style={{
+                                  fontSize: "18px",
+                                  fontWeight: "400",
+                                  textAlign: "center", // Ensure text alignment
+                                  color: 'white',
+                                }}>
+                                  {title}
+                                </span>
+                                <span style={{
+                                  fontSize: "30px",
+                                  fontWeight: "600",
+                                  textAlign: "center", // Center value text
+                                  color: 'white',
+                                }}>
+                                  $ {metricValue}
+                                </span>
+                              </div>
+                            );
+                        })}
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+              
+            )}
+          </div>
+        </div>
       </div>
-    </Card>
-  ))}
-</div>
-):(
-  <>
-  <div className="flex-center">
-      {`$9,085`}
-  </div>
-  </>
-)} 
-      </Card>
-    </>
+    );
+  };
+  return (
+    <div style={styling.containerStyle}>
+      {[0, 1, 2].map((index) => (
+        <SingleCard key={index} index={index} />
+      ))}
+    </div>
   );
 };
 
