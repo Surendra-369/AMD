@@ -120,7 +120,7 @@ const Sidebar = () => {
   return (
     <>
       <div>
-        <span style={{ height: "70px", width: "140px", display: "inline-block", paddingLeft: '50px' }}>
+        <span style={{ height: "60px", width: "140px", display: "inline-block", paddingLeft: '50px' }}>
           <img src={amdlogo} alt="Amd" style={{ height: "100%", width: "100%" }} />
         </span>
       </div>
